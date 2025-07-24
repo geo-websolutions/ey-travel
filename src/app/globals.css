@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* @theme {
+    --sandstone: #D4B483;
+    --nile-twilight: #1E2D3B;
+    --pharaoh-black: #0D1B1E;
+    --papyrus: #F0E6D2;
+    --lapis: #266691;
+    --sunset: #B85C38;
+    --gold: #C9A66B;
+} */
+@layer base {
+    :root {
+        --soft-black: 35, 34, 35; 
+        --nile-twilight: 30, 45, 59;
+        --pharaoh-black: 13, 27, 30;
+        --papyrus: 240, 230, 210;
+        --lapis: 38, 102, 145;
+        --sunset: 184, 92, 56;
+        --gold: 201, 166, 107;
+    }
+}
+
+@layer utilities {
+  .bg-soft-black {
+    background-color: rgb(var(--soft-black));
+  }
+  .bg-pharaoh-black {
+    background-color: rgb(var(--pharaoh-black));
+  }
+  /* Add other color utilities as needed */
+}

@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🌍 EY Travel Egypt - Premium Tour Experiences
 
-## Getting Started
+![EY Travel Egypt Banner](https://ey-travel-egypt.vercel.app/assets/icons/logo.png)
 
-First, run the development server:
+**Discover the Land of Pharaohs** - A Next.js travel platform offering tailored Economic, Luxury, and VIP tours across Egypt's most iconic destinations.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Tour Packages
+- **Economic Tours** - Budget-friendly itineraries
+- **Luxury Tours** - 5-star accommodations & private guides
+- **VIP Experiences** - Helicopter tours & Nile yacht charters
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Traveler Experience
+- 🗺️ Interactive itinerary planner
+- 🏨 Hotel/room visual selection
+- 📅 Real-time availability calendar
+- 🎫 Instant e-ticket generation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Admin Tools
+- 👔 Travel agent dashboard
+- 📊 Booking analytics
+- 💰 Dynamic pricing engine
 
-## Learn More
+## 🛠 Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+**Core Technologies**
+- Next.js 15.4.3 (App Router)
+- React 19.1.0
+- Framer Motion 12.23.7 (Animations)
+- Tailwind CSS (Styling)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Backend Services**
+| Service           | Usage                          |
+|-------------------|--------------------------------|
+| Firebase          | User authentication           |
+| firebase          | Tour data & bookings          |
+| paymob            | Payment processing            |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 Quick Start
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Prerequisites
+- Node.js 20+

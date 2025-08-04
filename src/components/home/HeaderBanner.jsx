@@ -98,7 +98,7 @@ const FullPageBanner = () => {
               <button
                 key={index}
                 onClick={() => setCurrentIndex(index)}
-                className={`w-3 h-3 rounded-full transition-all ${
+                className={`w-3 h-3 rounded-full transition-all cursor-pointer ${
                   index === currentIndex ? 'bg-stone-700 w-6' : 'bg-stone-500'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
@@ -120,7 +120,7 @@ const FullPageBanner = () => {
           <div className="w-full md:w-auto">
             <div className="grid grid-cols-2 gap-2 md:gap-4">
               <Link 
-                href="/tours" 
+                href="/destinations" 
                 className="px-4 py-2 bg-stone-700 text-white rounded-lg text-sm md:text-base text-center hover:bg-stone-800 transition-colors"
               >
                 View Tours

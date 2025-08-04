@@ -1,14 +1,17 @@
 @import "tailwindcss";
 
-/* @theme {
-    --sandstone: #D4B483;
-    --nile-twilight: #1E2D3B;
-    --pharaoh-black: #0D1B1E;
-    --papyrus: #F0E6D2;
-    --lapis: #266691;
-    --sunset: #B85C38;
-    --gold: #C9A66B;
-} */
+/* Remove arrows/spinners from number inputs */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 @layer base {
     :root {
         --soft-black: 35, 34, 35; 

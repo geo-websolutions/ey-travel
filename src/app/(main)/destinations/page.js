@@ -11,15 +11,6 @@ export default function DestinationsPage() {
       {/* Hero Section */}
       <section className="relative h-96 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-black/60 z-10" />
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/assets/videos/egypt-hero.mp4" type="video/mp4" />
-        </video>
         
         <motion.div 
           className="relative z-20 text-center px-4"
@@ -28,7 +19,7 @@ export default function DestinationsPage() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Discover <span className="text-amber-400">Egypt's Treasures</span>
+            Discover <span className="text-amber-400">Egypt&apos;s Treasures</span>
           </h1>
           <p className="text-xl max-w-2xl mx-auto">
             From ancient wonders to breathtaking landscapes, explore the very best of Egypt
@@ -37,7 +28,7 @@ export default function DestinationsPage() {
       </section>
 
       {/* Experience Types */}
-      <section className="py-16 bg-stone-800/50">
+      <section className="py-16 bg-stone-800/50"> 
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">
             Types of <span className="text-amber-400">Egyptian Experiences</span>

@@ -126,7 +126,7 @@ export default function LuxorToursPage() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.7 }}
           >
-            Walk in the footsteps of pharaohs in the world's greatest open-air museum
+            Walk in the footsteps of pharaohs in the world&apos;s greatest open-air museum
           </motion.p>
         </div>
       </section>
@@ -211,7 +211,7 @@ export default function LuxorToursPage() {
                 <p className="text-amber-300 mb-3">{tour.description}</p>
                 
                 <div className="mb-4">
-                  <p className="text-sm italic opacity-80">"{tour.insight}"</p>
+                  <p className="text-sm italic opacity-80">&quot;{tour.insight}&quot;</p>
                 </div>
                 
                 <div className="flex items-center text-sm space-x-4 mb-4 text-stone-400">

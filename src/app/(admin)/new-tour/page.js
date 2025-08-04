@@ -764,7 +764,7 @@ function TourForm({ tourData, setTourData, handleImageUpload, isLoading }) {
       {/* Itinerary Section */}
       <Section title="Itinerary" icon={<FaListUl />}>
         <div className="space-y-6">
-          <h3 className='text-gray-500'>Leave empty if there's no itinerary</h3>
+          <h3 className='text-gray-500'>Leave empty if there&apos;s no itinerary</h3>
           {tourData.itinerary.map((day, index) => (
             <div key={day.id} className="border border-gray-200 rounded-lg p-4">
               <div className="flex justify-between items-center mb-4">
@@ -1010,7 +1010,7 @@ function TourPreview({ tourData }) {
         {tourData.pricing.included.length > 0 && (
           <div className="bg-stone-800/40 p-4 rounded-lg border border-stone-700 space-y-4">
             <div>
-              <h3 className="text-lg font-semibold text-amber-400 mb-2">What's Included</h3>
+              <h3 className="text-lg font-semibold text-amber-400 mb-2">What&apos;s Included</h3>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {tourData.pricing.included.map((item, index) => (
                   <li key={index} className="flex items-start space-x-2">
@@ -1023,7 +1023,7 @@ function TourPreview({ tourData }) {
 
             {tourData.pricing.notIncluded.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold text-rose-400 mb-2">What's Not Included</h3>
+                <h3 className="text-lg font-semibold text-rose-400 mb-2">What&apos;s Not Included</h3>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {tourData.pricing.notIncluded.map((item, index) => (
                     <li key={index} className="flex items-start space-x-2">

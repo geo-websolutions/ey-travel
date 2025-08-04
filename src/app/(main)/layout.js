@@ -12,15 +12,16 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-        <html>
-            <body className={`bg-soft-black`}>
-              <header>
-                <Navbar />
-              </header>
-                
-              {children}
-              <Footer />
-            </body>
-        </html>
+    <html>
+      <body className={`bg-soft-black`}>
+        <header>
+          <Navbar />
+        </header>
+          
+        {children}
+        <Footer />
+      </body>
+    </html>
+    
   );
 }

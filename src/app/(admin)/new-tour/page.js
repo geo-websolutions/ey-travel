@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { convertImageToWebP } from '@/utils/imageResizer';
 import { supabase } from '@/lib/supabase';
 import { collection, addDoc } from "firebase/firestore"; 
@@ -46,7 +45,7 @@ export default function TourCreationPage() {
     // Itinerary
     itinerary: [
       {
-        id: uuidv4(),
+        id: crypto.randomUUID(),
         day: 1,
         title: '',
         description: '',
@@ -98,7 +97,7 @@ export default function TourCreationPage() {
       const webpBlob = await convertImageToWebP(file, 80, 1200, 800);
       
       // Generate unique filename
-      const fileName = `${uuidv4()}.webp`;
+      const fileName = `${crypto.randomUUID()}.webp`;
       const filePath = `tours/${fileName}`;
 
       // Upload to Supabase
@@ -400,7 +399,7 @@ function TourForm({ tourData, setTourData, handleImageUpload, isLoading }) {
 
   const addItineraryDay = () => {
     const newDay = {
-      id: uuidv4(),
+      id: crypto.randomUUID(),
       day: tourData.itinerary.length + 1,
       title: '',
       description: '',

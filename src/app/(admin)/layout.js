@@ -1,12 +1,10 @@
-export const metadata = {
-  title: 'EY Travel | Create New Tour',
-}
-
 export default function RootLayout({ children }) {
   return (
-    <>
-      <body>{children}</body>
-    </>
+    <html>
+        <body>
+            {children}
+        </body>
+    </html>
   )
 }
 

@@ -5,8 +5,8 @@ import { convertImageToWebP } from '@/utils/imageResizer';
 import { supabase } from '@/lib/supabase';
 import { collection, addDoc } from "firebase/firestore"; 
 import { db } from "@/lib/firebase";
-import { FaClock, FaStar, FaTimes, FaUsers, FaEye, FaEdit, FaUpload, FaPlus, FaTrash, FaCalendarAlt, FaCheck, FaTag, FaMapMarkerAlt, FaDollarSign, FaListUl } from 'react-icons/fa';
-import { useAuthGuard } from '@/utils/auth';
+import { FaDotCircle, FaListAlt, FaClock, FaStar, FaTimes, FaUsers, FaEye, FaEdit, FaUpload, FaPlus, FaTrash, FaCalendarAlt, FaCheck, FaTag, FaMapMarkerAlt, FaDollarSign, FaListUl } from 'react-icons/fa';
+import { LogoutButton } from '@/components/auth/LogoutButton';
 
 export default function TourCreationPage() {
   const [viewMode, setViewMode] = useState('form'); // 'form' or 'preview'
@@ -64,9 +64,6 @@ export default function TourCreationPage() {
       isAvailable: true
     }
   });
-
-  // Authentication guard
-  useAuthGuard("/login")
 
   // Generate slug from title
   useEffect(() => {
@@ -257,6 +254,7 @@ export default function TourCreationPage() {
                 {isLoading ? 'Saving...' : 'Save Tour'}
               </button>
             )}
+            <LogoutButton />
           </div>
         </div>
       </header>
@@ -441,6 +439,15 @@ function TourForm({ tourData, setTourData, handleImageUpload, isLoading }) {
     }));
   };
 
+  const removeActivity = (dayIndex, activityIndex) => {
+    const updatedItinerary = [...tourData.itinerary];
+    updatedItinerary[dayIndex].activities.splice(activityIndex, 1);
+    setTourData(prev => ({
+      ...prev,
+      itinerary: updatedItinerary
+    }));
+  };
+
   const addStartDate = (date) => {
     setTourData(prev => ({
       ...prev,
@@ -607,7 +614,7 @@ function TourForm({ tourData, setTourData, handleImageUpload, isLoading }) {
               { value: 'family-friendly', label: 'Family Friendly' },
               { value: 'luxury', label: 'Luxury' },
               { value: 'budget', label: 'Budget' },
-              { value: 'romantic', label: 'Romantic' },
+              { value: 'premium', label: 'Premium' },
               { value: 'adventure', label: 'Adventure' },
               { value: 'cultural', label: 'Cultural' },
               { value: 'historical', label: 'Historical' },
@@ -809,7 +816,7 @@ function TourForm({ tourData, setTourData, handleImageUpload, isLoading }) {
                   <label className="block text-sm font-medium text-gray-500 mb-2">Activities</label>
                   <div className="space-y-2">
                     {day.activities.map((activity, activityIndex) => (
-                      <div key={activityIndex} className="flex space-x-2">
+                      <div key={activityIndex} className="flex space-x-2 items-center">
                         <input
                           type="text"
                           value={activity}
@@ -817,13 +824,24 @@ function TourForm({ tourData, setTourData, handleImageUpload, isLoading }) {
                           className="flex-1 block w-full rounded-md text-stone-400 bg-stone-700 border border-stone-600 p-1 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                           placeholder="Hotel transfer"
                         />
-                        {activityIndex === day.activities.length - 1 && (
+                        {/* Show add button only for the last activity */}
+                        {activityIndex === day.activities.length - 1 ? (
                           <button
                             type="button"
                             onClick={() => addActivity(index)}
-                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-amber-600 hover:bg-amber-500"
+                            className="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-amber-600 hover:bg-amber-500"
                           >
                             <FaPlus size={12} />
+                          </button>
+                        ) : null}
+                        {/* Show remove button for all activities except when it's the only one */}
+                        {day.activities.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeActivity(index, activityIndex)}
+                            className="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-500"
+                          >
+                            <FaTimes size={12} />
                           </button>
                         )}
                       </div>
@@ -1041,11 +1059,36 @@ function TourPreview({ tourData }) {
         {hasItinerary && (
           <div>
             <h3 className="text-lg font-semibold text-amber-400 mb-2">Itinerary</h3>
-            <ul className="space-y-2">
+            <ul className="space-y-4">
               {tourData.itinerary.map((day, index) => (
-                <li key={index} className="bg-stone-700/40 p-3 rounded-lg border border-stone-600">
-                  <p className="text-white font-semibold">Day {day.day}: {day.title}</p>
-                  <p className="text-stone-400 text-sm mt-1">{day.description}</p>
+                <li key={index} className="bg-stone-700/40 p-4 rounded-lg border border-stone-600">
+                  <div className="mb-3">
+                    <p className="text-white font-semibold text-lg">Day {day.day}: {day.title}</p>
+                    {day.description && (
+                      <pre className="text-stone-400 text-sm font-sans mt-1">{day.description}</pre>
+                    )}
+                  </div>
+                  
+                  {/* Activities Section */}
+                  {day.activities && day.activities.length > 0 && (
+                    <div className="space-y-3">
+                      <h4 className="text-amber-300 font-medium text-sm flex items-center">
+                        <FaListAlt className="mr-2" /> Activities:
+                      </h4>
+                      <ul className="space-y-2 pl-4">
+                        {day.activities.map((activity, activityIndex) => (
+                          <li key={activityIndex} className="flex items-start">
+                            <span className="flex items-center justify-center w-5 h-5 bg-amber-500/20 rounded-full mr-2 mt-0.5 shrink-0">
+                              <FaDotCircle className="text-amber-400" size={8} />
+                            </span>
+                            <div>
+                              <p className="text-white text-sm">{activity}</p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>

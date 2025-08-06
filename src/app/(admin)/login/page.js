@@ -26,7 +26,7 @@ export default function LoginPage() {
         // Check Supabase auth if Firebase is authenticated
         const { data: { session: supabaseSession } } = await supabase.auth.getSession();
         if (supabaseSession) {
-          router.push('/new-tour');
+          router.push('/admin/dashboard');
         }
       }
       setAuthChecked(true);
@@ -56,7 +56,7 @@ export default function LoginPage() {
       if (supabaseError) throw supabaseError;
 
       // 3. Redirect on success
-      router.push('/new-tour');
+      router.push('/admin/dashboard');
     } catch (err) {
       console.error('Login error:', err);
       setError(err.message || 'Login failed. Please try again.');

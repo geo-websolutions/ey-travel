@@ -112,9 +112,9 @@ export default function TourDestinations() {
                 blurDataURL="/assets/images/placeholder.jpg"
               />
               {/* Tours Count Badge */}
-              <div className="absolute top-4 right-4 bg-amber-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+              {/* <div className="absolute top-4 right-4 bg-amber-600 text-white text-sm font-bold px-3 py-1 rounded-full">
                 {destination.toursCount} {destination.toursCount === 1 ? 'Tour' : 'Tours'}
-              </div>
+              </div> */}
             </div>
             
             {/* Destination Content */}

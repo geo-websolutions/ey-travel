@@ -18,21 +18,8 @@ export const TourEditModal = ({ tour, onClose, onUpdate }) => {
   });
 
   const modalRef = useRef(null);
-  console.log(tourData)
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [onClose]);
-
-  // Handle image upload (same as your creation page)
+  // Handle image upload
   const handleImageUpload = async (e, type) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -82,7 +69,7 @@ export const TourEditModal = ({ tour, onClose, onUpdate }) => {
     }
   };
 
-  // Delete image functions (same as your creation page)
+  // Delete image functions
   const deleteImageFromStorage = async (imageUrl) => {
     try {
       const filePath = imageUrl.split('tour-images/')[1];
@@ -199,8 +186,6 @@ export const TourEditModal = ({ tour, onClose, onUpdate }) => {
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 20, opacity: 0 }}
-          ref={modalRef}
-          onClick={(e) => e.stopPropagation()}
           className="relative bg-stone-800 rounded-xl max-w-6xl w-full max-h-[90vh] overflow-y-auto border border-stone-700 shadow-2xl"
         >
           {/* Close Button */}

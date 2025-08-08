@@ -1,7 +1,6 @@
 'use client'
 
 export const RecentTours = ({ tours, setActiveTab }) => {
-  // Get only the first 3 tours
   const recentTours = tours.slice(0, 3);
 
   return (

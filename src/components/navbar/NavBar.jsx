@@ -42,9 +42,11 @@ export default function Navbar() {
       subItems: [
         { href: "/tours/nile-cruise", label: "Nile Cruises" },
         { href: "/tours/day-tours", label: "Day Tours" },
+        { href: "/tours/historical", label: "Historical" },
         { href: "/tours/tour-packages", label: "Tour Packages" },
         { href: "/tours/excursions", label: "Excursions" },
         { href: "/tours/safari", label: "Safari" },
+        { href: "/tours/diving-trips", label: "Diving Trips" },
       ]
     },
     { 
@@ -55,6 +57,7 @@ export default function Navbar() {
         { href: "/destinations/aswan", label: "Aswan" },
         { href: "/destinations/cairo", label: "Cairo" },
         { href: "/destinations/hurghada", label: "Hurghada" },
+        { href: "/destinations/marsa-alam", label: "Marsa Alam" },
       ]
     },
     { 

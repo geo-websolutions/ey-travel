@@ -1,9 +1,6 @@
-import Navbar from "@/components/navbar/NavBar";
-import Footer from "@/components/Footer";
-
 export const metadata = {
   metadataBase: new URL('https://ey-travel-egypt.vercel.app/'),
-  title: "Egypt Tours | Premium Egypt Tours",
+  title: "Egypt Tours | Destinations",
   description: "Discover the best Egypt tours for all budgets. Explore Luxor's ancient temples, Aswan's Nile cruises, Cairo's pyramids, and Red Sea resorts in Hurghada & Marsa Alam. Book your perfect Egyptian adventure today!",
   keywords: [
     "Egypt tours", "Luxor tours", "Aswan Nile cruise", 
@@ -43,8 +40,7 @@ export const metadata = {
     icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',
   },
-  manifest: '/site.webmanifest',
-  formatDetection: {
+     formatDetection: {  
     email: false,
     address: false,
     telephone: true, // Important for contact
@@ -53,16 +49,6 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html>
-      <body className={`bg-soft-black`}>
-        <header>
-          <Navbar />
-        </header>
-          
-        {children}
-        <Footer />
-      </body>
-    </html>
-    
-  );
+    <>{children}</>
+  )
 }

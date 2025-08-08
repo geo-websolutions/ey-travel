@@ -259,15 +259,18 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
               ]}
             />
           </div>
-          <SelectField
+          <MultiSelectField
             label="Tour Type"
             value={tourData.basicInfo.type}
-            onChange={(e) => updateBasicInfo('type', e.target.value)}
+            onChange={(values) => updateBasicInfo('type', values)}
             options={[
               { value: 'nile-cruises', label: 'Nile Cruise' },
               { value: 'historical-tours', label: 'Historical Tour' },
-              { value: 'desert-safaris', label: 'Desert Safari' },
-              { value: 'diving-trips', label: 'Diving Trip' }
+              { value: 'safaris', label: 'Safari' },
+              { value: 'diving-trips', label: 'Diving Trip' },
+              { value: 'day-tour', label: 'Day Tour' },
+              { value: 'tour-package', label: 'Tour Package' },
+              { value: 'excursion', label: 'Excursion' },
             ]}
             required
           />
@@ -276,10 +279,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
             value={tourData.basicInfo.category}
             onChange={(e) => updateBasicInfo('category', e.target.value)}
             options={[
-              { value: 'historical', label: 'Historical' },
-              { value: 'adventure', label: 'Adventure' },
               { value: 'premium', label: 'Premium' },
-              { value: 'cultural', label: 'Cultural' },
               { value: 'economic', label: 'Economic' },
               { value: 'luxury', label: 'Luxury' }
             ]}

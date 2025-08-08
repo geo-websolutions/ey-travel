@@ -142,7 +142,7 @@ const ToursPage = () => {
             Explore <span className="text-amber-400">Our Tour Categories</span>
           </h2>
           <p className="text-lg mb-12 max-w-2xl mx-auto opacity-90">
-            Whether you're a history enthusiast, adventure seeker, or luxury traveler, 
+            Whether you&apos;re a history enthusiast, adventure seeker, or luxury traveler, 
             we have the perfect Egyptian experience for you.
           </p>
           
@@ -169,7 +169,7 @@ const ToursPage = () => {
                   </h3>
                   <p className="text-amber-300 mb-3">{tour.tagline}</p>
                   <div className="mb-4">
-                    <p className="text-sm opacity-85 italic">"{tour.description}"</p>
+                    <p className="text-sm opacity-85 italic">&quot;{tour.description}&quot;</p>
                   </div>
                   <div className="mt-auto pt-4 border-t border-stone-700">
                     <p className="text-sm font-medium mb-2">Experience includes:</p>
@@ -189,7 +189,7 @@ const ToursPage = () => {
               </Link>
             ))}
           </div>
-        </div>
+        </div> 
 
         {/* CTA Section */}
         <div className="mt-20 text-center bg-gradient-to-r from-amber-700 to-amber-900 rounded-xl p-8 md:p-12 max-w-4xl mx-auto">

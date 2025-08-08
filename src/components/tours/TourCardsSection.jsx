@@ -67,7 +67,16 @@ export default function TourCardsSection({ tours, city, slug }) {
               />
               {/* Tour Type */}
               <div className="absolute bottom-4 right-4 bg-stone-900/80 text-white text-xs px-2 py-1 rounded">
-                {formatToTitleCase(tour.basicInfo.type)}
+                {console.log(tour.basicInfo.type)}
+                {(Array.isArray(tour.basicInfo.type) ? tour.basicInfo.type : [tour.basicInfo.type])
+                  .map((type, i) => (
+                    <span 
+                      key={i} 
+                      className="bg-stone-900/80 text-white text-xs px-2 py-1 rounded"
+                    >
+                      {formatToTitleCase(type)}
+                    </span>
+                  ))}
               </div>
             </Link>
 

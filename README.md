@@ -39,7 +39,3 @@ Visit at https://ey-travel-egypt.vercel.app/
 | firebase          | Tour data & bookings          |
 | paymob            | Payment processing            |
 
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js 20+

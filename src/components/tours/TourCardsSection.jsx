@@ -58,7 +58,7 @@ export default function TourCardsSection({ tours, city, slug }) {
             )}
 
             {/* Tour Image */}
-            <Link href={`tours/${tour.basicInfo.slug}`} className="h-50 bg-stone-700 relative overflow-hidden">
+            <Link href={`/destinations/${city}/${tour.basicInfo.slug}`} className="h-50 bg-stone-700 relative overflow-hidden">
               <Image 
                 src={tour.media.coverImage}
                 alt={tour.basicInfo.title}

@@ -429,7 +429,7 @@ export default function TourDetailPage() {
               
               {/* Included/Excluded */}
               <div className="bg-stone-700/50 p-5 rounded-xl border border-stone-600">
-                <h3 className="text-xl font-bold text-white mb-4">What's Included</h3>
+                <h3 className="text-xl font-bold text-white mb-4">What&apos;s Included</h3>
                 
                 <ul className="space-y-3">
                   {tour.pricing.included.map((item, index) => (

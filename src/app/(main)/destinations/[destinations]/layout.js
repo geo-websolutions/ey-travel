@@ -1,6 +1,6 @@
 export const metadata = {
   metadataBase: new URL('https://ey-travel-egypt.vercel.app/'),
-  title: "Egypt Tours | Destinations",
+  title: "EY Travel | Destinations",
   description: "Discover the best Egypt tours for all budgets. Explore Luxor's ancient temples, Aswan's Nile cruises, Cairo's pyramids, and Red Sea resorts in Hurghada & Marsa Alam. Book your perfect Egyptian adventure today!",
   keywords: [
     "Egypt tours", "Luxor tours", "Aswan Nile cruise", 

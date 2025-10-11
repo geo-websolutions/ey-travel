@@ -2,7 +2,7 @@ import Navbar from "@/components/navbar/NavBar";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  metadataBase: new URL('https://ey-travel-egypt.vercel.app/'),
+  metadataBase: new URL('https://eytravelsegypt.com/'),
   title: "Egypt Tours | Premium Egypt Tours",
   description: "Discover the best Egypt tours for all budgets. Explore Luxor's ancient temples, Aswan's Nile cruises, Cairo's pyramids, and Red Sea resorts in Hurghada & Marsa Alam. Book your perfect Egyptian adventure today!",
   keywords: [
@@ -15,11 +15,11 @@ export const metadata = {
   openGraph: {
     title: "Egypt Tours - Unforgettable Adventures from Luxor to the Red Sea",
     description: "From budget to luxury, we offer the best tours in Egypt. Explore ancient wonders, cruise the Nile, or relax at Red Sea resorts. Your perfect Egyptian experience awaits!",
-    url: "https://ey-travel-egypt.vercel.app/",
+    url: "https://eytravelsegypt.com/",
     siteName: "Egypt Tours",
     images: [
       {
-        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/EY-Travel-og.png",
+        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/og_image.png",
         width: 1200,
         height: 630,
         alt: "EY Travel Egypt Tours featuring Luxor temples, Cairo pyramids, and Red Sea resorts"
@@ -35,7 +35,7 @@ export const metadata = {
     images: ['/assets/icons/logo.png'],
   },
   alternates: {
-    canonical: 'https://ey-travel-egypt.vercel.app/',
+    canonical: 'https://eytravelsegypt.com/',
   },
   category: 'travel',
   authors: [{ name: 'EY Travel Egypt Team' }],

@@ -4,7 +4,7 @@ import HomeMainSection from "@/components/home/HomeMainSection";
 
 export default function Home() {
   return (
-    <main>
+    <main className="">
       <HeaderBanner />
       <HomeMainSection />
     </main>

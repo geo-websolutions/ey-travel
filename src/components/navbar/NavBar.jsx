@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,8 +10,10 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState(null);
+  const [textColor, setTextColor] = useState('text-stone-700');
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
+  const navbarRef = useRef(null);
 
   useEffect(() => {
     setIsLoading(false);
@@ -25,6 +27,103 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Detect background color and adjust text color
+  useEffect(() => {
+    const detectBackgroundColor = () => {
+      if (!navbarRef.current) return;
+
+      const navbarRect = navbarRef.current.getBoundingClientRect();
+      
+      // Sample multiple points below the navbar
+      const samplePoints = [
+        { x: window.innerWidth * 0.25, y: navbarRect.bottom + 10 },
+        { x: window.innerWidth * 0.5, y: navbarRect.bottom + 10 },
+        { x: window.innerWidth * 0.75, y: navbarRect.bottom + 10 },
+        { x: window.innerWidth * 0.2, y: navbarRect.bottom + 20 },
+        { x: window.innerWidth * 0.8, y: navbarRect.bottom + 20 }
+      ];
+
+      let darkCount = 0;
+      let lightCount = 0;
+
+      samplePoints.forEach(point => {
+        const element = document.elementFromPoint(point.x, point.y);
+        if (element) {
+          const bgColor = window.getComputedStyle(element).backgroundColor;
+          const brightness = getBrightnessFromColor(bgColor);
+          brightness > 128 ? lightCount++ : darkCount++;
+        }
+      });
+
+      // Set text color based on majority
+      const shouldUseLightText = lightCount > darkCount;
+      setTextColor(shouldUseLightText ? 'text-stone-700' : 'text-white');
+    };
+
+    const getBrightnessFromColor = (color) => {
+      // Handle different color formats
+      if (color === 'transparent' || color === 'rgba(0, 0, 0, 0)') {
+        // Check parent elements until we find a background color
+        return checkParentBackgrounds();
+      }
+
+      const match = color.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.?\d*))?\)/);
+      if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        // Calculate perceived brightness
+        return (r * 299 + g * 587 + b * 114) / 1000;
+      }
+      
+      // Default to dark background
+      return 0;
+    };
+
+    const checkParentBackgrounds = () => {
+      // Sample a point and traverse up the DOM tree to find background
+      const sampleX = window.innerWidth / 2;
+      const sampleY = navbarRef.current?.getBoundingClientRect().bottom + 10;
+      let element = document.elementFromPoint(sampleX, sampleY);
+      
+      while (element && element !== document.documentElement) {
+        const bgColor = window.getComputedStyle(element).backgroundColor;
+        if (bgColor !== 'transparent' && bgColor !== 'rgba(0, 0, 0, 0)') {
+          const match = bgColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.?\d*))?\)/);
+          if (match) {
+            const r = parseInt(match[1]);
+            const g = parseInt(match[2]);
+            const b = parseInt(match[3]);
+            return (r * 299 + g * 587 + b * 114) / 1000;
+          }
+        }
+        element = element.parentElement;
+      }
+      
+      // Default to light background if nothing found
+      return 255;
+    };
+
+    // Initial detection
+    detectBackgroundColor();
+
+    // Detect on scroll and resize with debouncing
+    let timeoutId;
+    const handleChange = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(detectBackgroundColor, 50);
+    };
+
+    window.addEventListener('scroll', handleChange);
+    window.addEventListener('resize', handleChange);
+
+    return () => {
+      window.removeEventListener('scroll', handleChange);
+      window.removeEventListener('resize', handleChange);
+      clearTimeout(timeoutId);
+    };
+  }, [pathname]); // Re-run when route changes
+
   const isActive = (href) => {
     return href === "/" 
       ? pathname === "/" 
@@ -36,19 +135,6 @@ export default function Navbar() {
       href: "/", 
       label: "Home",
     },
-    // { 
-    //   href: "/tours", 
-    //   label: "Tour Type",
-    //   subItems: [
-    //     { href: "/tours/nile-cruise", label: "Nile Cruises" },
-    //     { href: "/tours/day-tours", label: "Day Tours" },
-    //     { href: "/tours/historical", label: "Historical" },
-    //     { href: "/tours/tour-packages", label: "Tour Packages" },
-    //     { href: "/tours/excursions", label: "Excursions" },
-    //     { href: "/tours/safari", label: "Safari" },
-    //     { href: "/tours/diving-trips", label: "Diving Trips" },
-    //   ]
-    // },
     { 
       href: "/destinations", 
       label: "Destinations",
@@ -75,13 +161,49 @@ export default function Navbar() {
     setOpenSubmenu(openSubmenu === index ? null : index);
   };
 
+  // Determine hover and active colors based on detected background
+  const getLinkColors = (isActiveLink) => {
+    const isDarkBackground = textColor === 'text-white';
+    
+    if (isActiveLink) {
+      return 'text-amber-600 font-medium';
+    }
+    
+    if (isDarkBackground) {
+      return 'text-white hover:text-amber-300';
+    } else {
+      return 'text-stone-700 hover:text-amber-600';
+    }
+  };
+
+  const getSubmenuColors = (isActiveLink) => {
+    const isDarkBackground = textColor === 'text-white';
+    
+    if (isActiveLink) {
+      return 'bg-amber-50 text-amber-700 font-medium';
+    }
+    
+    if (isDarkBackground) {
+      return 'text-white hover:bg-white/10 hover:text-amber-300';
+    } else {
+      return 'text-stone-700 hover:bg-stone-50 hover:text-amber-600';
+    }
+  };
+
   return (
     <motion.nav 
+      ref={navbarRef}
       initial={isLoading ? { y: -100 } : false}
       animate={{ y: 0 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       className={`fixed top-0 w-full z-[100] transition-all duration-300 ${
-        scrolled ? 'bg-white/95 shadow-lg backdrop-blur-sm' : 'bg-white'
+        scrolled 
+          ? textColor === 'text-white' 
+            ? 'bg-black/30 shadow-lg backdrop-blur-sm' 
+            : 'bg-white/20 shadow-lg backdrop-blur-sm'
+          : textColor === 'text-white'
+            ? 'bg-transparent'
+            : 'bg-white/20'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,25 +221,23 @@ export default function Navbar() {
                 alt="EY Travel Logo" 
                 width={60}
               />
-              <span className="hidden md:block text-xl font-bold text-stone-800">
+              <span className={`hidden md:block text-xl font-bold ${textColor}`}>
                 EY Travel Egypt
               </span>
             </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-2">
+          <div className="hidden md:flex items-center space-x-5">
             {navItems.map((item, index) => (
               <div key={index} className="relative group">
                 {item.subItems ? (
                   <>
                     <button
                       onClick={() => toggleSubmenu(index)}
-                      className={`flex items-center py-2.5 rounded-lg transition-colors ${
+                      className={`flex items-center py-2.5 rounded-lg transition-colors ${getLinkColors(
                         isActive(item.href) || (item.subItems && item.subItems.some(sub => isActive(sub.href)))
-                          ? 'text-amber-600 font-medium'
-                          : 'text-stone-700 hover:text-amber-600'
-                      } group-hover:text-amber-600`}
+                      )} group-hover:text-amber-600`}
                     >
                       <span className="relative">
                         {item.label}
@@ -134,7 +254,7 @@ export default function Navbar() {
                         transition={{ duration: 0.2 }}
                         className="ml-1"
                       >
-                        <ChevronDown size={16} className="group-hover:text-amber-600" />
+                        <ChevronDown size={16} className={textColor === 'text-white' ? 'text-white group-hover:text-amber-300' : 'group-hover:text-amber-600'} />
                       </motion.span>
                     </button>
 
@@ -180,11 +300,7 @@ export default function Navbar() {
                     className="relative px-3 py-2.5"
                   >
                     <motion.span
-                      className={`block transition-colors duration-300 ${
-                        isActive(item.href) 
-                          ? 'text-amber-600 font-medium' 
-                          : 'text-stone-700 hover:text-amber-600'
-                      }`}
+                      className={`block transition-colors duration-300 ${getLinkColors(isActive(item.href))}`}
                       whileHover={{ scale: 1.05 }}
                     >
                       {item.label}
@@ -192,7 +308,7 @@ export default function Navbar() {
                     {isActive(item.href) && (
                       <motion.div 
                         layoutId="navUnderline"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-600"
+                        className="absolute bottom-0 px-3 left-0 right-0 h-0.5 bg-amber-600"
                         transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                       />
                     )}
@@ -206,7 +322,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-stone-700 hover:text-amber-600 focus:outline-none"
+              className={`inline-flex items-center justify-center p-2 rounded-md ${textColor} hover:text-amber-600 focus:outline-none`}
               aria-expanded="false"
             >
               <span className="sr-only">Open main menu</span>
@@ -224,7 +340,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation - Keep original styles */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div

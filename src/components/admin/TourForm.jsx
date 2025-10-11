@@ -255,7 +255,8 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
               onChange={(e) => updateBasicInfo('durationType', e.target.value)}
               options={[
                 { value: 'hours', label: 'Hours' },
-                { value: 'days', label: 'Days' }
+                { value: 'days', label: 'Days' },
+                { value: 'minutes', label: 'Minutes' }
               ]}
             />
           </div>
@@ -269,6 +270,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
               { value: 'safaris', label: 'Safari' },
               { value: 'diving-trips', label: 'Diving Trip' },
               { value: 'day-tour', label: 'Day Tour' },
+              { value: 'half-day-tour', label: 'Half Day Tour' },
               { value: 'tour-package', label: 'Tour Package' },
               { value: 'excursion', label: 'Excursion' },
             ]}
@@ -374,6 +376,67 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
             ]}
           />
         </div>
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="freeCancellation"
+            checked={tourData.basicInfo.freeCancellation}
+            onChange={(e) => updateBasicInfo('freeCancellation', e.target.checked)}
+            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+          />
+          <label htmlFor="freeCancellation" className="ml-2 block text-sm text-amber-400">
+            Free cancellation
+          </label>
+        </div>
+        {tourData.basicInfo.freeCancellation && (
+          <div className="md:col-span-2 mt-4">
+            <h3 className="text-lg font-medium mb-4 text-white">Free Cancellation Policy</h3>
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+              <InputField
+                  label="Description"
+                  value={tourData.basicInfo.freeCancellationInfo}
+                  onChange={(e) => updateBasicInfo('freeCancellationInfo', e.target.value)}
+                  placeholder="Description of free cancellation policy"
+                />
+            </div>
+          </div>
+        )}
+        <div className="flex items-center mt-4">
+          <input
+            type="checkbox"
+            id="liveTourGuide"
+            checked={tourData.basicInfo.liveTourGuide}
+            onChange={(e) => updateBasicInfo('liveTourGuide', e.target.checked)}
+            className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+          />
+          <label htmlFor="liveTourGuide" className="ml-2 block text-sm text-amber-400">
+            Live Tour Guide
+          </label>
+        </div>
+        {tourData.basicInfo.liveTourGuide && (
+          <div className="md:col-span-2 mt-4">
+            <h3 className="text-lg font-medium mb-4 text-white">Live Tour Guide Languages Supported</h3>
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+              <MultiInputField
+                label="Supported Lanagues"
+                values={tourData.basicInfo.liveTourGuideLanguages}
+                onChange={(values) => updateBasicInfo('liveTourGuideLanguages', values)}
+                placeholder="Add supported languages"
+              />
+            </div>
+          </div>
+        )}
+        <div className="md:col-span-2 mt-4">
+            <h3 className="text-lg font-medium mb-4 text-white">Highlights</h3>
+            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+              <MultiInputField
+                label="Add highlights"
+                values={tourData.basicInfo.highlights}
+                onChange={(values) => updateBasicInfo('highlights', values)}
+                placeholder="Add highlight bullet point"
+              />
+            </div>
+          </div>
       </Section>
 
       {/* Pricing Information Section */}
@@ -454,7 +517,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
           <div>
             <label className="block text-sm font-medium text-amber-300 mb-2">Gallery Images</label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {tourData.media.gallery.map((img, index) => (
+              {tourData.media.gallery && tourData.media.gallery.map((img, index) => (
                 <div key={index} className="relative group">
                   <img
                     src={img}
@@ -517,7 +580,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
       <Section title="Itinerary" icon={<FaListUl />}>
         <div className="space-y-6">
           <h3 className='text-gray-500'>Leave empty if there&apos;s no itinerary</h3>
-          {tourData.itinerary.map((day, index) => (
+          {tourData.itinerary && tourData.itinerary.map((day, index) => (
             <div key={day.id} className="border border-gray-200 rounded-lg p-4">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-white">Day {day.day}</h3>
@@ -560,7 +623,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
                 <div>
                   <label className="block text-sm font-medium text-gray-500 mb-2">Activities</label>
                   <div className="space-y-2">
-                    {day.activities.map((activity, activityIndex) => (
+                    {day.activities && day.activities.map((activity, activityIndex) => (
                       <div key={activityIndex} className="flex space-x-2 items-center">
                         <input
                           type="text"
@@ -612,7 +675,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
           <div>
             <label className="block text-sm font-medium text-amber-400 mb-2">Start Dates</label>
             <div className="flex flex-wrap gap-2 mb-4">
-              {tourData.availability.startDates.map((date, index) => (
+              {tourData.availability && tourData.availability.startDates.map((date, index) => (
                 <div key={index} className="flex items-center bg-stone-500 rounded-full px-3 py-1">
                   <span className="mr-2 text-amber-400">{date}</span>
                   <button
@@ -696,6 +759,31 @@ function Section({ title, icon, children }) {
 }
 
 function InputField({ label, value, onChange, type = 'text', placeholder, required = false, disabled = false, textarea = false, rows = 3 }) {
+  
+  // Helper function to safely parse the value for display
+  const getSafeDisplayValue = (inputValue) => {
+    if (type === 'number') {
+      // If value is already a number, return it
+      if (typeof inputValue === 'number') {
+        return isNaN(inputValue) ? '' : inputValue;
+      }
+      
+      // If value is string, try to parse it
+      if (typeof inputValue === 'string') {
+        const parsed = parseFloat(inputValue);
+        return isNaN(parsed) ? inputValue : parsed;
+      }
+      
+      // For other types, return empty string
+      return '';
+    }
+    
+    // For non-number types, return as is
+    return inputValue;
+  };
+
+  const displayValue = getSafeDisplayValue(value);
+
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium text-amber-400 mb-1">
@@ -715,7 +803,7 @@ function InputField({ label, value, onChange, type = 'text', placeholder, requir
       ) : (
         <input
           type={type}
-          value={value}
+          value={displayValue}
           onChange={onChange}
           className="block w-full bg-stone-700 border border-stone-600 p-1 rounded-md shadow-sm focus:border-amber-500 focus:ring-amber-500 text-white sm:text-sm"
           placeholder={placeholder}
@@ -821,7 +909,7 @@ function MultiInputField({ label, values, onChange, placeholder }) {
         </button>
       </div>
       <div className="flex flex-wrap gap-2">
-        {values.map((value, index) => (
+        {values && values.map((value, index) => (
           <div key={index} className="flex items-center bg-stone-700 rounded-full px-3 py-1">
             <span className="mr-2 text-white text-sm">{value}</span>
             <button

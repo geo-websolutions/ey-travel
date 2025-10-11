@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { TourForm } from '@/components/admin/TourForm';
 import { collection, addDoc, setDoc, getCountFromServer, doc } from "firebase/firestore"; 
 import { db } from "@/lib/firebase";
-import { FaDotCircle, FaListAlt, FaClock, FaStar, FaTimes, FaUsers, FaEye, FaEdit, FaUpload, FaPlus, FaTrash, FaCalendarAlt, FaCheck, FaTag, FaMapMarkerAlt, FaDollarSign, FaListUl } from 'react-icons/fa';
+import { FaDotCircle, FaListAlt, FaClock, FaStar, FaTimes, FaUsers, FaEye, FaEdit, FaLanguage, FaUndo, FaHandPointRight, FaCalendarAlt, FaCheck, FaMap, FaMapMarkerAlt, FaDollarSign } from 'react-icons/fa';
 import { LogoutButton } from '@/components/auth/LogoutButton';
 
 export default function TourCreationPage() {
@@ -21,6 +21,7 @@ export default function TourCreationPage() {
       fullDescription: '',
       duration: 1,
       durationType: 'days',
+      durationInfo: '',
       type: [],
       category: 'Economic',
       destinations: [],
@@ -30,7 +31,14 @@ export default function TourCreationPage() {
       minAge: 12,
       maxGroupSize: 12,
       featured: false,
-      tags: []
+      tags: [],
+      liveTourGuide: false,
+      liveTourGuideLanguages: [],
+      freeCancellation: false,
+      freeCancellationInfo: '',
+      highlights: [],
+
+
     },
     // Pricing Information
     pricing: {
@@ -156,6 +164,7 @@ export default function TourCreationPage() {
           fullDescription: tourData.basicInfo.fullDescription,
           duration: Number(tourData.basicInfo.duration),
           durationType: tourData.basicInfo.durationType,
+          durationInfo: tourData.basicInfo.durationInfo,
           type: tourData.basicInfo.type,
           category: tourData.basicInfo.category,
           destinations: tourData.basicInfo.destinations,
@@ -166,6 +175,11 @@ export default function TourCreationPage() {
           maxGroupSize: Number(tourData.basicInfo.maxGroupSize),
           featured: Boolean(tourData.basicInfo.featured),
           tags: tourData.basicInfo.tags,
+          liveTourGuide: Boolean(tourData.basicInfo.liveTourGuide),
+          liveTourGuideLanguages: tourData.basicInfo.liveTourGuideLanguages,
+          freeCancellation: Boolean(tourData.basicInfo.freeCancellation),
+          freeCancellationInfo: tourData.basicInfo.freeCancellationInfo,
+          highlights: tourData.basicInfo.highlights,
           createdAt: new Date(), // Add timestamp
           updatedAt: new Date() // Add timestamp
         },
@@ -343,7 +357,7 @@ function TourPreview({ tourData }) {
   const hasItinerary = tourData.itinerary && tourData.itinerary.length > 0 && tourData.itinerary[0].title !== '';
 
   return (
-    <div className="bg-stone-800/50 rounded-xl overflow-hidden border border-stone-700 shadow-lg hover:shadow-amber-500/20 transition-all duration-300 hover:-translate-y-1">
+    <div className="bg-stone-900 rounded-xl overflow-hidden border border-stone-700 shadow-2xl hover:shadow-amber-500/10 transition-all duration-300">
       
       {/* Hero Section */}
       <div className="relative h-80 w-full group overflow-hidden">
@@ -355,26 +369,26 @@ function TourPreview({ tourData }) {
           />
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-900/95 via-stone-900/50 to-transparent" />
 
         {/* Title and Pricing */}
         <div className="absolute bottom-0 left-0 w-full p-6">
           <div className="flex justify-between items-end">
-            <div>
-              <h2 className="text-3xl font-bold text-white drop-shadow-lg">{tourData.basicInfo.title}</h2>
-              <p className="text-amber-300 mt-1 drop-shadow-md">{tourData.basicInfo.shortDescription}</p>
+            <div className="max-w-[70%]">
+              <h2 className="text-3xl font-bold text-white drop-shadow-lg mb-2">{tourData.basicInfo.title}</h2>
+              <p className="text-amber-300 drop-shadow-md text-sm">{tourData.basicInfo.shortDescription}</p>
             </div>
 
             <div className="text-right">
-              <div className="relative inline-block bg-gradient-to-br from-amber-500 to-amber-600 px-4 py-2 rounded-lg shadow-lg">
-                <span className="text-xl font-extrabold text-white">${tourData.pricing.basePrice}</span>
+              <div className="relative inline-block bg-gradient-to-br from-amber-600 to-amber-700 px-5 py-3 rounded-xl shadow-2xl border border-amber-500/30">
+                <span className="text-2xl font-extrabold text-white">${tourData.pricing.basePrice}</span>
                 {tourData.pricing.discount.amount > 0 && (
-                  <div className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-0.5 rounded-full shadow">
+                  <div className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full shadow-lg font-bold">
                     -${tourData.pricing.discount.amount}
                   </div>
                 )}
                 {tourData.pricing.discount.amount > 0 && (
-                  <div className="text-xs text-white/70 line-through">
+                  <div className="text-sm text-white/70 line-through mt-1">
                     ${(tourData.pricing.basePrice + tourData.pricing.discount.amount).toFixed(2)}
                   </div>
                 )}
@@ -385,83 +399,214 @@ function TourPreview({ tourData }) {
 
         {/* Featured Badge */}
         {tourData.basicInfo.featured && (
-          <div className="absolute top-4 left-4 bg-gradient-to-r from-amber-600 to-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center shadow-lg">
-            <FaStar className="mr-1.5" size={10} /> FEATURED
+          <div className="absolute top-4 left-4 bg-gradient-to-r from-amber-600 to-amber-500 text-white text-sm font-bold px-4 py-2 rounded-full flex items-center shadow-lg border border-amber-400/30">
+            <FaStar className="mr-2" size={14} /> FEATURED
           </div>
         )}
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-6">
+      <div className="p-6 space-y-8">
         
-        {/* Meta Info */}
-        <div className="flex flex-wrap gap-2">
-          <MetaTag icon={<FaClock size={10} />} label={`${tourData.basicInfo.duration} ${tourData.basicInfo.durationType}`} />
-          <MetaTag icon={<FaUsers size={10} />} label={`Max ${tourData.basicInfo.maxGroupSize}`} />
-          <MetaTag label={tourData.basicInfo.category} />
+        {/* About This Activity Section */}
+        <div className="bg-stone-800/50 rounded-xl p-6 border border-stone-700">
+          <div className="flex items-center mb-4">
+            <div className="w-1 h-8 bg-amber-500 rounded-full mr-3"></div>
+            <h3 className="text-2xl font-bold text-white">About This Activity</h3>
+          </div>
+          
+          <div className="grid md:grid-cols-1 lg:grid-cols-1  gap-4 mb-6">
+            {/* Duration */}
+            <div className="flex items-center space-x-3 p-3 bg-stone-700/20 rounded-lg">
+              <div className="p-2 bg-amber-500/20 rounded-lg">
+                <FaClock className="text-amber-400" size={18} />
+              </div>
+              <div>
+                <p className="text-stone-400 text-sm">Duration</p>
+                <p className="text-white font-medium">{tourData.basicInfo.duration} {tourData.basicInfo.durationType}</p>
+                {tourData.basicInfo.durationInfo && (
+                  <p className="text-stone-500 text-xs mt-1">{tourData.basicInfo.durationInfo}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Live Tour Guide */}
+            <div className="flex items-center space-x-3 p-3 bg-stone-700/20 rounded-lg">
+              <div className="p-2 bg-amber-500/20 rounded-lg">
+                <FaLanguage className="text-amber-400" size={18} />
+              </div>
+              <div>
+                <p className="text-stone-400 text-sm">Live Tour Guide</p>
+                <p className="text-white font-medium">
+                  {tourData.basicInfo.liveTourGuide ? 'Available' : 'Not Available'}
+                </p>
+                {tourData.basicInfo.liveTourGuideLanguages && tourData.basicInfo.liveTourGuideLanguages.length > 0 && (
+                  <p className="text-stone-500 text-xs mt-1">
+                    {tourData.basicInfo.liveTourGuideLanguages.join(', ')}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Free Cancellation */}
+            {tourData.basicInfo.freeCancellation && (
+              <div className="flex items-center space-x-3 p-3 bg-stone-700/20 rounded-lg">
+                <div className="p-2 bg-amber-500/20 rounded-lg">
+                  <FaUndo className="text-amber-400" size={18} />
+                </div>
+                <div>
+                  <p className="text-white font-medium">
+                    {tourData.basicInfo.freeCancellation ? 'Free Cancellation' : 'Non-refundable'}
+                  </p>
+                  {tourData.basicInfo.freeCancellationInfo && (
+                    <p className="text-stone-500 text-xs mt-1">{tourData.basicInfo.freeCancellationInfo}</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Group Size */}
+            <div className="flex items-center space-x-3 p-3 bg-stone-700/20 rounded-lg">
+              <div className="p-2 bg-amber-500/20 rounded-lg">
+                <FaUsers className="text-amber-400" size={18} />
+              </div>
+              <div>
+                <p className="text-stone-400 text-sm">Group Size</p>
+                <p className="text-white font-medium">Max {tourData.basicInfo.maxGroupSize}</p>
+                {tourData.basicInfo.minAge > 0 && (
+                  <p className="text-stone-500 text-xs mt-1">Min age: {tourData.basicInfo.minAge}</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Highlights */}
+          {tourData.basicInfo.highlights && tourData.basicInfo.highlights.length > 0 && (
+            <div className="mb-6">
+              <h4 className="text-lg font-semibold text-amber-400 mb-3">Highlights</h4>
+              <div className="grid md:grid-cols-2 gap-2">
+                {tourData.basicInfo.highlights.map((highlight, index) => (
+                  <div key={index} className="flex items-start space-x-3 p-2">
+                    <FaHandPointRight className="text-amber-500 mt-1 flex-shrink-0" size={14} />
+                    <span className="text-stone-300 text-sm">{highlight}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Full Description */}
+          <div>
+            <h4 className="text-lg font-semibold text-amber-400 mb-3">Full Description</h4>
+            <p className="text-stone-300 leading-relaxed">{tourData.basicInfo.fullDescription}</p>
+          </div>
         </div>
 
-        {/* About */}
-        <div>
-          <h3 className="text-lg font-semibold text-amber-400 mb-2">About This Tour</h3>
-          <p className="text-stone-300 line-clamp-4">{tourData.basicInfo.fullDescription}</p>
+        {/* Included & Not Included */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Included */}
+          <div className="bg-stone-800/50 rounded-xl p-6 border border-stone-700">
+            <div className="flex items-center mb-4">
+              <div className="w-1 h-8 bg-green-500 rounded-full mr-3"></div>
+              <h3 className="text-xl font-bold text-white">What&apos;s Included</h3>
+            </div>
+            <ul className="space-y-3">
+              {tourData.pricing.included.map((item, index) => (
+                <li key={index} className="flex items-start space-x-3">
+                  <div className="p-1 bg-green-500/20 rounded-full mt-0.5">
+                    <FaCheck className="text-green-400" size={12} />
+                  </div>
+                  <span className="text-stone-300 text-sm">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Not Included */}
+          <div className="bg-stone-800/50 rounded-xl p-6 border border-stone-700">
+            <div className="flex items-center mb-4">
+              <div className="w-1 h-8 bg-red-500 rounded-full mr-3"></div>
+              <h3 className="text-xl font-bold text-white">What&apos;s Not Included</h3>
+            </div>
+            <ul className="space-y-3">
+              {tourData.pricing.notIncluded.map((item, index) => (
+                <li key={index} className="flex items-start space-x-3">
+                  <div className="p-1 bg-red-500/20 rounded-full mt-0.5">
+                    <FaTimes className="text-red-400" size={12} />
+                  </div>
+                  <span className="text-stone-300 text-sm">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Route & Availability */}
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 gap-6">
           {tourData.basicInfo.destinations.length > 1 && (
-            <InfoBlock icon={<FaMapMarkerAlt />} title="Route">
-            {tourData.basicInfo.startLocation} → {tourData.basicInfo.endLocation}
-          </InfoBlock>
+            <div className="bg-stone-800/50 rounded-xl p-6 border border-stone-700">
+              <div className="flex items-center mb-4">
+                <div className="w-1 h-8 bg-blue-500 rounded-full mr-3"></div>
+                <h3 className="text-xl font-bold text-white">Route</h3>
+              </div>
+              <div className="flex items-center space-x-3 text-stone-300">
+                <FaMapMarkerAlt className="text-blue-400" />
+                <span>{tourData.basicInfo.startLocation} → {tourData.basicInfo.endLocation}</span>
+              </div>
+              {tourData.basicInfo.destinations.length > 0 && (
+                <div className="mt-3">
+                  <p className="text-stone-400 text-sm mb-2">Destinations:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {tourData.basicInfo.destinations.map((destination, index) => (
+                      <span key={index} className="px-3 py-1 text-xs bg-stone-700 text-stone-300 rounded-full border border-stone-600">
+                        {destination}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           )}
           
-          <InfoBlock icon={<FaCalendarAlt />} title="Availability">
-            {tourData.availability.startDates.length > 0 ? (
-              <>
-                Next: {new Date(tourData.availability.startDates[0]).toLocaleDateString()}
-                {tourData.availability.startDates.length > 1 && (
-                  <span> (+{tourData.availability.startDates.length - 1} dates)</span>
-                )}
-              </>
-            ) : 'Contact for availability'}
-          </InfoBlock>
-        </div>
-
-        {/* Included */}
-        {tourData.pricing.included.length > 0 && (
-          <div className="bg-stone-800/40 p-4 rounded-lg border border-stone-700 space-y-4">
-            <div>
-              <h3 className="text-lg font-semibold text-amber-400 mb-2">What&apos;s Included</h3>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {tourData.pricing.included.map((item, index) => (
-                  <li key={index} className="flex items-start space-x-2">
-                    <FaCheck className="text-amber-400 mt-1" />
-                    <span className="text-stone-300 text-sm">{item}</span>
-                  </li>
-                ))}
-              </ul>
+          <div className={`bg-stone-800/50 rounded-xl p-6 border border-stone-700 ${tourData.basicInfo.destinations.length > 1 ? '' : 'md:col-span-2 lg:col-span-2'}`}>
+            <div className="flex items-center mb-4">
+              <div className="w-1 h-8 bg-purple-500 rounded-full mr-3"></div>
+              <h3 className="text-xl font-bold text-white">Availability</h3>
             </div>
-
-            {tourData.pricing.notIncluded.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold text-rose-400 mb-2">What&apos;s Not Included</h3>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  {tourData.pricing.notIncluded.map((item, index) => (
-                    <li key={index} className="flex items-start space-x-2">
-                      <FaTimes className="text-rose-400 mt-1" />
-                      <span className="text-stone-300 text-sm">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            <div className="flex items-center space-x-3 text-stone-300">
+              <FaCalendarAlt className="text-purple-400" />
+              <span>
+                {tourData.availability.startDates.length > 0 ? (
+                  <>
+                    Next: {new Date(tourData.availability.startDates[0]).toLocaleDateString()}
+                    {tourData.availability.startDates.length > 1 && (
+                      <span className="text-stone-400 text-sm ml-2">
+                        (+{tourData.availability.startDates.length - 1} dates)
+                      </span>
+                    )}
+                  </>
+                ) : 'Contact for availability'}
+              </span>
+            </div>
+            <div className="mt-3">
+              <p className="text-stone-400 text-sm">Status: 
+                <span className={`ml-2 font-medium ${
+                  tourData.availability.isAvailable ? 'text-green-400' : 'text-red-400'
+                }`}>
+                  {tourData.availability.isAvailable ? 'Available' : 'Not Available'}
+                </span>
+              </p>
+            </div>
           </div>
-        )}
+        </div>
 
         {/* Itinerary */}
         {hasItinerary && (
-          <div>
-            <h3 className="text-lg font-semibold text-amber-400 mb-2">Itinerary</h3>
+          <div className="bg-stone-800/50 rounded-xl p-6 border border-stone-700">
+            <div className="flex items-center mb-4">
+              <div className="w-1 h-8 bg-amber-500 rounded-full mr-3"></div>
+              <h3 className="text-xl font-bold text-white">Itinerary</h3>
+            </div>
             <ul className="space-y-4">
               {tourData.itinerary.map((day, index) => (
                 <li key={index} className="bg-stone-700/40 p-4 rounded-lg border border-stone-600">
@@ -500,9 +645,12 @@ function TourPreview({ tourData }) {
 
         {/* Gallery */}
         {tourData.media.gallery.length > 0 && (
-          <div>
-            <h3 className="text-lg font-semibold text-amber-400 mb-2">Gallery</h3>
-            <div className="grid grid-cols-3 gap-2">
+          <div className="bg-stone-800/50 rounded-xl p-6 border border-stone-700">
+            <div className="flex items-center mb-4">
+              <div className="w-1 h-8 bg-amber-500 rounded-full mr-3"></div>
+              <h3 className="text-xl font-bold text-white">Gallery</h3>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
               {tourData.media.gallery.slice(0, 3).map((img, index) => (
                 <div
                   key={index}
@@ -514,7 +662,7 @@ function TourPreview({ tourData }) {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                   {index === 2 && tourData.media.gallery.length > 3 && (
-                    <div className="absolute inset-0 bg-stone-900/70 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-stone-900/80 flex items-center justify-center">
                       <span className="text-white font-medium text-sm">
                         +{tourData.media.gallery.length - 3} more
                       </span>
@@ -527,25 +675,26 @@ function TourPreview({ tourData }) {
         )}
 
         {/* CTA */}
-        <button className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-amber-500/30">
-          Book Now
+        <button className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-amber-500/30 text-lg">
+          Book Now - ${tourData.pricing.basePrice}
         </button>
       </div>
 
       {/* Footer Tags */}
       {tourData.basicInfo.tags.length > 0 && (
-        <div className="bg-stone-900/80 px-6 py-4 border-t border-stone-700 flex flex-wrap gap-2">
-          {tourData.basicInfo.tags.map((tag, index) => (
-            <span key={index} className="px-3 py-1 text-xs font-medium bg-stone-700 text-amber-300 rounded-full border border-stone-600">
-              #{tag}
-            </span>
-          ))}
+        <div className="bg-stone-900/80 px-6 py-4 border-t border-stone-700">
+          <div className="flex flex-wrap gap-2">
+            {tourData.basicInfo.tags.map((tag, index) => (
+              <span key={index} className="px-3 py-1 text-xs font-medium bg-stone-700 text-amber-300 rounded-full border border-stone-600">
+                #{tag}
+              </span>
+            ))}
+          </div>
         </div>
       )}
     </div>
   );
 }
-
 // Reusable UI Parts
 function MetaTag({ icon, label }) {
   return (

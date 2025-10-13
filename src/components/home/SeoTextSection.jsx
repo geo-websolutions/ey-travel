@@ -10,7 +10,7 @@ export default function SeoTextSection() {
       whileInView={{ opacity: 1 }}
       viewport={{ margin: "-100px" }}
     >
-      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Why Choose EY Travel for Your Egypt Vacation?</h2>
+      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Why Choose EY Travels for Your Egypt Vacation?</h2>
       <p className="mb-4">
         As <strong>specialists in Egypt tours</strong>, we offer unparalleled access to the country's most iconic sites. Our <strong>Luxor and Aswan packages</strong> include private guided tours of Karnak Temple, Valley of the Kings, and Philae Temple, while our <strong>Red Sea vacations</strong> in Hurghada and Marsa Alam feature the best snorkeling and diving spots.
       </p>

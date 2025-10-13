@@ -6,6 +6,7 @@ import ValuePropositions from '@/components/home/ValuePropositions';
 import CallToAction from '@/components/home/CallToAction';
 import SeoTextSection from '@/components/home/SeoTextSection';
 import TourDestinations from '@/components/home/TourDestinations';
+import { useState } from 'react';
 
 const container = {
   hidden: { opacity: 0 },
@@ -17,7 +18,8 @@ const container = {
   }
 };
 
-export default function HomeMainSection() {
+export default function HomeMainSection({ tours }) {
+  const [isSearching, setIsSearching] = useState(false);
   return (
     <motion.section 
       initial="hidden"
@@ -26,12 +28,16 @@ export default function HomeMainSection() {
       className="bg-soft-black text-stone-100 pt-16 md:pt-24"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <HeroSection />
-        <ValuePropositions />
-        <TourDestinations />
+        <HeroSection setIsSearching={setIsSearching} isSearching={isSearching} tours={tours} />
+        {!isSearching && (
+        <>
+          <ValuePropositions />
+          <TourDestinations />
+        </>
+        )}
         <CallToAction />
         <SeoTextSection />
-      </div>
+      </div> 
     </motion.section>
   );
 }

@@ -252,7 +252,12 @@ export default function TourCreationPage() {
           minAge: 12,
           maxGroupSize: 12,
           featured: false,
-          tags: []
+          tags: [],
+          liveTourGuide: false,
+          liveTourGuideLanguages: [],
+          freeCancellation: false,
+          freeCancellationInfo: '',
+          highlights: [],
         },
         pricing: {
           basePrice: 0,

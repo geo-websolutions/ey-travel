@@ -137,9 +137,9 @@ const FullPageBanner = () => {
 
         {/* Expandable Content Area */}
         <div className="mt-4 pt-4 border-t border-stone-400">
-          <p className="text-sm text-stone-700">
+          {/* <p className="text-sm text-stone-700">
             Special offer: Book before {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} and get 10% discount!
-          </p>
+          </p> */}
           {/* Add more content here to expand container vertically */}
         </div>
       </div>

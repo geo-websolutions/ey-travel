@@ -31,11 +31,6 @@ export default function TourCardsSection({ tours, city, slug }) {
         <h2 className="text-2xl md:text-3xl font-bold">
           Our <span className="text-amber-400">{city} Tours</span>
         </h2>
-        <div className="flex space-x-2">
-          <button className="px-4 py-2 bg-amber-600 rounded-lg text-sm">All Tours</button>
-          <button className="px-4 py-2 bg-stone-700 rounded-lg text-sm">Historical</button>
-          <button className="px-4 py-2 bg-stone-700 rounded-lg text-sm">Adventure</button>
-        </div>
       </div>
 
       {/* Tours Grid */}

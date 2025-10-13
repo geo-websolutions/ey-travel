@@ -1,6 +1,6 @@
-# 🌍 EY Travel Egypt - Premium Tour Experiences
+# 🌍 EY Travels Egypt - Premium Tour Experiences
 
-![EY Travel Egypt Banner](https://ey-travel-egypt.vercel.app/assets/icons/logo.png)
+![EY Travels Egypt Banner](https://ey-travel-egypt.vercel.app/assets/icons/logo.png)
 
 **Discover the Land of Pharaohs** - A Next.js travel platform offering tailored Economic, Luxury, and VIP tours across Egypt's most iconic destinations.
 

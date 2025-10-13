@@ -1,5 +1,9 @@
 import Navbar from "@/components/navbar/NavBar";
 import Footer from "@/components/Footer";
+import { ToursProvider } from "@/context/TourContext";
+import { db } from "@/lib/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import ScrollToTop from "@/components/navbar/ScrollToTop";
 
 export const metadata = {
   metadataBase: new URL('https://eytravelsegypt.com/'),
@@ -22,7 +26,7 @@ export const metadata = {
         url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/og_image.png",
         width: 1200,
         height: 630,
-        alt: "EY Travel Egypt Tours featuring Luxor temples, Cairo pyramids, and Red Sea resorts"
+        alt: "EY Travels Egypt Tours featuring Luxor temples, Cairo pyramids, and Red Sea resorts"
       }
     ],
     locale: 'en_US',
@@ -30,7 +34,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "EY Travel Egypt Tours | From Ancient Wonders to Red Sea Paradise",
+    title: "EY Travels Egypt Tours | From Ancient Wonders to Red Sea Paradise",
     description: "Discover tailor-made tours for Luxor, Aswan, Cairo, Hurghada & Marsa Alam. All price ranges available!",
     images: ['/assets/icons/logo.png'],
   },
@@ -38,7 +42,7 @@ export const metadata = {
     canonical: 'https://eytravelsegypt.com/',
   },
   category: 'travel',
-  authors: [{ name: 'EY Travel Egypt Team' }],
+  authors: [{ name: 'EY Travels Egypt Team' }],
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',
@@ -51,18 +55,49 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export const revalidate = 86400; // Revalidate every 24 hours
+
+export default async function RootLayout({ children }) {
+  const toursDataRef = collection(db, "tours");
+  const toursData = await getDocs(toursDataRef);
+
+  const tours = toursData.docs.map((doc) => ({
+    id: doc.id,
+    ...convertFirestoreData(doc.data()),
+  }));
+
   return (
     <html>
       <body className={`bg-soft-black`}>
         <header>
           <Navbar />
         </header>
-          
-        {children}
+        <ScrollToTop />
+        <ToursProvider toursData={tours}>{children}</ToursProvider>
         <Footer />
       </body>
     </html>
     
   );
+}
+
+function convertFirestoreData(data) {
+  if (!data || typeof data !== "object") return data;
+
+  // Handle Firestore Timestamp
+  if (data.seconds && data.nanoseconds) {
+    return new Date(data.seconds * 1000).toISOString();
+  }
+
+  // Handle arrays
+  if (Array.isArray(data)) {
+    return data.map(convertFirestoreData);
+  }
+
+  // Handle nested objects
+  const plain = {};
+  for (const key in data) {
+    plain[key] = convertFirestoreData(data[key]);
+  }
+  return plain;
 }

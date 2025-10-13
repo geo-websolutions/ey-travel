@@ -8,7 +8,7 @@ export default function Contact() {
   return (
     <>
       <Head>
-        <title>Contact EY Travel Egypt | Start Your Premium Egyptian Adventure</title>
+        <title>Contact EY Travels Egypt | Start Your Premium Egyptian Adventure</title>
         <meta 
           name="description" 
           content="Begin crafting your perfect Egypt tour with our travel experts. Get personalized advice for luxury Nile cruises, Red Sea escapes, and cultural experiences." 
@@ -272,7 +272,7 @@ export default function Contact() {
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  aria-label="EY Travel Egypt Location in Luxor"
+                  aria-label="EY Travels Egypt Location in Luxor"
                 />
                 
                 {/* Gradient overlay with CTA button */}

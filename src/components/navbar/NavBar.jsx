@@ -5,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import LanguageSelector from './LanguageSelector';
+import CompactLanguageSelector from './CompactLanguageSelector';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -147,6 +149,10 @@ export default function Navbar() {
       ]
     },
     { 
+      href: "/places", 
+      label: "Where to go",
+    },
+    { 
       href: "/reservation", 
       label: "Reservation",
     },
@@ -218,11 +224,11 @@ export default function Navbar() {
               <img 
                 className='object-contain h-12' 
                 src="/assets/icons/logo.png" 
-                alt="EY Travel Logo" 
+                alt="EY Travels Logo" 
                 width={60}
               />
               <span className={`hidden md:block text-xl font-bold ${textColor}`}>
-                EY Travel Egypt
+                EY Travels Egypt
               </span>
             </Link>
           </motion.div>
@@ -316,6 +322,10 @@ export default function Navbar() {
                 )}
               </div>
             ))}
+            {/* Language Select Section */}
+            <div>
+              <LanguageSelector />
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -336,6 +346,7 @@ export default function Navbar() {
                 </svg>
               )}
             </button>
+            <CompactLanguageSelector/>
           </div>
         </div>
       </div>

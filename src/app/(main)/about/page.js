@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Head from 'next/head';
+import Link from 'next/link';
 
 export default function About() {
   return (
@@ -233,22 +234,22 @@ export default function About() {
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <a
+                  <Link
                     href="/contact"
                     className="inline-block px-8 py-3 bg-black text-amber-400 rounded-lg font-bold hover:bg-stone-900 transition-colors"
                     aria-label="Begin designing your premium Egypt experience"
                   >
                     Design Your Journey
-                  </a>
+                  </Link>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <a
-                    href="/tours"
+                  <Link
+                    href="/destinations"
                     className="inline-block px-8 py-3 border-2 border-white text-white rounded-lg font-bold hover:bg-white hover:bg-opacity-10 transition-colors"
                     aria-label="Discover our signature Egypt tour experiences"
                   >
                     Explore Our Experiences
-                  </a>
+                  </Link>
                 </motion.div>
               </div>
             </motion.div>

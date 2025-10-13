@@ -10,7 +10,7 @@ export default function Footer() {
           
           {/* Quick Links */}
           <div className="space-y-4">
-            <h5 className="text-lg font-bold text-amber-400">TRAVEL TO EGYPT WITH EY TRAVELS</h5>
+            <h5 className="text-lg font-bold text-amber-400">TRAVEL TO EGYPT WITH EY TRAVEL</h5>
             <ul className="space-y-2">
               <li><Link href="/" className="hover:text-amber-300 transition-colors">Home</Link></li>
               <li><Link href="/destinations" className="hover:text-amber-300 transition-colors">Destinations</Link></li>
@@ -93,7 +93,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="border-t border-stone-700 mt-12 pt-8 text-center text-stone-400">
           <p>
-            © {new Date().getFullYear()} <Link href="/" className="hover:text-amber-300 transition-colors">EY Travels</Link>. All rights reserved.
+            © {new Date().getFullYear()} <Link href="/" className="hover:text-amber-300 transition-colors">EY Travel</Link>. All rights reserved.
             <span className="mx-2">•</span>
             <Link href="/sitemap" className="hover:text-amber-300 transition-colors">Sitemap</Link>
           </p>

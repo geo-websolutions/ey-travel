@@ -75,7 +75,7 @@ export default function LoginPage() {
         <div className="relative z-20 text-center px-4">
           <h1 className="text-4xl font-bold mb-2 flex items-center justify-center">
             <GiEgyptianTemple className="text-amber-400 mr-3" size={36} />
-            Welcome to <span className="text-amber-400 ml-2">EY Travels</span>
+            Welcome to <span className="text-amber-400 ml-2">EY Travel</span>
           </h1>
           <p className="text-lg">Sign in to access your account</p>
         </div>

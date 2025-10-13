@@ -8,10 +8,10 @@ export default function About() {
   return (
     <>
       <Head>
-        <title>About EY Travels Egypt | Premium Hassle-Free Egypt Tours</title>
+        <title>About EY Travel Egypt | Premium Hassle-Free Egypt Tours</title>
         <meta 
           name="description" 
-          content="Founded by a world traveler, EY Travels Egypt delivers premium, hassle-free tours with insider knowledge. Experience Egypt's wonders through our carefully crafted luxury itineraries." 
+          content="Founded by a world traveler, EY Travel Egypt delivers premium, hassle-free tours with insider knowledge. Experience Egypt's wonders through our carefully crafted luxury itineraries." 
         />
         <meta name="keywords" content="luxury Egypt tours, premium Cairo travel, hassle-free Nile cruise, private Egypt guides, personalized travel experiences" />
       </Head>
@@ -36,7 +36,7 @@ export default function About() {
               className="max-w-3xl"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                <span className="text-amber-400">EY Travels Egypt</span>: Where Premium Meets Authentic
+                <span className="text-amber-400">EY Travel Egypt</span>: Where Premium Meets Authentic
               </h1>
               <p className="text-xl md:text-2xl opacity-90">
                 Years crafting unforgettable Egyptian experiences for travelers worldwide. 
@@ -62,7 +62,7 @@ export default function About() {
                 Having traveled extensively abroad as a student, I intimately understand what travelers truly need - the comfort of knowing every detail is handled, the joy of authentic experiences, and the freedom to simply marvel at Egypt&apos;s ancient wonders without logistical worries.
               </p>
               <p className="text-lg mb-6">
-                At EY Travels Egypt, we&apos;ve taken that hard-won knowledge and applied it to crafting exceptional Egyptian adventures. Every itinerary is designed with the care I wish I&apos;d found in my own travels - seamless transitions, insider access, and local experts who make history come alive.
+                At EY Travel Egypt, we&apos;ve taken that hard-won knowledge and applied it to crafting exceptional Egyptian adventures. Every itinerary is designed with the care I wish I&apos;d found in my own travels - seamless transitions, insider access, and local experts who make history come alive.
               </p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-start">
@@ -151,7 +151,7 @@ export default function About() {
             viewport={{ margin: "-100px" }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-              The <span className="text-amber-400">EY Travels</span> Promise
+              The <span className="text-amber-400">EY Travel</span> Promise
             </h2>
             
             <div className="grid md:grid-cols-2 gap-12">

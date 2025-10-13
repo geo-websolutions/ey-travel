@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'EY Travels | Tour Destinations',
+  title: 'EY Travel | Tour Destinations',
 }
 
 export default function RootLayout({ children }) {

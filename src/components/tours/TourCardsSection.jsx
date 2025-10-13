@@ -53,7 +53,7 @@ export default function TourCardsSection({ tours, city, slug }) {
             )}
 
             {/* Tour Image */}
-            <Link href={`/destinations/${city}/${tour.basicInfo.slug}`} className="h-50 bg-stone-700 relative overflow-hidden">
+            <Link href={`/tours/${tour.basicInfo.slug}`} className="h-50 bg-stone-700 relative overflow-hidden">
               <Image 
                 src={tour.media.coverImage}
                 alt={tour.basicInfo.title}
@@ -77,7 +77,7 @@ export default function TourCardsSection({ tours, city, slug }) {
             {/* Tour Content - Optimized spacing */}
             <div className="p-6 flex flex-col h-80">
               <div className="flex-1"> {/* This will grow to fill available space */}
-                <Link href={`tours/${tour.basicInfo.slug}`} className="block mb-4">
+                <Link href={`/tours/${tour.basicInfo.slug}`} className="block mb-4">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-xl font-bold">{tour.basicInfo.title}</h3>
                     <div className="text-amber-400 font-bold text-lg">${tour.pricing.basePrice}</div>

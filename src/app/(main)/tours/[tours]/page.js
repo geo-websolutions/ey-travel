@@ -13,6 +13,7 @@ import GalleryModal from '@/components/tours/TourGalleryModal'
 import Link from 'next/link'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { useTours } from "@/context/TourContext";
 
 // Loading skeleton component
 const TourLoadingSkeleton = () => {
@@ -49,47 +50,18 @@ const TourLoadingSkeleton = () => {
 
 
 // Main Tour Detail Page Component
-export default function TourDetailPage({ tours }) {
+export default function TourDetailPage() {
   const params = useParams()
-  const slug = params.destination
-  const [tour, setTour] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const slug = params.tours
+  //const [tour, setTour] = useState(null)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [galleryOpen, setGalleryOpen] = useState(false)
   const [galleryIndex, setGalleryIndex] = useState(0)
-  console.log(params)
-  // setTour(tours.find(tour => tour.basicInfo.slug === slug))
+  const { tours } = useTours();
 
-  useEffect(() => {
-    const fetchTour = async () => {
-      try {
-        setLoading(true);
-        const ref = collection(db, 'tours');
-        const q = query(ref, where('basicInfo.slug', '==', slug));
-        const querySnapshot = await getDocs(q);
-        console.log(querySnapshot)
-        if (!querySnapshot.empty) {
-          // Get the first document that matches (assuming slugs are unique)
-          const doc = querySnapshot.docs[0];
-          setTour({ id: doc.id, ...doc.data() });
-        } else {
-          setError('Tour not found');
-          toast.error('Tour not found');
-        }
-      } catch (err) {
-        console.error('Error fetching tour:', err);
-        setError('Failed to load tour');
-        toast.error('Failed to load tour');
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    if (slug) {
-      fetchTour();
-    }
-  }, [slug]);
-  
+  const tour = tours.find(tour => tour.basicInfo.slug === slug);
+
   const openGallery = (index) => {
     setGalleryIndex(index)
     setGalleryOpen(true)

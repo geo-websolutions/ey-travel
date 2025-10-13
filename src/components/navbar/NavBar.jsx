@@ -224,11 +224,11 @@ export default function Navbar() {
               <img 
                 className='object-contain h-12' 
                 src="/assets/icons/logo.png" 
-                alt="EY Travels Logo" 
+                alt="EY Travel Logo" 
                 width={60}
               />
               <span className={`hidden md:block text-xl font-bold ${textColor}`}>
-                EY Travels Egypt
+                EY Travel Egypt
               </span>
             </Link>
           </motion.div>

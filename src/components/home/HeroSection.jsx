@@ -137,7 +137,7 @@ export default function HeroSection({ setIsSearching, isSearching, tours }) {
   };
 
   return (
-    <motion.div variants={container} className="text-center mb-16">
+    <motion.div variants={container} className="text-center my-16">
       <motion.h1
         className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
         initial={{ opacity: 0, y: -20 }}
@@ -153,7 +153,7 @@ export default function HeroSection({ setIsSearching, isSearching, tours }) {
         animate={{ opacity: 0.9 }}
         transition={{ delay: 0.4 }}
       >
-        Experience 5,000 years of history with EY Travels Egypt tours. From the pyramids of Giza to the temples of Luxor and Red Sea resorts in Hurghada, we offer all-inclusive packages with expert Egyptologists.
+        Experience 5,000 years of history with EY Travel Egypt tours. From the pyramids of Giza to the temples of Luxor and Red Sea resorts in Hurghada, we offer all-inclusive packages with expert Egyptologists.
       </motion.p>
 
       {/* Personalize Your Journey Section */}

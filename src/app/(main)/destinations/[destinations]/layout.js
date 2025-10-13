@@ -19,7 +19,7 @@ export const metadata = {
         url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/og_image.png",
         width: 1200,
         height: 630,
-        alt: "EY Travels Egypt Tours featuring Luxor temples, Cairo pyramids, and Red Sea resorts"
+        alt: "EY Travel Egypt Tours featuring Luxor temples, Cairo pyramids, and Red Sea resorts"
       }
     ],
     locale: 'en_US',
@@ -27,7 +27,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "EY Travels Egypt Tours | From Ancient Wonders to Red Sea Paradise",
+    title: "EY Travel Egypt Tours | From Ancient Wonders to Red Sea Paradise",
     description: "Discover tailor-made tours for Luxor, Aswan, Cairo, Hurghada & Marsa Alam. All price ranges available!",
     images: ['/assets/icons/logo.png'],
   },
@@ -35,7 +35,7 @@ export const metadata = {
     canonical: 'https://eytravelsegypt.com/',
   },
   category: 'travel',
-  authors: [{ name: 'EY Travels Egypt Team' }],
+  authors: [{ name: 'EY Travel Egypt Team' }],
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',

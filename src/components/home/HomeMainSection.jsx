@@ -28,13 +28,14 @@ export default function HomeMainSection({ tours }) {
       className="bg-soft-black text-stone-100 pt-16 md:pt-24"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <HeroSection setIsSearching={setIsSearching} isSearching={isSearching} tours={tours} />
         {!isSearching && (
         <>
           <ValuePropositions />
           <TourDestinations />
         </>
         )}
+        <HeroSection setIsSearching={setIsSearching} isSearching={isSearching} tours={tours} />
+        
         <CallToAction />
         <SeoTextSection />
       </div> 

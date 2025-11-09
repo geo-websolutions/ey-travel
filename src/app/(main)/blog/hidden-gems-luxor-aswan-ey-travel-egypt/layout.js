@@ -33,7 +33,7 @@ export const metadata = {
     siteName: "EY Travel Egypt Blog",
     images: [
       {
-        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/hidden-gems-og.png",
+        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/hidden-gems-og.webp",
         width: 1200,
         height: 630,
         alt: "Hidden gems and offbeat locations in Luxor and Aswan with EY Travel Egypt 2025",
@@ -50,7 +50,7 @@ export const metadata = {
     description:
       "Discover Egypt's secret spots with local experts. Offbeat temples, authentic villages, and hidden historical sites beyond the tourist trail.",
     images: [
-      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/hidden-gems-og.png",
+      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/hidden-gems-og.webp",
     ],
     creator: "@eytravelegypt",
   },

@@ -33,7 +33,7 @@ export const metadata = {
     siteName: "EY Travel Egypt",
     images: [
       {
-        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/destinations-og.png",
+        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/destinations-og.webp",
         width: 1200,
         height: 630,
         alt: "EY Travel Egypt Destinations - Luxor temples, Aswan Nile, Cairo pyramids, Hurghada and Marsa Alam Red Sea",
@@ -48,7 +48,7 @@ export const metadata = {
     description:
       "Explore Luxor, Aswan, Cairo, Hurghada & Marsa Alam with local experts. Ancient wonders, Nile cruises, pyramids & Red Sea adventures.",
     images: [
-      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/destinations-og.png",
+      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/destinations-og.webp",
     ],
     creator: "@eytravelegypt",
   },

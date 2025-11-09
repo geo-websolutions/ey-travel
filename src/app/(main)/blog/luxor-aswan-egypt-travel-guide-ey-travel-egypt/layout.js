@@ -33,7 +33,7 @@ export const metadata = {
     siteName: "EY Travel Egypt Blog",
     images: [
       {
-        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/luxor-aswan-guide-og.png",
+        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/luxor-aswan-guide-og.webp",
         width: 1200,
         height: 630,
         alt: "Luxor hot air balloon over ancient temples and Nile River with EY Travel Egypt",
@@ -50,7 +50,7 @@ export const metadata = {
     description:
       "Expert guide to Luxor temples, Aswan Nile cruises, hot air balloon experiences, and ancient Egyptian wonders. Plan your perfect trip with local specialists.",
     images: [
-      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/luxor-aswan-guide-og.png",
+      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/luxor-aswan-guide-og.webp",
     ],
     creator: "@eytravelegypt",
   },

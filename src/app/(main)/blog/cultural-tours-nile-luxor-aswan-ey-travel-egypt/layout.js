@@ -33,7 +33,7 @@ export const metadata = {
     siteName: "EY Travel Egypt Blog",
     images: [
       {
-        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/cultural-tours-og.png",
+        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/cultural-tours-og.webp",
         width: 1200,
         height: 630,
         alt: "Cultural experiences in Egypt with EY Travel Egypt 2025 - Nubian villages, felucca sailing, and local traditions",
@@ -50,7 +50,7 @@ export const metadata = {
     description:
       "Authentic cultural experiences in Luxor & Aswan. Nubian villages, traditional sailing, local cuisine, and immersive cultural journeys for 2025.",
     images: [
-      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/cultural-tours-og.png",
+      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/cultural-tours-og.webp",
     ],
     creator: "@eytravelegypt",
   },

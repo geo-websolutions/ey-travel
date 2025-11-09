@@ -33,7 +33,7 @@ export const metadata = {
     siteName: "EY Travel Egypt Blog",
     images: [
       {
-        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/5-day-itinerary-og.png",
+        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/5-day-itinerary-og.webp",
         width: 1200,
         height: 630,
         alt: "5-day Luxor and Aswan itinerary map with EY Travel Egypt 2025 - temples, Nile cruise, and hot air balloon",
@@ -50,7 +50,7 @@ export const metadata = {
     description:
       "Perfect Egypt travel plan: 5 days covering Luxor temples, hot air balloon, Nile cruise, and Aswan highlights. Expert itinerary for 2025.",
     images: [
-      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/5-day-itinerary-og.png",
+      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/5-day-itinerary-og.webp",
     ],
     creator: "@eytravelegypt",
   },

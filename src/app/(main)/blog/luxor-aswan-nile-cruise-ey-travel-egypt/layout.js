@@ -33,7 +33,7 @@ export const metadata = {
     siteName: "EY Travel Egypt Blog",
     images: [
       {
-        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/nile-cruise-og.png",
+        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/nile-cruise-og.webp",
         width: 1200,
         height: 630,
         alt: "Luxury Nile cruise ship sailing from Luxor to Aswan with EY Travel Egypt 2025",
@@ -50,7 +50,7 @@ export const metadata = {
     description:
       "Luxury Nile cruise experience with hot air balloons, temple visits, and expert guides. Book your 2025 Egypt river adventure with local specialists.",
     images: [
-      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/nile-cruise-og.png",
+      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/nile-cruise-og.webp",
     ],
     creator: "@eytravelegypt",
   },

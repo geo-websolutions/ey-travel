@@ -28,7 +28,7 @@ export const metadata = {
     siteName: "EY Travel Egypt",
     images: [
       {
-        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/reservation-og.png",
+        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/og_image.png",
         width: 1200,
         height: 630,
         alt: "EY Travel Egypt reservation process - secure tour booking and payment",
@@ -43,7 +43,7 @@ export const metadata = {
     description:
       "Secure your Egypt adventure with our simple booking process. Stripe payments, 24-hour confirmation, expert service.",
     images: [
-      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/reservation-og.png",
+      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/og_image.png",
     ],
   },
   alternates: {

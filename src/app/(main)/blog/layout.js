@@ -33,7 +33,7 @@ export const metadata = {
     siteName: "EY Travel Egypt Blog",
     images: [
       {
-        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/blog_og_image.png",
+        url: "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/og_image.png",
         width: 1200,
         height: 630,
         alt: "EY Travel Egypt Blog featuring Luxor hot air balloons, Aswan temples, and Nile cruise adventures",
@@ -48,7 +48,7 @@ export const metadata = {
     description:
       "Expert Egypt travel guides, Nile cruise tips, Luxor hot air balloon experiences, and Aswan cultural insights from local travel specialists.",
     images: [
-      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/blog_og_image.png",
+      "https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/og_image.png",
     ],
   },
   alternates: {

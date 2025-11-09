@@ -218,9 +218,10 @@ export default function CulturalToursNileLuxorAswan() {
             {/* Introduction */}
             <div className="bg-stone-800/50 rounded-xl p-8 border border-stone-700 mb-8">
               <p className="text-xl text-stone-300 leading-relaxed italic border-l-4 border-amber-400 pl-6">
-                Travel isn't just about places — it's about people, stories, and culture. On a
-                journey with EY Travel Egypt, you'll experience the living heart of Egypt along the
-                Nile River, from Luxor's ancient splendor to Aswan's warm hospitality.
+                Travel isn&apos;t just about places — it&apos;s about people, stories, and culture.
+                On a journey with EY Travel Egypt, you&apos;ll experience the living heart of Egypt
+                along the Nile River, from Luxor&apos;s ancient splendor to Aswan&apos;s warm
+                hospitality.
               </p>
             </div>
 
@@ -234,15 +235,15 @@ export default function CulturalToursNileLuxorAswan() {
               <div className="grid md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <p className="text-stone-300 leading-relaxed mb-4">
-                    In Luxor, you'll start your day floating high in a hot air balloon, watching the
-                    sunrise over temples that have stood for 3,000 years. This magical experience
-                    connects you to the same landscape that pharaohs and priests witnessed millennia
-                    ago.
+                    In Luxor, you&apos;ll start your day floating high in a hot air balloon,
+                    watching the sunrise over temples that have stood for 3,000 years. This magical
+                    experience connects you to the same landscape that pharaohs and priests
+                    witnessed millennia ago.
                   </p>
                   <p className="text-stone-300 leading-relaxed">
-                    As you drift silently above the Nile, you'll see the patchwork of fields, the
-                    winding river, and the monumental temples from a perspective that few experience
-                    — a truly spiritual beginning to your cultural journey.
+                    As you drift silently above the Nile, you&apos;ll see the patchwork of fields,
+                    the winding river, and the monumental temples from a perspective that few
+                    experience — a truly spiritual beginning to your cultural journey.
                   </p>
                 </div>
                 <div className="relative h-64 rounded-xl overflow-hidden border border-stone-700">
@@ -259,10 +260,11 @@ export default function CulturalToursNileLuxorAswan() {
               <div className="bg-stone-800/30 rounded-xl p-6 border border-stone-700 mb-6">
                 <h3 className="text-xl font-bold text-white mb-4">Guided by Egyptologists</h3>
                 <p className="text-stone-300 leading-relaxed">
-                  On the ground, you'll explore Karnak, Luxor Temple, and the Valley of the Kings,
-                  guided by Egyptologists who reveal the secrets behind every carving. These aren't
-                  just historical lectures — they're passionate storytelling sessions that bring
-                  ancient Egyptian culture to life through the eyes of those who understand it best.
+                  On the ground, you&apos;ll explore Karnak, Luxor Temple, and the Valley of the
+                  Kings, guided by Egyptologists who reveal the secrets behind every carving. These
+                  aren&apos;t just historical lectures — they&apos;re passionate storytelling
+                  sessions that bring ancient Egyptian culture to life through the eyes of those who
+                  understand it best.
                 </p>
               </div>
 
@@ -303,7 +305,7 @@ export default function CulturalToursNileLuxorAswan() {
                   <p className="text-stone-300 leading-relaxed">
                     Visit the Nubian villages, where colorful houses line the water and music fills
                     the air. These vibrant communities maintain cultural practices that date back to
-                    ancient times, offering a living connection to Egypt's diverse heritage.
+                    ancient times, offering a living connection to Egypt&apos;s diverse heritage.
                   </p>
                 </div>
               </div>
@@ -346,12 +348,13 @@ export default function CulturalToursNileLuxorAswan() {
                 <p className="text-stone-300 leading-relaxed mb-4">
                   Enjoy a felucca sail as the sun dips below the horizon, experiencing the Nile as
                   Egyptians have for thousands of years. These traditional wooden sailing boats
-                  offer an intimate connection with the river that motorized vessels can't match.
+                  offer an intimate connection with the river that motorized vessels can&apos;t
+                  match.
                 </p>
                 <p className="text-stone-300 leading-relaxed">
-                  As you glide silently across the water, you'll hear the sounds of daily life from
-                  the riverbanks — children playing, merchants calling, and the gentle rhythm of a
-                  civilization that has always depended on this life-giving river.
+                  As you glide silently across the water, you&apos;ll hear the sounds of daily life
+                  from the riverbanks — children playing, merchants calling, and the gentle rhythm
+                  of a civilization that has always depended on this life-giving river.
                 </p>
               </div>
 
@@ -380,11 +383,11 @@ export default function CulturalToursNileLuxorAswan() {
                   the traveler and the communities visited.
                 </p>
                 <p className="text-stone-300 leading-relaxed">
-                  Whether it's a private guided tour, a hot air balloon flight, or a Nile cruise,
-                  each journey connects travelers to the real Egypt — a place where ancient wonders
-                  and living traditions intertwine. Our carefully crafted experiences ensure you
-                  don't just see Egypt; you feel it, taste it, and carry its spirit with you long
-                  after you return home.
+                  Whether it&apos;s a private guided tour, a hot air balloon flight, or a Nile
+                  cruise, each journey connects travelers to the real Egypt — a place where ancient
+                  wonders and living traditions intertwine. Our carefully crafted experiences ensure
+                  you don&apos;t just see Egypt; you feel it, taste it, and carry its spirit with
+                  you long after you return home.
                 </p>
               </div>
             </section>

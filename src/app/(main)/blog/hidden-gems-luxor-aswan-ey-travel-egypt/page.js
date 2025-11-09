@@ -127,7 +127,7 @@ export default function HiddenGemsLuxorAswan() {
                 </li>
                 <li className="flex items-start">
                   <FaStar className="text-amber-400 mt-1 mr-3 flex-shrink-0" size={14} />
-                  <span>Deir el-Medina Workers' Village</span>
+                  <span>Deir el-Medina Workers&apos; Village</span>
                 </li>
                 <li className="flex items-start">
                   <FaStar className="text-amber-400 mt-1 mr-3 flex-shrink-0" size={14} />
@@ -221,7 +221,7 @@ export default function HiddenGemsLuxorAswan() {
             <section className="mb-12">
               <h2 className="text-3xl font-bold text-amber-400 mb-6 flex items-center">
                 <div className="w-2 h-8 bg-amber-500 rounded-full mr-3"></div>
-                Luxor's Secret Sunrise: Beyond the Tourist Trail
+                Luxor&apos;s Secret Sunrise: Beyond the Tourist Trail
               </h2>
 
               <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -229,11 +229,11 @@ export default function HiddenGemsLuxorAswan() {
                   <p className="text-stone-300 leading-relaxed mb-4">
                     Begin your adventure in Luxor, where most tourists never rise early enough to
                     experience the serenity of a hot air balloon ride. Drifting above the green
-                    farmlands and ancient monuments, you'll see Egypt wake up from a perspective few
-                    ever experience.
+                    farmlands and ancient monuments, you&apos;ll see Egypt wake up from a
+                    perspective few ever experience.
                   </p>
                   <p className="text-stone-300 leading-relaxed">
-                    While others sleep, you'll float peacefully above the Valley of the Kings,
+                    While others sleep, you&apos;ll float peacefully above the Valley of the Kings,
                     watching the first rays of sun paint the Theban mountains in golden hues. This
                     tranquil experience offers a private audience with ancient history.
                   </p>
@@ -259,13 +259,13 @@ export default function HiddenGemsLuxorAswan() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-white mb-4">
-                    Deir el-Medina: The Artisans' Village
+                    Deir el-Medina: The Artisans&apos; Village
                   </h3>
                   <p className="text-stone-300 leading-relaxed mb-4">
-                    Then, dive deeper. Visit Deir el-Medina, the ancient workers' village where the
-                    artisans of the Valley of the Kings once lived. This remarkably preserved
+                    Then, dive deeper. Visit Deir el-Medina, the ancient workers&apos; village where
+                    the artisans of the Valley of the Kings once lived. This remarkably preserved
                     settlement offers intimate insights into the daily lives of the craftsmen who
-                    built Egypt's most famous tombs.
+                    built Egypt&apos;s most famous tombs.
                   </p>
                   <p className="text-stone-300 leading-relaxed">
                     Walk through the same streets where ancient artists and builders lived, and see
@@ -305,8 +305,8 @@ export default function HiddenGemsLuxorAswan() {
                   </p>
                   <p className="text-stone-300 leading-relaxed">
                     Marvel at the vibrant colors still visible on the temple ceiling, where
-                    astronomical charts and zodiac signs reveal the ancient Egyptians' sophisticated
-                    understanding of the cosmos.
+                    astronomical charts and zodiac signs reveal the ancient Egyptians&apos;
+                    sophisticated understanding of the cosmos.
                   </p>
                 </div>
                 <div className="relative h-64 rounded-xl overflow-hidden border border-stone-700">
@@ -344,7 +344,7 @@ export default function HiddenGemsLuxorAswan() {
                     years.
                   </p>
                   <p className="text-stone-300 leading-relaxed">
-                    Here, you'll meet locals, sample traditional dishes like ful medames and
+                    Here, you&apos;ll meet locals, sample traditional dishes like ful medames and
                     karkadeh tea, and see how ancient customs live on in modern Egypt. Experience
                     the famous Nubian hospitality and learn about their unique cultural heritage.
                   </p>
@@ -357,11 +357,11 @@ export default function HiddenGemsLuxorAswan() {
                   The EY Travel Egypt Philosophy: Transformative Travel
                 </h3>
                 <p className="text-stone-300 leading-relaxed">
-                  At EY Travel Egypt, we believe travel should transform. That's why every offbeat
-                  itinerary combines authentic encounters with comfort, safety, and the perfect
-                  touch of adventure. We work directly with local communities to ensure your visit
-                  supports sustainable tourism and preserves these precious cultural treasures for
-                  future generations.
+                  At EY Travel Egypt, we believe travel should transform. That&apos;s why every
+                  offbeat itinerary combines authentic encounters with comfort, safety, and the
+                  perfect touch of adventure. We work directly with local communities to ensure your
+                  visit supports sustainable tourism and preserves these precious cultural treasures
+                  for future generations.
                 </p>
               </div>
 
@@ -378,7 +378,7 @@ export default function HiddenGemsLuxorAswan() {
             {/* Call to Action */}
             <section className="bg-gradient-to-r from-amber-700 to-amber-900 rounded-xl p-8 text-center">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                Ready to Discover Egypt's Secrets?
+                Ready to Discover Egypt&apos;s Secrets?
               </h2>
               <p className="text-amber-100 mb-6 text-lg">
                 Let EY Travel Egypt guide you to the hidden treasures most tourists never see
@@ -426,7 +426,7 @@ export default function HiddenGemsLuxorAswan() {
             {[
               {
                 title: "Cultural Tours Along the Nile",
-                description: "Experience Egypt's soul through authentic cultural encounters",
+                description: "Experience Egypt&apos;s soul through authentic cultural encounters",
                 link: "/blog/cultural-tours-nile-luxor-aswan-ey-travel-egypt",
               },
               {

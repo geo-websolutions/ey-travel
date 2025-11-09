@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   FaCheck,
   FaCreditCard,
@@ -45,14 +46,14 @@ export default function ReservationPage() {
       icon: FaEnvelope,
       title: "Submit Reservation Request",
       description:
-        "Provide your contact email and submit your reservation. We'll immediately check availability for your selected dates.",
+        "Provide your contact email and submit your reservation. We&apos;ll immediately check availability for your selected dates.",
     },
     {
       step: 4,
       icon: FaCreditCard,
       title: "Receive Payment Link",
       description:
-        "Within hours, you'll receive a secure Stripe payment link with your total tour cost calculated automatically.",
+        "Within hours, you&apos;ll receive a secure Stripe payment link with your total tour cost calculated automatically.",
     },
     {
       step: 5,
@@ -157,8 +158,8 @@ export default function ReservationPage() {
               </h2>
               <p className="text-lg text-stone-300 mb-6">
                 All payments are securely processed through <strong>Stripe</strong>, one of the
-                world's most trusted payment platforms. Your financial information is never stored
-                on our servers.
+                world&apos;s most trusted payment platforms. Your financial information is never
+                stored on our servers.
               </p>
 
               <div className="space-y-4 mb-8">
@@ -182,7 +183,7 @@ export default function ReservationPage() {
                 </h3>
                 <p className="text-stone-300 text-sm">
                   Your payment is fully protected. In the rare event that we cannot fulfill your
-                  tour, you'll receive a 100% refund. All transactions are monitored for fraud
+                  tour, you&apos;ll receive a 100% refund. All transactions are monitored for fraud
                   protection.
                 </p>
               </div>
@@ -309,7 +310,7 @@ export default function ReservationPage() {
               The EY Travel Egypt Guarantee
             </h2>
             <p className="text-xl text-amber-100 mb-8">
-              At <strong>Elevate Your Travel Egypt</strong>, we're committed to crafting your
+              At <strong>Elevate Your Travel Egypt</strong>, we&apos;re committed to crafting your
               perfect Egyptian adventure
             </p>
 
@@ -331,7 +332,7 @@ export default function ReservationPage() {
               <div className="bg-white/10 rounded-xl p-6 backdrop-blur-sm">
                 <h3 className="text-lg font-bold text-white mb-3">24/7 Support</h3>
                 <p className="text-amber-100">
-                  From booking to completion, we're here to ensure your journey is seamless and
+                  From booking to completion, we&apos;re here to ensure your journey is seamless and
                   memorable.
                 </p>
               </div>
@@ -344,18 +345,18 @@ export default function ReservationPage() {
                 Egyptian adventure.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <a
+                <Link
                   href="/destinations"
                   className="inline-flex items-center px-8 py-3 bg-white text-amber-700 font-bold rounded-lg hover:bg-stone-100 transition-colors"
                 >
                   Browse Tours
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/contact"
                   className="inline-flex items-center px-8 py-3 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:bg-opacity-10 transition-colors"
                 >
                   Contact Us
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -381,7 +382,7 @@ export default function ReservationPage() {
               {
                 question: "What happens if my preferred date is unavailable?",
                 answer:
-                  "We'll immediately contact you with alternative available dates that work with your schedule. Our team works to find the best possible solution for your travel plans.",
+                  "We&apos;ll immediately contact you with alternative available dates that work with your schedule. Our team works to find the best possible solution for your travel plans.",
               },
               {
                 question: "Can I modify my reservation after submitting?",
@@ -391,7 +392,7 @@ export default function ReservationPage() {
               {
                 question: "What if I miss the 24-hour payment window?",
                 answer:
-                  "Your temporary reservation will be released. However, you can submit a new reservation request, and we'll check availability again for your preferred dates.",
+                  "Your temporary reservation will be released. However, you can submit a new reservation request, and we&apos;ll check availability again for your preferred dates.",
               },
               {
                 question: "Are there group discounts available?",
@@ -436,7 +437,8 @@ export default function ReservationPage() {
                 <a
                   href="mailto:info@eytravelegypt.com"
                   className="inline-flex items-center px-6 py-3 bg-amber-600 text-white font-bold rounded-lg hover:bg-amber-500 transition-colors"
-                  target="_blank noopener noreferrer"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <FaEnvelope className="mr-2" />
                   Email Us
@@ -444,7 +446,8 @@ export default function ReservationPage() {
                 <a
                   href="https://wa.me/201278926104"
                   className="inline-flex items-center px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-500 transition-colors"
-                  target="_blank noopener noreferrer"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <FaWhatsapp className="mr-2" />
                   WhatsApp
@@ -452,7 +455,8 @@ export default function ReservationPage() {
                 <a
                   href="tel:+201080174045"
                   className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 transition-colors"
-                  target="_blank noopener noreferrer"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <FaPhone className="mr-2" />
                   Call Us

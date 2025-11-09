@@ -263,10 +263,10 @@ export default function FiveDayItineraryLuxorAswan() {
             {/* Introduction */}
             <div className="bg-stone-800/50 rounded-xl p-8 border border-stone-700 mb-8">
               <p className="text-xl text-stone-300 leading-relaxed italic border-l-4 border-amber-400 pl-6">
-                If you're planning your first trip to Egypt, five days is the sweet spot — enough to
-                explore Luxor and Aswan's ancient wonders without feeling rushed. With EY Travel
-                Egypt, we've crafted a 5-day itinerary that balances history, adventure, and
-                relaxation.
+                If you&apos;re planning your first trip to Egypt, five days is the sweet spot —
+                enough to explore Luxor and Aswan&apos;s ancient wonders without feeling rushed.
+                With EY Travel Egypt, we&apos;ve crafted a 5-day itinerary that balances history,
+                adventure, and relaxation.
               </p>
             </div>
 
@@ -286,9 +286,9 @@ export default function FiveDayItineraryLuxorAswan() {
                   experience sets the tone for your Egyptian adventure.
                 </p>
                 <p className="text-stone-300 leading-relaxed">
-                  After your aerial adventure, visit the Valley of the Kings, Hatshepsut's Temple,
-                  and the Colossi of Memnon. Each site reveals different aspects of ancient Egyptian
-                  civilization and royal traditions.
+                  After your aerial adventure, visit the Valley of the Kings, Hatshepsut&apos;s
+                  Temple, and the Colossi of Memnon. Each site reveals different aspects of ancient
+                  Egyptian civilization and royal traditions.
                 </p>
               </div>
 
@@ -382,8 +382,8 @@ export default function FiveDayItineraryLuxorAswan() {
               <div className="bg-stone-800/30 rounded-xl p-6 border border-stone-700 mb-4">
                 <p className="text-stone-300 leading-relaxed mb-4">
                   Explore Philae Temple, beautifully situated on an island and dedicated to the
-                  goddess Isis. The temple's relocation to higher ground to save it from flooding is
-                  a modern engineering marvel.
+                  goddess Isis. The temple&apos;s relocation to higher ground to save it from
+                  flooding is a modern engineering marvel.
                 </p>
                 <p className="text-stone-300 leading-relaxed">
                   Take a traditional felucca ride on the Nile, experiencing the river as Egyptians

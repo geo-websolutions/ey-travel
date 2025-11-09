@@ -1,17 +1,12 @@
-import "./globals.css";
-
 export const metadata = {
-  metadataBase: new URL("https://www.eytravelegypt.com/"),
-  title: "EY Travel Egypt",
+  metadataBase: new URL("https://www.eytravelegypt.com/contact"),
+  title: "Contact EY Travel Egypt | Start Your Premium Egyptian Adventure",
   description:
-    "Discover the best Egypt tours for all budgets. Explore Luxor's ancient temples, Aswan's Nile cruises, Cairo's pyramids, and Red Sea resorts in Hurghada & Marsa Alam. Book your perfect Egyptian adventure today!",
+    "Begin crafting your perfect Egypt tour with our travel experts. Get personalized advice for luxury Nile cruises, Red Sea escapes, and cultural experiences.",
   keywords: [
-    "Egypt tours",
+    "Egypt tours contact",
     "Luxor tours",
     "Aswan Nile cruise",
-    "Cairo pyramids tours",
-    "Hurghada excursions",
-    "Marsa Alam diving",
     "affordable Egypt trips",
     "luxury Egypt travel",
     "historical Egypt tours",
@@ -21,7 +16,7 @@ export const metadata = {
     title: "Egypt Tours - Unforgettable Adventures from Luxor to the Red Sea",
     description:
       "From budget to luxury, we offer the best tours in Egypt. Explore ancient wonders, cruise the Nile, or relax at Red Sea resorts. Your perfect Egyptian experience awaits!",
-    url: "https://www.eytravelegypt.com/",
+    url: "https://www.eytravelegypt.com/contact",
     siteName: "Egypt Tours",
     images: [
       {
@@ -42,7 +37,7 @@ export const metadata = {
     images: ["/assets/icons/logo.png"],
   },
   alternates: {
-    canonical: "https://www.eytravelegypt.com/",
+    canonical: "https://www.eytravelegypt.com/contact",
   },
   category: "travel",
   authors: [{ name: "EY Travel Egypt Team" }],
@@ -56,8 +51,8 @@ export const metadata = {
   },
   manifest: "/site.webmanifest",
   formatDetection: {
-    email: true,
-    address: true,
+    email: false,
+    address: false,
     telephone: true, // Important for contact
   },
 };

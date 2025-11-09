@@ -6,11 +6,7 @@ const TourContext = createContext();
 
 export function ToursProvider({ toursData, children }) {
   const [tours, setTours] = useState(toursData || []);
-  return (
-    <TourContext.Provider value={{ tours, setTours }}>
-      {children}
-    </TourContext.Provider>
-  );
+  return <TourContext.Provider value={{ tours, setTours }}>{children}</TourContext.Provider>;
 }
 
 export function useTours() {

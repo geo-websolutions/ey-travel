@@ -1,20 +1,19 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FaStar, FaClock, FaUsers } from 'react-icons/fa';
+import { FaStar, FaClock, FaUsers } from "react-icons/fa";
 
 function formatToTitleCase(text) {
-  if (!text) return ''; // Handle empty input
+  if (!text) return ""; // Handle empty input
 
   // Replace underscores and dashes with spaces
-  const withSpaces = text.replace(/[_-]/g, ' ');
+  const withSpaces = text.replace(/[_-]/g, " ");
 
   // Capitalize the first letter of each word
-  return withSpaces.replace(/\b\w/g, char => char.toUpperCase());
+  return withSpaces.replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-export default function TourCardsSection({ tours, city, slug }) {
-
+export default function TourCardsSection({ tours, city }) {
   if (!tours || tours.length === 0) {
     return (
       <section className="py-16 container mx-auto px-4">
@@ -43,7 +42,9 @@ export default function TourCardsSection({ tours, city, slug }) {
             viewport={{ margin: "-50px" }}
             transition={{ delay: index * 0.1 }}
             whileHover={{ y: -5 }}
-            className={`bg-stone-800 rounded-lg overflow-hidden border ${tour.basicInfo.featured ? 'border-amber-400/50' : 'border-stone-700'} hover:shadow-lg hover:shadow-amber-400/10 transition-all flex flex-col h-full`}
+            className={`bg-stone-800 rounded-lg overflow-hidden border ${
+              tour.basicInfo.featured ? "border-amber-400/50" : "border-stone-700"
+            } hover:shadow-lg hover:shadow-amber-400/10 transition-all flex flex-col h-full`}
           >
             {/* Featured Badge */}
             {tour.basicInfo.featured && (
@@ -53,8 +54,11 @@ export default function TourCardsSection({ tours, city, slug }) {
             )}
 
             {/* Tour Image */}
-            <Link href={`/tours/${tour.basicInfo.slug}`} className="h-50 bg-stone-700 relative overflow-hidden">
-              <Image 
+            <Link
+              href={`/destinations/tours/${tour.basicInfo.slug}`}
+              className="h-50 bg-stone-700 relative overflow-hidden"
+            >
+              <Image
                 src={tour.media.coverImage}
                 alt={tour.basicInfo.title}
                 fill
@@ -62,25 +66,28 @@ export default function TourCardsSection({ tours, city, slug }) {
               />
               {/* Tour Type */}
               <div className="absolute bottom-4 right-4 bg-stone-900/80 text-white text-xs px-2 py-1 rounded">
-                {(Array.isArray(tour.basicInfo.type) ? tour.basicInfo.type : [tour.basicInfo.type])
-                  .map((type, i) => (
-                    <span 
-                      key={i} 
-                      className="bg-stone-900/80 text-white text-xs px-2 py-1 rounded"
-                    >
-                      {formatToTitleCase(type)}
-                    </span>
-                  ))}
+                {(Array.isArray(tour.basicInfo.type)
+                  ? tour.basicInfo.type
+                  : [tour.basicInfo.type]
+                ).map((type, i) => (
+                  <span key={i} className="bg-stone-900/80 text-white text-xs px-2 py-1 rounded">
+                    {formatToTitleCase(type)}
+                  </span>
+                ))}
               </div>
             </Link>
 
             {/* Tour Content - Optimized spacing */}
             <div className="p-6 flex flex-col h-80">
-              <div className="flex-1"> {/* This will grow to fill available space */}
-                <Link href={`/tours/${tour.basicInfo.slug}`} className="block mb-4">
+              <div className="flex-1">
+                {" "}
+                {/* This will grow to fill available space */}
+                <Link href={`/destinations/tours/${tour.basicInfo.slug}`} className="block mb-4">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-xl font-bold">{tour.basicInfo.title}</h3>
-                    <div className="text-amber-400 font-bold text-lg">${tour.pricing.basePrice}</div>
+                    <div className="text-amber-400 font-bold text-lg">
+                      ${tour.pricing.basePrice}
+                    </div>
                   </div>
                   <p className="text-amber-300">{tour.basicInfo.shortDescription}</p>
                 </Link>
@@ -90,23 +97,24 @@ export default function TourCardsSection({ tours, city, slug }) {
               <div>
                 <div className="flex items-center text-sm space-x-4 mb-4 text-stone-400">
                   <div className="flex items-center">
-                    <FaClock className="mr-1" size={12} /> {tour.basicInfo.duration} {tour.basicInfo.durationType}
+                    <FaClock className="mr-1" size={12} /> {tour.basicInfo.duration}{" "}
+                    {tour.basicInfo.durationType}
                   </div>
-                  <div className="flex items-center">
-                    <FaUsers className="mr-1" size={12} /> (Max Group Size) {tour.basicInfo.maxGroupSize} People
+                  <div className="hidden items-center">
+                    <FaUsers className="mr-1" size={12} /> (Max Group Size){" "}
+                    {tour.basicInfo.maxGroupSize} People
                   </div>
                 </div>
-                <Link href={`tours/${tour.basicInfo.slug}`}>
+                <Link href={`/destinations/tours/${tour.basicInfo.slug}`}>
                   <button className="w-full bg-amber-600 hover:bg-amber-500 py-2 rounded-lg font-medium transition-colors cursor-pointer">
                     View Tour
                   </button>
                 </Link>
-                
               </div>
             </div>
           </motion.div>
         ))}
       </div>
     </section>
-  )
+  );
 }

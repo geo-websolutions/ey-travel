@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.eytravelegypt.com/</loc>
+    <lastmod>2025-11-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://knfanjrmktlgwcmmucok.supabase.co/storage/v1/object/public/tour-images/OpenGraph/og_image.png</image:loc>
+      <image:caption>EY Travel Egypt Tours featuring Luxor temples, Aswan temples, Cairo pyramids, and Red Sea resorts</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Static pages -->
+  <url>
+    <loc>https://www.eytravelegypt.com/about</loc>
+    <lastmod>2025-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.eytravelegypt.com/contact</loc>
+    <lastmod>2025-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://www.eytravelegypt.com/reservation</loc>
+    <lastmod>2025-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Category pages -->
+  <url>
+    <loc>https://www.eytravelegypt.com/destinations</loc>
+    <lastmod>2025-11-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.eytravelegypt.com/blog</loc>
+    <lastmod>2025-11-09</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Dynamic destination pages -->
+  <url>
+    <loc>https://www.eytravelegypt.com/destinations/[slug]</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.eytravelegypt.com/assets/images/luxor.webp</image:loc>
+      <image:title>Ancient Luxor Temple</image:title>
+      <image:caption>Explore Egypt destinations with EY Travel Egypt</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Dynamic tours pages -->
+  <url>
+    <loc>https://www.eytravelegypt.com/destinations/tours/[slug]</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.eytravelegypt.com/assets/images/banner-01.webp</image:loc>
+      <image:title>Abu Simbel Temple in Aswan</image:title>
+      <image:caption>Book Egypt tours and Nile cruises with EY Travel Egypt</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Dynamic blog posts -->
+  <url>
+    <loc>https://www.eytravelegypt.com/blog/[slug]</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.eytravelegypt.com/assets/images/blog/blog-hero-bg.webp</image:loc>
+      <image:caption>Travel tips and guides from EY Travel Egypt Blog</image:caption>
+    </image:image>
+  </url>
+
+</urlset>

@@ -17,7 +17,6 @@ export const TourEditModal = ({ tour, onClose, onUpdate }) => {
     gallery: Array(tour.media.gallery?.length || 0).fill(false)
   });
 
-  console.log(tourData)
   const modalRef = useRef(null);
 
   // Handle image upload

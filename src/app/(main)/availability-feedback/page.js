@@ -29,8 +29,10 @@ import Link from "next/link";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
+import { Suspense } from "react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
-export default function AvailabilityFeedbackPage() {
+function AvailabilityFeedbackPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
@@ -939,5 +941,13 @@ export default function AvailabilityFeedbackPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function AvailabilityFeedbackPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <AvailabilityFeedbackPageContent />
+    </Suspense>
   );
 }

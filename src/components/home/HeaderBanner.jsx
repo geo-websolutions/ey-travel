@@ -1,39 +1,41 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 const FullPageBanner = () => {
   const bannerContent = [
     {
-      image: '/assets/images/banner-01.jpg',
-      title: 'Luxor & Aswan Nile Cruise Tours',
-      buttonText: 'View Nile Cruise Packages',
-      description: 'Explore ancient temples & sail the Nile in luxury between Egypt\'s historic gems',
-      cardDescription: '5-star Nile cruises with Egyptologists | Valley of the Kings access | Luxor & Aswan temple tours'
+      image: "/assets/images/banner-01.jpg",
+      title: "Luxor & Aswan Nile Cruise Tours",
+      buttonText: "View Nile Cruise Packages",
+      description:
+        "Explore ancient temples & sail the Nile in luxury between Egypt's historic gems",
+      cardDescription:
+        "5-star Nile cruises with Egyptologists | Valley of the Kings access | Luxor & Aswan temple tours",
     },
     {
-      image: '/assets/images/banner-02.jpg',
-      title: 'Private Giza Pyramids & Cairo Tours',
-      buttonText: 'Book Pyramid Excursions',
-      description: 'Private guided tours of the Great Pyramids, Sphinx & Egyptian Museum',
-      cardDescription: 'VIP pyramid access | Grand Egyptian Museum tours | Cairo city highlights'
+      image: "/assets/images/banner-02.jpg",
+      title: "Private Giza Pyramids & Cairo Tours",
+      buttonText: "Book Pyramid Excursions",
+      description: "Private guided tours of the Great Pyramids, Sphinx & Egyptian Museum",
+      cardDescription: "VIP pyramid access | Grand Egyptian Museum tours | Cairo city highlights",
     },
     {
-      image: '/assets/images/banner-03.jpg',
-      title: 'Hurghada Red Sea Vacation Packages',
-      buttonText: 'Discover Red Sea Holidays',
-      description: 'World-class diving, snorkeling & beach resorts on Egypt\'s Red Sea coast',
-      cardDescription: 'All-inclusive resorts | Giftun Island snorkeling | Desert safari combos'
+      image: "/assets/images/banner-03.jpg",
+      title: "Hurghada Red Sea Vacation Packages",
+      buttonText: "Discover Red Sea Holidays",
+      description: "World-class diving, snorkeling & beach resorts on Egypt's Red Sea coast",
+      cardDescription: "All-inclusive resorts | Giftun Island snorkeling | Desert safari combos",
     },
     {
-      image: '/assets/images/banner-04.jpg',
-      title: 'Marsa Alam Scuba Diving Expeditions',
-      buttonText: 'Explore Dive Packages',
-      description: 'Pristine coral reefs & dolphin encounters in Egypt\'s southern Red Sea',
-      cardDescription: 'Elphinstone Reef diving | Dolphin House snorkeling | Luxury eco-resorts'
-    }
+      image: "/assets/images/banner-04.jpg",
+      title: "Marsa Alam Scuba Diving Expeditions",
+      buttonText: "Explore Dive Packages",
+      description: "Pristine coral reefs & dolphin encounters in Egypt's southern Red Sea",
+      cardDescription: "Elphinstone Reef diving | Dolphin House snorkeling | Luxury eco-resorts",
+    },
   ];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fade, setFade] = useState(true);
@@ -56,9 +58,7 @@ const FullPageBanner = () => {
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-500 ${
-            index === currentIndex 
-              ? (fade ? 'opacity-100' : 'opacity-0') 
-              : 'opacity-0'
+            index === currentIndex ? (fade ? "opacity-100" : "opacity-0") : "opacity-0"
           }`}
         >
           <Image
@@ -67,7 +67,7 @@ const FullPageBanner = () => {
             fill
             className="object-cover w-full h-full"
             priority={index === 0}
-            quality={100}
+            quality={75}
             sizes="100vw"
           />
 
@@ -99,7 +99,7 @@ const FullPageBanner = () => {
                 key={index}
                 onClick={() => setCurrentIndex(index)}
                 className={`w-3 h-3 rounded-full transition-all cursor-pointer ${
-                  index === currentIndex ? 'bg-stone-700 w-6' : 'bg-stone-500'
+                  index === currentIndex ? "bg-stone-700 w-6" : "bg-stone-500"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -119,14 +119,14 @@ const FullPageBanner = () => {
           {/* Additional Content - Will Expand Container */}
           <div className="w-full md:w-auto">
             <div className="grid grid-cols-2 gap-2 md:gap-4">
-              <Link 
-                href="/destinations" 
+              <Link
+                href="/destinations"
                 className="px-4 py-2 bg-stone-700 text-white rounded-lg text-sm md:text-base text-center hover:bg-stone-800 transition-colors"
               >
                 View Tours
               </Link>
-              <Link 
-                href="/contact" 
+              <Link
+                href="/contact"
                 className="px-4 py-2 border border-stone-700 text-stone-700 rounded-lg text-sm md:text-base text-center hover:bg-stone-300 transition-colors"
               >
                 Contact Us

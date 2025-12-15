@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
-import { supabase } from '@/lib/supabase';
-import { app } from '@/lib/firebase';
-import { FaLock, FaEnvelope, FaEye, FaEyeSlash } from 'react-icons/fa';
-import { GiEgyptianTemple } from 'react-icons/gi';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { supabase } from "@/lib/supabase";
+import { app } from "@/lib/firebase";
+import { FaLock, FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
+import { GiEgyptianTemple } from "react-icons/gi";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const router = useRouter();
@@ -20,13 +20,15 @@ export default function LoginPage() {
   // Check authentication state on component mount
   useEffect(() => {
     const firebaseAuth = getAuth(app);
-    
+
     const unsubscribeFirebase = onAuthStateChanged(firebaseAuth, async (firebaseUser) => {
       if (firebaseUser) {
         // Check Supabase auth if Firebase is authenticated
-        const { data: { session: supabaseSession } } = await supabase.auth.getSession();
+        const {
+          data: { session: supabaseSession },
+        } = await supabase.auth.getSession();
         if (supabaseSession) {
-          router.push('/admin/dashboard');
+          router.push("/admin/dashboard");
         }
       }
       setAuthChecked(true);
@@ -40,7 +42,7 @@ export default function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       // 1. Login to Firebase
@@ -50,16 +52,16 @@ export default function LoginPage() {
       // 2. Login to Supabase
       const { error: supabaseError } = await supabase.auth.signInWithPassword({
         email,
-        password
+        password,
       });
 
       if (supabaseError) throw supabaseError;
 
       // 3. Redirect on success
-      router.push('/admin/dashboard');
+      router.push("/admin/dashboard");
     } catch (err) {
-      console.error('Login error:', err);
-      setError(err.message || 'Login failed. Please try again.');
+      console.error("Login error:", err);
+      setError(err.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -67,11 +69,10 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-stone-900 text-white">
-
       {/* Hero Section */}
       <section className="relative h-64 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/70 to-stone-900/20 z-10" />
-        
+
         <div className="relative z-20 text-center px-4">
           <h1 className="text-4xl font-bold mb-2 flex items-center justify-center">
             <GiEgyptianTemple className="text-amber-400 mr-3" size={36} />
@@ -84,9 +85,7 @@ export default function LoginPage() {
       {/* Login Form */}
       <section className="container mx-auto px-4 py-12 max-w-md">
         <div className="bg-stone-800/50 rounded-lg border border-stone-700 p-8 shadow-lg">
-          <h2 className="text-2xl font-bold mb-6 text-center text-amber-400">
-            Member Login
-          </h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-amber-400">Member Login</h2>
 
           {error && (
             <div className="mb-4 p-3 bg-red-900/50 border border-red-700 rounded text-sm">
@@ -128,7 +127,7 @@ export default function LoginPage() {
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   required
                   value={password}
@@ -150,7 +149,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="hidden items-center justify-between">
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -164,7 +163,10 @@ export default function LoginPage() {
               </div>
 
               <div className="text-sm">
-                <a href="/forgot-password" className="font-medium text-amber-400 hover:text-amber-300">
+                <a
+                  href="/forgot-password"
+                  className="font-medium text-amber-400 hover:text-amber-300"
+                >
                   Forgot password?
                 </a>
               </div>
@@ -174,17 +176,37 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-amber-600 hover:bg-amber-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-colors ${
+                  loading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
               >
                 {loading ? (
                   <span className="flex items-center">
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Signing in...
                   </span>
-                ) : 'Sign in'}
+                ) : (
+                  "Sign in"
+                )}
               </button>
             </div>
           </form>

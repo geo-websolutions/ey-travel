@@ -13,15 +13,15 @@ input[type="number"] {
 }
 
 @layer base {
-    :root {
-        --soft-black: 35, 34, 35; 
-        --nile-twilight: 30, 45, 59;
-        --pharaoh-black: 13, 27, 30;
-        --papyrus: 240, 230, 210;
-        --lapis: 38, 102, 145;
-        --sunset: 184, 92, 56;
-        --gold: 201, 166, 107;
-    }
+  :root {
+    --soft-black: 35, 34, 35;
+    --nile-twilight: 30, 45, 59;
+    --pharaoh-black: 13, 27, 30;
+    --papyrus: 240, 230, 210;
+    --lapis: 38, 102, 145;
+    --sunset: 184, 92, 56;
+    --gold: 201, 166, 107;
+  }
 }
 
 @layer utilities {
@@ -32,4 +32,149 @@ input[type="number"] {
     background-color: rgb(var(--pharaoh-black));
   }
   /* Add other color utilities as needed */
+}
+
+/* === DatePicker Popper Global Styling === */
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+
+/* === Main Popper Container === */
+.react-datepicker {
+  background: rgba(30, 30, 40, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  font-family: "Inter", sans-serif;
+  color: #151313;
+  overflow: hidden;
+}
+
+/* === Header (Month / Year) === */
+.react-datepicker__header {
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 0;
+}
+
+.react-datepicker__current-month {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #151313;
+}
+
+/* === Navigation Arrows === */
+.react-datepicker__navigation {
+  top: 1rem;
+  line-height: 1;
+  border: none;
+
+  color: #151313;
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: rgba(29, 27, 27, 0.8);
+  border-width: 2px 2px 0 0;
+  content: "";
+  display: inline-block;
+  padding: 5px;
+  transform: rotate(45deg);
+  transition: border-color 0.2s ease;
+}
+
+.react-datepicker__navigation--previous .react-datepicker__navigation-icon::before {
+  transform: rotate(-135deg);
+  border-color: #151313;
+}
+
+.react-datepicker__navigation--next .react-datepicker__navigation-icon::before {
+  transform: rotate(45deg);
+  border-color: #151313;
+}
+
+.react-datepicker__navigation:hover .react-datepicker__navigation-icon::before {
+  border-color: #3b82f6;
+}
+
+/* === Day Grid === */
+.react-datepicker__day-name {
+  color: #151313;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.react-datepicker__day {
+  color: #151313;
+  font-size: 0.9rem;
+  margin: 0.2rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.react-datepicker__day:hover {
+  background: rgba(59, 130, 246, 0.3);
+  color: #151313;
+  transform: scale(1.05);
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  color: #151313;
+  font-weight: 600;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+.react-datepicker__day--today {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #151313;
+}
+
+/* === Month & Year Picker === */
+.react-datepicker__month-container,
+.react-datepicker__year-container {
+  padding: 0.75rem 1rem;
+}
+
+.react-datepicker__month-text,
+.react-datepicker__year-text {
+  color: #282929;
+  padding: 0.5rem 0.75rem;
+  margin: 0.3rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.react-datepicker__month-text:hover,
+.react-datepicker__year-text:hover {
+  background: rgba(59, 130, 246, 0.3);
+  color: #151313;
+  transform: scale(1.05);
+}
+
+.react-datepicker__month-text--selected,
+.react-datepicker__year-text--selected {
+  background: linear-gradient(to right, #3b82f6, #06b6d4);
+  color: #151313;
+  font-weight: 600;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+/* === Month/Year Dropdown Read View === */
+.react-datepicker__month-read-view,
+.react-datepicker__year-read-view {
+  color: #151313;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.react-datepicker__month-read-view:hover,
+.react-datepicker__year-read-view:hover {
+  color: #3b82f6;
+}
+
+/* Hide default triangle arrow */
+.react-datepicker__triangle {
+  display: none;
 }

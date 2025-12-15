@@ -6,9 +6,7 @@ import TourWhyVisitSection from "@/components/tours/TourWhyVisitSection";
 import TourCardsSection from "@/components/tours/TourCardsSection";
 import { useParams } from "next/navigation";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { orderBy, query, collection, where, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { db } from "@/lib/firebase";
 import { useDestinations } from "@/context/DestinationContext";
 import { useTours } from "@/context/TourContext";
 
@@ -19,80 +17,24 @@ export default function DestinationsPage() {
   const { destinations: destinationsData } = useDestinations();
   const { tours: toursData } = useTours();
 
+  if (
+    !destinations ||
+    destinationsData.find((destination) => destination.slug === destinations) === undefined
+  ) {
+    return (
+      <div className="min-h-screen bg-stone-900 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-white mb-4">Destination Not Found</h1>
+        </div>
+      </div>
+    );
+  }
+
   const destinationData = destinationsData.find((destination) => destination.slug === destinations);
 
   const tours = toursData.filter((tour) =>
     tour.basicInfo.destinations.includes(destinationData.slug)
   );
-
-  // useEffect(() => {
-  //   let unsubscribeTours = () => {};
-  //   let unsubscribeDestination = () => {};
-
-  //   const fetchData = async () => {
-  //     try {
-  //       // 1. Fetch destination data first
-  //       const destinationRef = collection(db, "destinations");
-  //       const destinationQuery = query(destinationRef, where("slug", "==", destinations));
-
-  //       unsubscribeDestination = onSnapshot(
-  //         destinationQuery,
-  //         (querySnapshot) => {
-  //           if (!querySnapshot.empty) {
-  //             const doc = querySnapshot.docs[0];
-  //             setDestinationData({
-  //               id: doc.id,
-  //               ...doc.data(),
-  //             });
-  //           } else {
-  //             setError("Destination not found");
-  //           }
-  //         },
-  //         (error) => {
-  //           console.error("Error fetching destination data:", error);
-  //           setError("Failed to load destination");
-  //         }
-  //       );
-
-  //       // 2. Fetch tours for this destination
-  //       const toursRef = collection(db, "tours");
-  //       const toursQuery = query(
-  //         toursRef,
-  //         where("basicInfo.destinations", "array-contains", destinations),
-  //         where("basicInfo.status", "==", "active"),
-  //         orderBy("basicInfo.createdAt", "desc")
-  //       );
-
-  //       unsubscribeTours = onSnapshot(
-  //         toursQuery,
-  //         (querySnapshot) => {
-  //           const recentTours = querySnapshot.docs.map((doc) => ({
-  //             id: doc.id,
-  //             ...doc.data(),
-  //           }));
-  //           setTours(recentTours);
-  //         },
-  //         (error) => {
-  //           console.error("Error fetching tours:", error);
-  //           setError("Failed to load tours");
-  //         }
-  //       );
-
-  //       setLoading(false);
-  //     } catch (err) {
-  //       console.error("Initialization error:", err);
-  //       setError("Failed to initialize");
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-
-  //   return () => {
-  //     unsubscribeTours();
-  //     unsubscribeDestination();
-  //   };
-  // }, [destinations]);
 
   if (loading || !destinationData) {
     return <LoadingSpinner />;

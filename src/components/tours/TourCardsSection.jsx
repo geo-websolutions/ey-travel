@@ -14,6 +14,36 @@ function formatToTitleCase(text) {
 }
 
 export default function TourCardsSection({ tours, city }) {
+  const getStartingPrice = (tour) => {
+    // Add safety checks
+    if (
+      !tour.pricing?.groupPrices ||
+      !Array.isArray(tour.pricing.groupPrices) ||
+      tour.pricing.groupPrices.length === 0
+    ) {
+      return { price: 0, perPerson: false };
+    }
+
+    // Filter out groups with price > 0 to find actual minimum
+    const validGroups = tour.pricing.groupPrices.filter(
+      (group) => typeof group.price === "number" && group.price > 0
+    );
+
+    if (validGroups.length === 0) {
+      return { price: 0, perPerson: false };
+    }
+
+    // Find minimum price
+    const minPriceGroup = validGroups.reduce((min, group) =>
+      group.price < min.price ? group : min
+    );
+
+    return {
+      price: minPriceGroup.price,
+      perPerson: minPriceGroup.perPerson,
+    };
+  };
+
   if (!tours || tours.length === 0) {
     return (
       <section className="py-16 container mx-auto px-4">
@@ -86,7 +116,15 @@ export default function TourCardsSection({ tours, city }) {
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-xl font-bold">{tour.basicInfo.title}</h3>
                     <div className="text-amber-400 font-bold text-lg">
-                      ${tour.pricing.basePrice}
+                      {tour.pricing.basePrice !== undefined ? (
+                        `$${tour.pricing.basePrice}`
+                      ) : (
+                        <>
+                          <span className="text-lg font-bold text-amber-400">
+                            ${getStartingPrice(tour).price.toLocaleString()}
+                          </span>
+                        </>
+                      )}
                     </div>
                   </div>
                   <p className="text-amber-300">{tour.basicInfo.shortDescription}</p>

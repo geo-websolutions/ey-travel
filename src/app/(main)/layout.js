@@ -2,11 +2,13 @@ import Navbar from "@/components/navbar/NavBar";
 import Footer from "@/components/Footer";
 import { ToursProvider } from "@/context/TourContext";
 import { DestinationProvider } from "@/context/DestinationContext";
+import { CartProvider } from "@/context/CartContext";
 import { db } from "@/lib/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import ScrollToTop from "@/components/navbar/ScrollToTop";
 import convertFirestoreData from "@/utils/converFirestoreData";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export const metadata = {
   metadataBase: new URL("https://www.eytravelegypt.com/"),
   title: "Egypt Tours | Premium Egypt Tours",
@@ -69,11 +71,11 @@ export const metadata = {
   },
 };
 
-export const revalidate = 86400; // Revalidate every 24 hours
+export const revalidate = 3600; // Revalidate every 1 hours
 
 export default async function RootLayout({ children }) {
   // Fetch tours data
-  const toursDataRef = collection(db, "tours");
+  const toursDataRef = query(collection(db, "tours"), where("basicInfo.status", "==", "active"));
   const toursData = await getDocs(toursDataRef);
   const tours = toursData.docs.map((doc) => ({
     id: doc.id,
@@ -91,14 +93,19 @@ export default async function RootLayout({ children }) {
   return (
     <html>
       <body className={`bg-soft-black`}>
-        <header>
-          <Navbar />
-        </header>
-        <ScrollToTop />
-        <ToursProvider toursData={tours} destinationsData={destinations}>
-          <DestinationProvider destinationsData={destinations}>{children}</DestinationProvider>
-        </ToursProvider>
+        <CartProvider>
+          {/* Navbar */}
+          <header>
+            <Navbar />
+          </header>
+          <ScrollToTop />
+          {/* Tours and Destinations */}
+          <ToursProvider toursData={tours} destinationsData={destinations}>
+            <DestinationProvider destinationsData={destinations}>{children}</DestinationProvider>
+          </ToursProvider>
+        </CartProvider>
         <Footer />
+        <ToastContainer position="bottom-right" theme="dark" />
       </body>
     </html>
   );

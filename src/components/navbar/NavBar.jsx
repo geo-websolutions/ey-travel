@@ -7,6 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import LanguageSelector from "./LanguageSelector";
 import CompactLanguageSelector from "./CompactLanguageSelector";
+import { FiShoppingCart } from "react-icons/fi";
+import CartModal from "./CartModal";
+import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,6 +19,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
   const navbarRef = useRef(null);
+  const { cartItemCount } = useCart();
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     setIsLoading(false);
@@ -370,13 +375,45 @@ export default function Navbar() {
               </div>
             ))}
             {/* Language Select Section */}
-            <div>
+            {/* <div>
               <LanguageSelector />
-            </div>
+            </div> */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsCartOpen(true)}
+              className={`relative ml-2 p-2 rounded-lg transition-all duration-300 ${
+                textColor === "text-white"
+                  ? "text-white hover:text-amber-300 hover:bg-white/10"
+                  : "text-stone-700 hover:text-amber-600 hover:bg-stone-100"
+              }`}
+              aria-label="Shopping Cart"
+            >
+              <FiShoppingCart size={22} />
+              {/* Cart badge for item count */}
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-xs font-medium text-white">
+                {cartItemCount}
+              </span>
+            </motion.button>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
+            <motion.button
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsCartOpen(true)}
+              className="relative mr-3 p-2"
+              aria-label="Shopping Cart"
+            >
+              <FiShoppingCart
+                size={24}
+                className={textColor === "text-white" ? "text-white" : "text-stone-700"}
+              />
+              {/* Cart badge for item count */}
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-xs font-medium text-white">
+                {cartItemCount}
+              </span>
+            </motion.button>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`inline-flex items-center justify-center p-2 rounded-md ${textColor} hover:text-amber-600 focus:outline-none`}
@@ -417,7 +454,7 @@ export default function Navbar() {
                 </svg>
               )}
             </button>
-            <CompactLanguageSelector />
+            {/* <CompactLanguageSelector /> */}
           </div>
         </div>
       </div>
@@ -533,6 +570,7 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </motion.nav>
   );
 }

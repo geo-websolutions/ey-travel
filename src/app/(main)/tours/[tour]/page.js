@@ -22,8 +22,6 @@ import {
 } from "react-icons/fa";
 import GalleryModal from "@/components/tours/TourGalleryModal";
 import Link from "next/link";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useTours } from "@/context/TourContext";
 
 // Main Tour Detail Page Component
@@ -64,8 +62,6 @@ export default function TourDetailPage() {
 
   return (
     <div className="min-h-screen bg-stone-900 text-stone-100">
-      <ToastContainer position="bottom-right" theme="dark" />
-
       {/* Hero Section - Matching Modal Design */}
       <div className="relative h-96 w-full overflow-hidden">
         {tour.media.coverImage ? (

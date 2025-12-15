@@ -46,14 +46,14 @@ export default function ReservationPage() {
       icon: FaEnvelope,
       title: "Submit Reservation Request",
       description:
-        "Provide your contact email and submit your reservation. We&apos;ll immediately check availability for your selected dates.",
+        "Provide your contact email and submit your reservation. We'll immediately check availability for your selected dates.",
     },
     {
       step: 4,
       icon: FaCreditCard,
       title: "Receive Payment Link",
       description:
-        "Within hours, you&apos;ll receive a secure Stripe payment link with your total tour cost calculated automatically.",
+        "Within hours, you'll receive a secure Stripe payment link with your total tour cost calculated automatically.",
     },
     {
       step: 5,
@@ -382,7 +382,7 @@ export default function ReservationPage() {
               {
                 question: "What happens if my preferred date is unavailable?",
                 answer:
-                  "We&apos;ll immediately contact you with alternative available dates that work with your schedule. Our team works to find the best possible solution for your travel plans.",
+                  "We'll immediately contact you with alternative available dates that work with your schedule. Our team works to find the best possible solution for your travel plans.",
               },
               {
                 question: "Can I modify my reservation after submitting?",
@@ -392,7 +392,7 @@ export default function ReservationPage() {
               {
                 question: "What if I miss the 24-hour payment window?",
                 answer:
-                  "Your temporary reservation will be released. However, you can submit a new reservation request, and we&apos;ll check availability again for your preferred dates.",
+                  "Your temporary reservation will be released. However, you can submit a new reservation request, and we'll check availability again for your preferred dates.",
               },
               {
                 question: "Are there group discounts available?",

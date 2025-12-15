@@ -1,69 +1,75 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { FaPlus, FaTag, FaDollarSign, FaUpload, FaListUl, FaCalendarAlt, FaTrash, FaTimes } from 'react-icons/fa';
-import { supabase } from '@/lib/supabase';
+"use client";
+import { useState, useEffect } from "react";
+import {
+  FaPlus,
+  FaTag,
+  FaDollarSign,
+  FaUpload,
+  FaListUl,
+  FaCalendarAlt,
+  FaTrash,
+  FaTimes,
+} from "react-icons/fa";
+import { supabase } from "@/lib/supabase";
 
 export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }) {
-
   // Generate slug from title
-    useEffect(() => {
-      if (tourData.basicInfo.title) {
-        const slug = tourData.basicInfo.title
-          .toLowerCase()
-          .replace(/[^\w\s-]/g, '')
-          .replace(/[\s_-]+/g, '-')
-          .replace(/^-+|-+$/g, '');
-        setTourData(prev => ({
-          ...prev,
-          basicInfo: {
-            ...prev.basicInfo,
-            slug
-          }
-        }));
-      }
-    }, [tourData.basicInfo.title]);
+  useEffect(() => {
+    if (tourData.basicInfo.title) {
+      const slug = tourData.basicInfo.title
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/[\s_-]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      setTourData((prev) => ({
+        ...prev,
+        basicInfo: {
+          ...prev.basicInfo,
+          slug,
+        },
+      }));
+    }
+  }, [tourData.basicInfo.title]);
 
   // Delete Image Functions
   const deleteImageFromStorage = async (imageUrl) => {
     try {
       // Extract the file path from the URL (everything after 'tour-images/')
-      const filePath = imageUrl.split('tour-images/')[1];
-      
+      const filePath = imageUrl.split("tour-images/")[1];
+
       if (!filePath) {
-        throw new Error('Invalid image URL format');
+        throw new Error("Invalid image URL format");
       }
 
-      const { error } = await supabase.storage
-        .from('tour-images')
-        .remove([filePath]);
+      const { error } = await supabase.storage.from("tour-images").remove([filePath]);
 
       if (error) throw error;
-      
+
       return true;
     } catch (error) {
-      console.error('Error deleting image:', error);
+      console.error("Error deleting image:", error);
       return false;
     }
   };
 
   const handleDeleteCoverImage = async () => {
     if (!tourData.media.coverImage) return;
-    
-    setDeleteLoading(prev => ({ ...prev, cover: true }));
-    
+
+    setDeleteLoading((prev) => ({ ...prev, cover: true }));
+
     const success = await deleteImageFromStorage(tourData.media.coverImage);
-    
+
     if (success) {
-      setTourData(prev => ({
+      setTourData((prev) => ({
         ...prev,
         media: {
           ...prev.media,
-          coverImage: ''
-        }
+          coverImage: "",
+        },
       }));
     }
-    
-    setDeleteLoading(prev => ({ ...prev, cover: false }));
+
+    setDeleteLoading((prev) => ({ ...prev, cover: false }));
   };
 
   const handleDeleteGalleryImage = async (index) => {
@@ -71,72 +77,72 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
     if (!imageUrl) return;
 
     // Update loading state for this specific image
-    setDeleteLoading(prev => {
+    setDeleteLoading((prev) => {
       const newGalleryLoading = [...prev.gallery];
       newGalleryLoading[index] = true;
       return { ...prev, gallery: newGalleryLoading };
     });
 
     const success = await deleteImageFromStorage(imageUrl);
-    
+
     if (success) {
-      setTourData(prev => {
+      setTourData((prev) => {
         const updatedGallery = [...prev.media.gallery];
         updatedGallery.splice(index, 1);
         return {
           ...prev,
           media: {
             ...prev.media,
-            gallery: updatedGallery
-          }
+            gallery: updatedGallery,
+          },
         };
       });
     }
 
     // Reset loading state
-    setDeleteLoading(prev => {
+    setDeleteLoading((prev) => {
       const newGalleryLoading = [...prev.gallery];
       newGalleryLoading[index] = false;
       return { ...prev, gallery: newGalleryLoading };
     });
   };
-  
+
   const [deleteLoading, setDeleteLoading] = useState({
     cover: false,
-    gallery: Array(tourData.media.gallery.length).fill(false)
+    gallery: Array(tourData.media.gallery.length).fill(false),
   });
 
   // Helper functions for nested state updates
   const updateBasicInfo = (field, value) => {
-    setTourData(prev => ({
+    setTourData((prev) => ({
       ...prev,
       basicInfo: {
         ...prev.basicInfo,
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
   const updatePricing = (field, value) => {
-    setTourData(prev => ({
+    setTourData((prev) => ({
       ...prev,
       pricing: {
         ...prev.pricing,
-        [field]: value
-      }
+        [field]: value,
+      },
     }));
   };
 
   const updateDiscount = (field, value) => {
-    setTourData(prev => ({
+    setTourData((prev) => ({
       ...prev,
       pricing: {
         ...prev.pricing,
         discount: {
           ...prev.pricing.discount,
-          [field]: value
-        }
-      }
+          [field]: value,
+        },
+      },
     }));
   };
 
@@ -144,13 +150,13 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
     const newDay = {
       id: crypto.randomUUID(),
       day: tourData.itinerary.length + 1,
-      title: '',
-      description: '',
-      activities: ['']
+      title: "",
+      description: "",
+      activities: [""],
     };
-    setTourData(prev => ({
+    setTourData((prev) => ({
       ...prev,
-      itinerary: [...prev.itinerary, newDay]
+      itinerary: [...prev.itinerary, newDay],
     }));
   };
 
@@ -158,50 +164,52 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
     const updatedItinerary = [...tourData.itinerary];
     updatedItinerary[index] = {
       ...updatedItinerary[index],
-      [field]: value
+      [field]: value,
     };
-    setTourData(prev => ({
+    setTourData((prev) => ({
       ...prev,
-      itinerary: updatedItinerary
+      itinerary: updatedItinerary,
     }));
   };
 
   const updateItineraryActivity = (dayIndex, activityIndex, value) => {
     const updatedItinerary = [...tourData.itinerary];
     updatedItinerary[dayIndex].activities[activityIndex] = value;
-    setTourData(prev => ({
+    setTourData((prev) => ({
       ...prev,
-      itinerary: updatedItinerary
+      itinerary: updatedItinerary,
     }));
   };
 
   const addActivity = (dayIndex) => {
     const updatedItinerary = [...tourData.itinerary];
-    updatedItinerary[dayIndex].activities.push('');
-    setTourData(prev => ({
+    updatedItinerary[dayIndex].activities.push("");
+    setTourData((prev) => ({
       ...prev,
-      itinerary: updatedItinerary
+      itinerary: updatedItinerary,
     }));
   };
 
   const removeActivity = (dayIndex, activityIndex) => {
     const updatedItinerary = [...tourData.itinerary];
     updatedItinerary[dayIndex].activities.splice(activityIndex, 1);
-    setTourData(prev => ({
+    setTourData((prev) => ({
       ...prev,
-      itinerary: updatedItinerary
+      itinerary: updatedItinerary,
     }));
   };
 
   const addStartDate = (date) => {
-    setTourData(prev => ({
+    setTourData((prev) => ({
       ...prev,
       availability: {
         ...prev.availability,
-        startDates: [...prev.availability.startDates, date]
-      }
+        startDates: [...prev.availability.startDates, date],
+      },
     }));
   };
+
+  console.log(tourData.pricing);
 
   return (
     <div className="space-y-8">
@@ -211,21 +219,21 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
           <InputField
             label="Tour Title"
             value={tourData.basicInfo.title}
-            onChange={(e) => updateBasicInfo('title', e.target.value)}
+            onChange={(e) => updateBasicInfo("title", e.target.value)}
             placeholder="Luxury Nile Cruise"
             required
           />
           <InputField
             label="Slug (auto-generated)"
             value={tourData.basicInfo.slug}
-            onChange={(e) => updateBasicInfo('slug', e.target.value)}
+            onChange={(e) => updateBasicInfo("slug", e.target.value)}
             placeholder="luxury-nile-cruise"
             disabled
           />
           <InputField
             label="Short Description"
             value={tourData.basicInfo.shortDescription}
-            onChange={(e) => updateBasicInfo('shortDescription', e.target.value)}
+            onChange={(e) => updateBasicInfo("shortDescription", e.target.value)}
             placeholder="5-day luxury cruise from Luxor to Aswan"
             textarea
             required
@@ -234,7 +242,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
             <InputField
               label="Full Description"
               value={tourData.basicInfo.fullDescription}
-              onChange={(e) => updateBasicInfo('fullDescription', e.target.value)}
+              onChange={(e) => updateBasicInfo("fullDescription", e.target.value)}
               placeholder="Detailed description of the tour..."
               textarea
               rows={5}
@@ -246,57 +254,57 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
               label="Duration"
               type="number"
               value={tourData.basicInfo.duration}
-              onChange={(e) => updateBasicInfo('duration', parseInt(e.target.value))}
+              onChange={(e) => updateBasicInfo("duration", parseInt(e.target.value))}
               min={1}
             />
             <SelectField
               label="Duration Type"
               value={tourData.basicInfo.durationType}
-              onChange={(e) => updateBasicInfo('durationType', e.target.value)}
+              onChange={(e) => updateBasicInfo("durationType", e.target.value)}
               options={[
-                { value: 'hours', label: 'Hours' },
-                { value: 'days', label: 'Days' },
-                { value: 'minutes', label: 'Minutes' }
+                { value: "hours", label: "Hours" },
+                { value: "days", label: "Days" },
+                { value: "minutes", label: "Minutes" },
               ]}
             />
           </div>
           <MultiSelectField
             label="Tour Type"
             value={tourData.basicInfo.type}
-            onChange={(values) => updateBasicInfo('type', values)}
+            onChange={(values) => updateBasicInfo("type", values)}
             options={[
-              { value: 'nile-cruises', label: 'Nile Cruise' },
-              { value: 'historical-tours', label: 'Historical Tour' },
-              { value: 'safaris', label: 'Safari' },
-              { value: 'diving-trips', label: 'Diving Trip' },
-              { value: 'day-tour', label: 'Day Tour' },
-              { value: 'half-day-tour', label: 'Half Day Tour' },
-              { value: 'tour-package', label: 'Tour Package' },
-              { value: 'excursion', label: 'Excursion' },
+              { value: "nile-cruises", label: "Nile Cruise" },
+              { value: "historical-tours", label: "Historical Tour" },
+              { value: "safaris", label: "Safari" },
+              { value: "diving-trips", label: "Diving Trip" },
+              { value: "day-tour", label: "Day Tour" },
+              { value: "half-day-tour", label: "Half Day Tour" },
+              { value: "tour-package", label: "Tour Package" },
+              { value: "excursion", label: "Excursion" },
             ]}
             required
           />
           <SelectField
             label="Category"
             value={tourData.basicInfo.category}
-            onChange={(e) => updateBasicInfo('category', e.target.value)}
+            onChange={(e) => updateBasicInfo("category", e.target.value)}
             options={[
-              { value: 'premium', label: 'Premium' },
-              { value: 'economic', label: 'Economic' },
-              { value: 'luxury', label: 'Luxury' }
+              { value: "premium", label: "Premium" },
+              { value: "economic", label: "Economic" },
+              { value: "luxury", label: "Luxury" },
             ]}
             required
           />
           <MultiSelectField
             label="Destinations"
             value={tourData.basicInfo.destinations}
-            onChange={(values) => updateBasicInfo('destinations', values)}
+            onChange={(values) => updateBasicInfo("destinations", values)}
             options={[
-              { value: 'cairo', label: 'Cairo' },
-              { value: 'luxor', label: 'Luxor' },
-              { value: 'aswan', label: 'Aswan' },
-              { value: 'hurghada', label: 'Hurghada' },
-              { value: 'marsa-alam', label: 'Marsa Alam' }
+              { value: "cairo", label: "Cairo" },
+              { value: "luxor", label: "Luxor" },
+              { value: "aswan", label: "Aswan" },
+              { value: "hurghada", label: "Hurghada" },
+              { value: "marsa-alam", label: "Marsa Alam" },
             ]}
           />
           {tourData.basicInfo.destinations.length > 1 && (
@@ -304,13 +312,13 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
               <InputField
                 label="Start Location"
                 value={tourData.basicInfo.startLocation}
-                onChange={(e) => updateBasicInfo('startLocation', e.target.value)}
+                onChange={(e) => updateBasicInfo("startLocation", e.target.value)}
                 placeholder="Luxor"
               />
               <InputField
                 label="End Location"
                 value={tourData.basicInfo.endLocation}
-                onChange={(e) => updateBasicInfo('endLocation', e.target.value)}
+                onChange={(e) => updateBasicInfo("endLocation", e.target.value)}
                 placeholder="Aswan"
               />
             </div>
@@ -318,11 +326,11 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
           <SelectField
             label="Status"
             value={tourData.basicInfo.status}
-            onChange={(e) => updateBasicInfo('status', e.target.value)}
+            onChange={(e) => updateBasicInfo("status", e.target.value)}
             options={[
-              { value: 'active', label: 'Active' },
-              { value: 'inactive', label: 'Inactive' },
-              { value: 'archived', label: 'Archived' }
+              { value: "active", label: "Active" },
+              { value: "inactive", label: "Inactive" },
+              { value: "archived", label: "Archived" },
             ]}
           />
           <div className="flex space-x-4">
@@ -330,15 +338,8 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
               label="Minimum Age"
               type="number"
               value={tourData.basicInfo.minAge}
-              onChange={(e) => updateBasicInfo('minAge', parseInt(e.target.value))}
+              onChange={(e) => updateBasicInfo("minAge", parseInt(e.target.value))}
               min={0}
-            />
-            <InputField
-              label="Max Group Size"
-              type="number"
-              value={tourData.basicInfo.maxGroupSize}
-              onChange={(e) => updateBasicInfo('maxGroupSize', parseInt(e.target.value))}
-              min={1}
             />
           </div>
           <div className="flex items-center">
@@ -346,7 +347,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
               type="checkbox"
               id="featured"
               checked={tourData.basicInfo.featured}
-              onChange={(e) => updateBasicInfo('featured', e.target.checked)}
+              onChange={(e) => updateBasicInfo("featured", e.target.checked)}
               className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
             />
             <label htmlFor="featured" className="ml-2 block text-sm text-amber-400">
@@ -356,23 +357,22 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
           <MultiSelectField
             label="Tags"
             value={tourData.basicInfo.tags}
-            onChange={(values) => updateBasicInfo('tags', values)}
+            onChange={(values) => updateBasicInfo("tags", values)}
             options={[
-              { value: 'family-friendly', label: 'Family Friendly' },
-              { value: 'luxury', label: 'Luxury' },
-              { value: 'budget', label: 'Budget' },
-              { value: 'premium', label: 'Premium' },
-              { value: 'adventure', label: 'Adventure' },
-              { value: 'cultural', label: 'Cultural' },
-              { value: 'historical', label: 'Historical' },
-              { value: 'beach', label: 'Beach' },
-              { value: 'desert', label: 'Desert' },
-              { value: 'cruise', label: 'Cruise' },
-              { value: 'safari', label: 'Safari' },
-              { value: 'diving', label: 'Diving' },
-              { value: 'snorkeling', label: 'Snorkeling' },
-              { value: 'wellness', label: 'Wellness' },
-
+              { value: "family-friendly", label: "Family Friendly" },
+              { value: "luxury", label: "Luxury" },
+              { value: "budget", label: "Budget" },
+              { value: "premium", label: "Premium" },
+              { value: "adventure", label: "Adventure" },
+              { value: "cultural", label: "Cultural" },
+              { value: "historical", label: "Historical" },
+              { value: "beach", label: "Beach" },
+              { value: "desert", label: "Desert" },
+              { value: "cruise", label: "Cruise" },
+              { value: "safari", label: "Safari" },
+              { value: "diving", label: "Diving" },
+              { value: "snorkeling", label: "Snorkeling" },
+              { value: "wellness", label: "Wellness" },
             ]}
           />
         </div>
@@ -381,7 +381,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
             type="checkbox"
             id="freeCancellation"
             checked={tourData.basicInfo.freeCancellation}
-            onChange={(e) => updateBasicInfo('freeCancellation', e.target.checked)}
+            onChange={(e) => updateBasicInfo("freeCancellation", e.target.checked)}
             className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
           />
           <label htmlFor="freeCancellation" className="ml-2 block text-sm text-amber-400">
@@ -393,11 +393,11 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
             <h3 className="text-lg font-medium mb-4 text-white">Free Cancellation Policy</h3>
             <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
               <InputField
-                  label="Description"
-                  value={tourData.basicInfo.freeCancellationInfo}
-                  onChange={(e) => updateBasicInfo('freeCancellationInfo', e.target.value)}
-                  placeholder="Description of free cancellation policy"
-                />
+                label="Description"
+                value={tourData.basicInfo.freeCancellationInfo}
+                onChange={(e) => updateBasicInfo("freeCancellationInfo", e.target.value)}
+                placeholder="Description of free cancellation policy"
+              />
             </div>
           </div>
         )}
@@ -406,7 +406,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
             type="checkbox"
             id="liveTourGuide"
             checked={tourData.basicInfo.liveTourGuide}
-            onChange={(e) => updateBasicInfo('liveTourGuide', e.target.checked)}
+            onChange={(e) => updateBasicInfo("liveTourGuide", e.target.checked)}
             className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
           />
           <label htmlFor="liveTourGuide" className="ml-2 block text-sm text-amber-400">
@@ -415,51 +415,113 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
         </div>
         {tourData.basicInfo.liveTourGuide && (
           <div className="md:col-span-2 mt-4">
-            <h3 className="text-lg font-medium mb-4 text-white">Live Tour Guide Languages Supported</h3>
+            <h3 className="text-lg font-medium mb-4 text-white">
+              Live Tour Guide Languages Supported
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
               <MultiInputField
                 label="Supported Lanagues"
                 values={tourData.basicInfo.liveTourGuideLanguages}
-                onChange={(values) => updateBasicInfo('liveTourGuideLanguages', values)}
+                onChange={(values) => updateBasicInfo("liveTourGuideLanguages", values)}
                 placeholder="Add supported languages"
               />
             </div>
           </div>
         )}
         <div className="md:col-span-2 mt-4">
-            <h3 className="text-lg font-medium mb-4 text-white">Highlights</h3>
-            <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
-              <MultiInputField
-                label="Add highlights"
-                values={tourData.basicInfo.highlights}
-                onChange={(values) => updateBasicInfo('highlights', values)}
-                placeholder="Add highlight bullet point"
-              />
-            </div>
+          <h3 className="text-lg font-medium mb-4 text-white">Highlights</h3>
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+            <MultiInputField
+              label="Add highlights"
+              values={tourData.basicInfo.highlights}
+              onChange={(values) => updateBasicInfo("highlights", values)}
+              placeholder="Add highlight bullet point"
+            />
           </div>
+        </div>
       </Section>
 
       {/* Pricing Information Section */}
       <Section title="Pricing" icon={<FaDollarSign />}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <InputField
-            label="Base Price"
-            type="number"
-            value={tourData.pricing.basePrice}
-            onChange={(e) => updatePricing('basePrice', parseFloat(e.target.value))}
-            min={0}
-            step="0.01"
-            required
-          />
+          <div className="space-y-4">
+            {tourData.pricing.groupPrices.map((group, index) => (
+              <div
+                key={index}
+                className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-stone-700/30 rounded-lg"
+              >
+                <div className="md:col-span-1">
+                  <label className="block text-sm font-medium text-amber-400 mb-1">
+                    {group.label}
+                  </label>
+                  <div className="text-sm text-stone-400">
+                    {group.groupSize} {typeof group.groupSize === "string" ? "persons" : "person"}
+                  </div>
+                </div>
+                <div className="md:col-span-1">
+                  <label className="block text-sm font-medium text-amber-400 mb-1">Price</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={group.price}
+                    onChange={(e) => {
+                      const newGroupPrices = [...tourData.pricing.groupPrices];
+                      newGroupPrices[index].price = parseFloat(e.target.value) || 0;
+                      setTourData((prev) => ({
+                        ...prev,
+                        pricing: {
+                          ...prev.pricing,
+                          groupPrices: newGroupPrices,
+                        },
+                      }));
+                    }}
+                    className="block w-full bg-stone-700 border border-stone-600 p-2 rounded-md shadow-sm focus:border-amber-500 focus:ring-amber-500 text-white sm:text-sm"
+                    placeholder="0.00"
+                  />
+                </div>
+                <div className="md:col-span-1">
+                  <label className="block text-sm font-medium text-amber-400 mb-1">
+                    Pricing Type
+                  </label>
+                  <select
+                    value={group.perPerson ? "perPerson" : "total"}
+                    onChange={(e) => {
+                      const newGroupPrices = [...tourData.pricing.groupPrices];
+                      newGroupPrices[index].perPerson = e.target.value === "perPerson";
+                      setTourData((prev) => ({
+                        ...prev,
+                        pricing: {
+                          ...prev.pricing,
+                          groupPrices: newGroupPrices,
+                        },
+                      }));
+                    }}
+                    className="block w-full bg-stone-700 border border-stone-600 p-2 rounded-md shadow-sm focus:border-amber-500 focus:ring-amber-500 text-white sm:text-sm"
+                  >
+                    <option value="total">Total for group</option>
+                    <option value="perPerson">Per person</option>
+                  </select>
+                  <div className="text-xs text-stone-500 mt-1">
+                    {group.perPerson
+                      ? `Price is per person × ${
+                          typeof group.groupSize === "string" ? "group size" : group.groupSize
+                        }`
+                      : "Total price for entire group"}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
           <SelectField
             label="Currency"
             value={tourData.pricing.currency}
-            onChange={(e) => updatePricing('currency', e.target.value)}
+            onChange={(e) => updatePricing("currency", e.target.value)}
             options={[
-              { value: 'USD', label: 'USD' },
-              { value: 'EUR', label: 'EUR' },
-              { value: 'GBP', label: 'GBP' },
-              { value: 'EGP', label: 'EGP' }
+              { value: "USD", label: "USD" },
+              { value: "EUR", label: "EUR" },
+              { value: "GBP", label: "GBP" },
+              { value: "EGP", label: "EGP" },
             ]}
           />
           <div className="md:col-span-2 border-t pt-4">
@@ -469,7 +531,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
                 label="Discount Amount"
                 type="number"
                 value={tourData.pricing.discount.amount}
-                onChange={(e) => updateDiscount('amount', parseFloat(e.target.value))}
+                onChange={(e) => updateDiscount("amount", parseFloat(e.target.value))}
                 min={0}
                 step="0.01"
               />
@@ -477,7 +539,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
                 label="Discount Expiry Date"
                 type="date"
                 value={tourData.pricing.discount.expires}
-                onChange={(e) => updateDiscount('expires', e.target.value)}
+                onChange={(e) => updateDiscount("expires", e.target.value)}
               />
             </div>
           </div>
@@ -487,13 +549,13 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
               <MultiInputField
                 label="Included Features"
                 values={tourData.pricing.included}
-                onChange={(values) => updatePricing('included', values)}
+                onChange={(values) => updatePricing("included", values)}
                 placeholder="Add included feature"
               />
               <MultiInputField
                 label="Not Included Features"
                 values={tourData.pricing.notIncluded}
-                onChange={(values) => updatePricing('notIncluded', values)}
+                onChange={(values) => updatePricing("notIncluded", values)}
                 placeholder="Add excluded feature"
               />
             </div>
@@ -508,7 +570,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
             <label className="block text-sm font-medium text-amber-300 mb-2">Cover Image</label>
             <ImageUploader
               imageUrl={tourData.media.coverImage}
-              onChange={(e) => handleImageUpload(e, 'cover')}
+              onChange={(e) => handleImageUpload(e, "cover")}
               isLoading={isLoading}
               onDelete={handleDeleteCoverImage}
               deleteLoading={deleteLoading.cover}
@@ -517,36 +579,53 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
           <div>
             <label className="block text-sm font-medium text-amber-300 mb-2">Gallery Images</label>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {tourData.media.gallery && tourData.media.gallery.map((img, index) => (
-                <div key={index} className="relative group">
-                  <img
-                    src={img}
-                    alt={`Gallery ${index + 1}`}
-                    className="w-full h-32 object-cover rounded"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteGalleryImage(index)}
-                    disabled={deleteLoading.gallery[index]}
-                    className={`absolute top-2 right-2 p-1 rounded-full transition-opacity ${
-                      deleteLoading.gallery[index]
-                        ? 'bg-gray-500 cursor-not-allowed opacity-100'
-                        : 'bg-red-500 opacity-0 group-hover:opacity-100'
-                    }`}
-                  >
-                    {deleteLoading.gallery[index] ? (
-                      <svg className="animate-spin h-3 w-3 text-white" viewBox="0 0 24 24">
-                        <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              {tourData.media.gallery &&
+                tourData.media.gallery.map((img, index) => (
+                  <div key={index} className="relative group">
+                    <img
+                      src={img}
+                      alt={`Gallery ${index + 1}`}
+                      className="w-full h-32 object-cover rounded"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteGalleryImage(index)}
+                      disabled={deleteLoading.gallery[index]}
+                      className={`absolute top-2 right-2 p-1 rounded-full transition-opacity ${
+                        deleteLoading.gallery[index]
+                          ? "bg-gray-500 cursor-not-allowed opacity-100"
+                          : "bg-red-500 opacity-0 group-hover:opacity-100"
+                      }`}
+                    >
+                      {deleteLoading.gallery[index] ? (
+                        <svg className="animate-spin h-3 w-3 text-white" viewBox="0 0 24 24">
+                          <svg
+                            className="animate-spin h-3 w-3 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
+                          </svg>
                         </svg>
-                      </svg>
-                    ) : (
-                      <FaTrash size={12} className="text-white" />
-                    )}
-                  </button>
-                </div>
-              ))}
+                      ) : (
+                        <FaTrash size={12} className="text-white" />
+                      )}
+                    </button>
+                  </div>
+                ))}
               <div className="border-2 border-dashed border-stone-600 rounded flex items-center justify-center h-32">
                 <label className="cursor-pointer p-4 text-center">
                   <FaPlus className="mx-auto text-gray-400" />
@@ -554,7 +633,7 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
                   <input
                     type="file"
                     className="hidden"
-                    onChange={(e) => handleImageUpload(e, 'gallery')}
+                    onChange={(e) => handleImageUpload(e, "gallery")}
                     accept="image/*"
                   />
                 </label>
@@ -564,13 +643,15 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
           <InputField
             label="Video URL (YouTube)"
             value={tourData.media.videoUrl}
-            onChange={(e) => setTourData(prev => ({
-              ...prev,
-              media: {
-                ...prev.media,
-                videoUrl: e.target.value
-              }
-            }))}
+            onChange={(e) =>
+              setTourData((prev) => ({
+                ...prev,
+                media: {
+                  ...prev.media,
+                  videoUrl: e.target.value,
+                },
+              }))
+            }
             placeholder="https://youtube.com/embed/..."
           />
         </div>
@@ -579,86 +660,92 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
       {/* Itinerary Section */}
       <Section title="Itinerary" icon={<FaListUl />}>
         <div className="space-y-6">
-          <h3 className='text-gray-500'>Leave empty if there&apos;s no itinerary</h3>
-          {tourData.itinerary && tourData.itinerary.map((day, index) => (
-            <div key={day.id} className="border border-gray-200 rounded-lg p-4">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-white">Day {day.day}</h3>
-                {index > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const updatedItinerary = [...tourData.itinerary];
-                      updatedItinerary.splice(index, 1);
-                      // Re-number days
-                      const renumbered = updatedItinerary.map((d, i) => ({
-                        ...d,
-                        day: i + 1
-                      }));
-                      setTourData(prev => ({
-                        ...prev,
-                        itinerary: renumbered
-                      }));
-                    }}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <FaTrash />
-                  </button>
-                )}
-              </div>
-              <div className="space-y-4">
-                <InputField
-                  label="Day Title"
-                  value={day.title}
-                  onChange={(e) => updateItineraryDay(index, 'title', e.target.value)}
-                  placeholder="Arrival in Luxor"
-                />
-                <InputField
-                  label="Description"
-                  value={day.description}
-                  onChange={(e) => updateItineraryDay(index, 'description', e.target.value)}
-                  placeholder="Check-in and welcome dinner"
-                  textarea
-                />
-                <div>
-                  <label className="block text-sm font-medium text-gray-500 mb-2">Activities</label>
-                  <div className="space-y-2">
-                    {day.activities && day.activities.map((activity, activityIndex) => (
-                      <div key={activityIndex} className="flex space-x-2 items-center">
-                        <input
-                          type="text"
-                          value={activity}
-                          onChange={(e) => updateItineraryActivity(index, activityIndex, e.target.value)}
-                          className="flex-1 block w-full rounded-md text-stone-400 bg-stone-700 border border-stone-600 p-1 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                          placeholder="Hotel transfer"
-                        />
-                        {/* Show add button only for the last activity */}
-                        {activityIndex === day.activities.length - 1 ? (
-                          <button
-                            type="button"
-                            onClick={() => addActivity(index)}
-                            className="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-amber-600 hover:bg-amber-500"
-                          >
-                            <FaPlus size={12} />
-                          </button>
-                        ) : null}
-                        {/* Show remove button for all activities except when it's the only one */}
-                        {day.activities.length > 1 && (
-                          <button
-                            type="button"
-                            onClick={() => removeActivity(index, activityIndex)}
-                            className="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-500"
-                          >
-                            <FaTimes size={12} />
-                          </button>
-                        )}
-                      </div>
-                    ))}
+          <h3 className="text-gray-500">Leave empty if there&apos;s no itinerary</h3>
+          {tourData.itinerary &&
+            tourData.itinerary.map((day, index) => (
+              <div key={day.id} className="border border-gray-200 rounded-lg p-4">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-white">Day {day.day}</h3>
+                  {index > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updatedItinerary = [...tourData.itinerary];
+                        updatedItinerary.splice(index, 1);
+                        // Re-number days
+                        const renumbered = updatedItinerary.map((d, i) => ({
+                          ...d,
+                          day: i + 1,
+                        }));
+                        setTourData((prev) => ({
+                          ...prev,
+                          itinerary: renumbered,
+                        }));
+                      }}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <FaTrash />
+                    </button>
+                  )}
+                </div>
+                <div className="space-y-4">
+                  <InputField
+                    label="Day Title"
+                    value={day.title}
+                    onChange={(e) => updateItineraryDay(index, "title", e.target.value)}
+                    placeholder="Arrival in Luxor"
+                  />
+                  <InputField
+                    label="Description"
+                    value={day.description}
+                    onChange={(e) => updateItineraryDay(index, "description", e.target.value)}
+                    placeholder="Check-in and welcome dinner"
+                    textarea
+                  />
+                  <div>
+                    <label className="block text-sm font-medium text-gray-500 mb-2">
+                      Activities
+                    </label>
+                    <div className="space-y-2">
+                      {day.activities &&
+                        day.activities.map((activity, activityIndex) => (
+                          <div key={activityIndex} className="flex space-x-2 items-center">
+                            <input
+                              type="text"
+                              value={activity}
+                              onChange={(e) =>
+                                updateItineraryActivity(index, activityIndex, e.target.value)
+                              }
+                              className="flex-1 block w-full rounded-md text-stone-400 bg-stone-700 border border-stone-600 p-1 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              placeholder="Hotel transfer"
+                            />
+                            {/* Show add button only for the last activity */}
+                            {activityIndex === day.activities.length - 1 ? (
+                              <button
+                                type="button"
+                                onClick={() => addActivity(index)}
+                                className="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-amber-600 hover:bg-amber-500"
+                              >
+                                <FaPlus size={12} />
+                              </button>
+                            ) : null}
+                            {/* Show remove button for all activities except when it's the only one */}
+                            {day.activities.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => removeActivity(index, activityIndex)}
+                                className="inline-flex items-center px-2 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-red-600 hover:bg-red-500"
+                              >
+                                <FaTimes size={12} />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
           <button
             type="button"
             onClick={addItineraryDay}
@@ -675,28 +762,32 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
           <div>
             <label className="block text-sm font-medium text-amber-400 mb-2">Start Dates</label>
             <div className="flex flex-wrap gap-2 mb-4">
-              {tourData.availability && tourData.availability.startDates.map((date, index) => (
-                <div key={index} className="flex items-center bg-stone-500 rounded-full px-3 py-1">
-                  <span className="mr-2 text-amber-400">{date}</span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const updatedDates = [...tourData.availability.startDates];
-                      updatedDates.splice(index, 1);
-                      setTourData(prev => ({
-                        ...prev,
-                        availability: {
-                          ...prev.availability,
-                          startDates: updatedDates
-                        }
-                      }));
-                    }}
-                    className="text-red-500 hover:text-red-600"
+              {tourData.availability &&
+                tourData.availability.startDates.map((date, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center bg-stone-500 rounded-full px-3 py-1"
                   >
-                    <FaTrash size={12} />
-                  </button>
-                </div>
-              ))}
+                    <span className="mr-2 text-amber-400">{date}</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updatedDates = [...tourData.availability.startDates];
+                        updatedDates.splice(index, 1);
+                        setTourData((prev) => ({
+                          ...prev,
+                          availability: {
+                            ...prev.availability,
+                            startDates: updatedDates,
+                          },
+                        }));
+                      }}
+                      className="text-red-500 hover:text-red-600"
+                    >
+                      <FaTrash size={12} />
+                    </button>
+                  </div>
+                ))}
             </div>
             <div className="flex space-x-2">
               <input
@@ -707,10 +798,10 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
               <button
                 type="button"
                 onClick={() => {
-                  const dateInput = document.getElementById('newDate');
+                  const dateInput = document.getElementById("newDate");
                   if (dateInput.value) {
                     addStartDate(dateInput.value);
-                    dateInput.value = '';
+                    dateInput.value = "";
                   }
                 }}
                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-amber-600 hover:bg-amber-500"
@@ -724,13 +815,15 @@ export function TourForm({ tourData, setTourData, handleImageUpload, isLoading }
               type="checkbox"
               id="isAvailable"
               checked={tourData.availability.isAvailable}
-              onChange={(e) => setTourData(prev => ({
-                ...prev,
-                availability: {
-                  ...prev.availability,
-                  isAvailable: e.target.checked
-                }
-              }))}
+              onChange={(e) =>
+                setTourData((prev) => ({
+                  ...prev,
+                  availability: {
+                    ...prev.availability,
+                    isAvailable: e.target.checked,
+                  },
+                }))
+              }
               className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
             />
             <label htmlFor="isAvailable" className="ml-2 block text-sm text-gray-700">
@@ -758,26 +851,35 @@ function Section({ title, icon, children }) {
   );
 }
 
-function InputField({ label, value, onChange, type = 'text', placeholder, required = false, disabled = false, textarea = false, rows = 3 }) {
-  
+function InputField({
+  label,
+  value,
+  onChange,
+  type = "text",
+  placeholder,
+  required = false,
+  disabled = false,
+  textarea = false,
+  rows = 3,
+}) {
   // Helper function to safely parse the value for display
   const getSafeDisplayValue = (inputValue) => {
-    if (type === 'number') {
+    if (type === "number") {
       // If value is already a number, return it
-      if (typeof inputValue === 'number') {
-        return isNaN(inputValue) ? '' : inputValue;
+      if (typeof inputValue === "number") {
+        return isNaN(inputValue) ? "" : inputValue;
       }
-      
+
       // If value is string, try to parse it
-      if (typeof inputValue === 'string') {
+      if (typeof inputValue === "string") {
         const parsed = parseFloat(inputValue);
         return isNaN(parsed) ? inputValue : parsed;
       }
-      
+
       // For other types, return empty string
-      return '';
+      return "";
     }
-    
+
     // For non-number types, return as is
     return inputValue;
   };
@@ -809,8 +911,8 @@ function InputField({ label, value, onChange, type = 'text', placeholder, requir
           placeholder={placeholder}
           required={required}
           disabled={disabled}
-          min={type === 'number' ? 0 : undefined}
-          step={type === 'number' ? 'any' : undefined}
+          min={type === "number" ? 0 : undefined}
+          step={type === "number" ? "any" : undefined}
         />
       )}
     </div>
@@ -830,7 +932,9 @@ function SelectField({ label, value, onChange, options, required = false }) {
         className="block w-full bg-stone-700 border border-stone-600 p-1 rounded-md shadow-sm focus:border-amber-500 focus:ring-amber-500 text-white sm:text-sm"
         required={required}
       >
-        <option value="" className="bg-stone-700">Select an option</option>
+        <option value="" className="bg-stone-700">
+          Select an option
+        </option>
         {options.map((option) => (
           <option key={option.value} value={option.value} className="bg-stone-700">
             {option.label}
@@ -844,7 +948,7 @@ function SelectField({ label, value, onChange, options, required = false }) {
 function MultiSelectField({ label, value, onChange, options }) {
   const handleChange = (optionValue) => {
     const newValue = value.includes(optionValue)
-      ? value.filter(v => v !== optionValue)
+      ? value.filter((v) => v !== optionValue)
       : [...value, optionValue];
     onChange(newValue);
   };
@@ -873,12 +977,12 @@ function MultiSelectField({ label, value, onChange, options }) {
 }
 
 function MultiInputField({ label, values, onChange, placeholder }) {
-  const [newValue, setNewValue] = useState('');
+  const [newValue, setNewValue] = useState("");
 
   const addValue = () => {
     if (newValue.trim()) {
       onChange([...values, newValue.trim()]);
-      setNewValue('');
+      setNewValue("");
     }
   };
 
@@ -896,7 +1000,7 @@ function MultiInputField({ label, values, onChange, placeholder }) {
           type="text"
           value={newValue}
           onChange={(e) => setNewValue(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && addValue()}
+          onKeyPress={(e) => e.key === "Enter" && addValue()}
           className="flex-1 block w-full bg-stone-700 border border-stone-600 p-1 rounded-md shadow-sm focus:border-amber-500 focus:ring-amber-500 text-white sm:text-sm"
           placeholder={placeholder}
         />
@@ -909,18 +1013,19 @@ function MultiInputField({ label, values, onChange, placeholder }) {
         </button>
       </div>
       <div className="flex flex-wrap gap-2">
-        {values && values.map((value, index) => (
-          <div key={index} className="flex items-center bg-stone-700 rounded-full px-3 py-1">
-            <span className="mr-2 text-white text-sm">{value}</span>
-            <button
-              type="button"
-              onClick={() => removeValue(index)}
-              className="text-stone-400 hover:text-red-500"
-            >
-              <FaTrash size={12} />
-            </button>
-          </div>
-        ))}
+        {values &&
+          values.map((value, index) => (
+            <div key={index} className="flex items-center bg-stone-700 rounded-full px-3 py-1">
+              <span className="mr-2 text-white text-sm">{value}</span>
+              <button
+                type="button"
+                onClick={() => removeValue(index)}
+                className="text-stone-400 hover:text-red-500"
+              >
+                <FaTrash size={12} />
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );
@@ -948,16 +1053,32 @@ function ImageUploader({ imageUrl, onChange, isLoading, onDelete, deleteLoading 
             onClick={onDelete}
             disabled={deleteLoading}
             className={`absolute top-2 right-2 p-1 rounded-full transition-opacity ${
-              deleteLoading 
-                ? 'bg-gray-500 cursor-not-allowed opacity-100' 
-                : 'bg-red-500 opacity-0 group-hover:opacity-100'
+              deleteLoading
+                ? "bg-gray-500 cursor-not-allowed opacity-100"
+                : "bg-red-500 opacity-0 group-hover:opacity-100"
             }`}
           >
             {deleteLoading ? (
               <svg className="animate-spin h-3 w-3 text-white" viewBox="0 0 24 24">
-                <svg className="animate-spin h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="animate-spin h-3 w-3 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
               </svg>
             ) : (
@@ -977,12 +1098,7 @@ function ImageUploader({ imageUrl, onChange, isLoading, onDelete, deleteLoading 
                 <div className="text-xs text-stone-400">Recommended: 1200x800px</div>
               </>
             )}
-            <input
-              type="file"
-              className="hidden"
-              onChange={onChange}
-              accept="image/*"
-            />
+            <input type="file" className="hidden" onChange={onChange} accept="image/*" />
           </div>
         </label>
       )}

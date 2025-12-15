@@ -1,7 +1,16 @@
+// jsconfig.json
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+      "@/*": ["./src/*"],
+      "@/public/*": ["./public/*"]
+    },
+    // You may also want to include these if you use modern JS features
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowJs": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", ".next"]
 }

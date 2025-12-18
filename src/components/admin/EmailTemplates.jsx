@@ -53,6 +53,7 @@ export default function EmailTemplates() {
     "Tour Completed Notification",
     "Booking Confirmed After Modification",
     "Booking Cancelled After Modification",
+    "Client Payment Failed",
   ];
 
   // Fetch templates from Firestore

@@ -23,6 +23,18 @@ export default function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Close submenu if clicking outside
+      if (openSubmenu !== null && !event.target.closest(".submenu-container")) {
+        setOpenSubmenu(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [openSubmenu]);
+
+  useEffect(() => {
     setIsLoading(false);
   }, []);
 
@@ -281,7 +293,7 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item, index) => (
-              <div key={index} className="relative group">
+              <div key={index} className="relative group submenu-container">
                 {item.subItems ? (
                   <>
                     <button
@@ -328,6 +340,7 @@ export default function Navbar() {
                               <Link
                                 key={subIndex}
                                 href={subItem.href}
+                                onClick={() => setOpenSubmenu(null)}
                                 className={`relative flex items-center px-4 py-2.5 text-sm transition-colors ${
                                   isActive(subItem.href)
                                     ? "bg-amber-50 text-amber-700 font-medium"

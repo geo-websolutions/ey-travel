@@ -9,10 +9,39 @@ import {
 } from "@/utils/handleEmailTemplates"; // You'll need to add these imports
 
 // Helper function to generate payment link
-const generatePaymentLink = (bookingId, totalAmount) => {
-  // You can replace this with your actual payment link generation logic
-  const randomId = Math.random().toString(36).substring(2, 15);
-  return `https://checkout.stripe.com/pay/${randomId}`;
+const createPaymentLink = async (
+  bookingId,
+  customerName,
+  customerEmail,
+  idToken,
+  tours,
+  amount
+) => {
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://crm.growthifylabs.com"
+      : "http://localhost:3000";
+
+  const response = await fetch(`${baseUrl}/api/v1/stripe/create-payment-link`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${idToken}`,
+    },
+    body: JSON.stringify({ bookingId, customerName, customerEmail, tours, amount }),
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error("Failed to create payment link");
+  }
+
+  return {
+    link: data.paymentLink,
+    expiresAt: data.expiresAt,
+    linkId: data.paymentLinkId,
+    log: data.log,
+  };
 };
 
 export async function POST(request) {
@@ -142,9 +171,9 @@ export async function POST(request) {
           };
         } else if (modifiedTour?.action === "modify" || modifiedTour?.action === "keep") {
           // Update tour with modifications
-          const newDate = modifiedTour.newDate || tour.date;
-          const newGuests = modifiedTour.newGuests || tour.guests;
-          const newPrice = modifiedTour.newPrice || tour.calculatedPrice;
+          const newDate = modifiedTour.newDate || tour.originalDate;
+          const newGuests = modifiedTour.newGuests || tour.originalGuests;
+          const newPrice = modifiedTour.newPrice || tour.originalPrice;
 
           return {
             ...tour,
@@ -155,9 +184,9 @@ export async function POST(request) {
             calculatedPrice: newPrice,
             modifiedAt: new Date().toISOString(),
             modifications: {
-              dateChanged: modifiedTour.newDate !== tour.date,
-              guestsChanged: modifiedTour.newGuests !== tour.guests,
-              priceChanged: modifiedTour.newPrice !== tour.calculatedPrice,
+              dateChanged: modifiedTour.newDate !== tour.originalDate,
+              guestsChanged: modifiedTour.newGuests !== tour.originalGuests,
+              priceChanged: modifiedTour.newPrice !== tour.originalPrice,
               notes: modifiedTour.notes || "",
             },
           };
@@ -167,9 +196,29 @@ export async function POST(request) {
       });
 
       // Generate payment link
-      const paymentLink = generatePaymentLink(bookingId, totalPrice);
+      const {
+        link: paymentLink,
+        expiresAt,
+        linkId,
+        log,
+      } = await createPaymentLink(
+        bookingId,
+        bookingData.customer.name,
+        bookingData.customer.email,
+        idToken,
+        updatedTours,
+        bookingData.total
+      );
 
-      // Prepare update data (similar to allToursAvailable case with modifications)
+      updateData.paymentLink = paymentLink;
+      updateData.paymentLinkExpiresAt = expiresAt;
+      updateData.paymentLinkId = linkId;
+      await db
+        .collection("bookings")
+        .doc(bookingId)
+        .update({ log: admin.firestore.FieldValue.arrayUnion(log) });
+
+      // Prepare update data
       updateData = {
         tours: updatedTours,
         status: "confirmed",
@@ -180,8 +229,6 @@ export async function POST(request) {
         feedbackProcessedAt: new Date().toISOString(),
         feedbackProcessedBy: userRecord.email,
         feedbackProcessedAction: "confirmed",
-        paymentLink: paymentLink,
-        paymentLinkSent: true,
         paymentLinkGeneratedAt: new Date().toISOString(),
         adminNotes: adminNotes || "",
         updatedAt: new Date().toISOString(),

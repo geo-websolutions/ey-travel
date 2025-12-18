@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { sendEmail } from "@/lib/sendEmail";
 import {
   clientAllToursAvailable,
-  clientPartialAvailablilityNotification,
+  clientPartialAvailabilityNotification,
   allToursUnavailable,
   prepareAllToursAvailableData,
   preparePartialAvailabilityData,
@@ -12,9 +12,39 @@ import {
 import { generateClientFeedbackLink } from "@/lib/feedbackLinks";
 
 // Helper function to generate dummy payment link (for demo)
-const generateDummyPaymentLink = () => {
-  const randomId = Math.random().toString(36).substring(2, 15);
-  return `https://checkout.stripe.com/pay/${randomId}`;
+const createPaymentLink = async (
+  bookingId,
+  customerName,
+  customerEmail,
+  idToken,
+  tours,
+  amount
+) => {
+  const baseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://crm.growthifylabs.com"
+      : "http://localhost:3000";
+
+  const response = await fetch(`${baseUrl}/api/v1/stripe/create-payment-link`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${idToken}`,
+    },
+    body: JSON.stringify({ bookingId, customerName, customerEmail, tours, amount }),
+  });
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error("Failed to create payment link");
+  }
+
+  return {
+    link: data.paymentLink,
+    expiresAt: data.expiresAt,
+    linkId: data.paymentLinkId,
+    log: data.log,
+  };
 };
 
 export async function POST(request) {
@@ -148,6 +178,11 @@ export async function POST(request) {
       emailSubject = "Tour Unavailability Notification - EY Travel Egypt";
       emailStatus = "no_availability";
 
+      // Update tour statuses
+      updateData.tours.map((tour) => {
+        tour.status = "cancelled";
+      });
+
       // Update booking status
       updateData.status = "cancelled";
       updateData.currentStep = "no_availability";
@@ -163,11 +198,10 @@ export async function POST(request) {
         );
       }
 
-      const paymentLink = generateDummyPaymentLink();
-      const emailData = prepareAllToursAvailableData(updateData, paymentLink);
-      emailToSend = clientAllToursAvailable(templates["client_availability_confirmed"], emailData);
-      emailSubject = "Tour Availability Confirmed - Ready for Payment";
-      emailStatus = "all_available";
+      // Update tour statuses
+      updateData.tours.map((tour) => {
+        tour.status = "confirmed";
+      });
 
       // Update booking status
       updateData.status = "confirmed";
@@ -175,7 +209,34 @@ export async function POST(request) {
       updateData.pendingClientFeedback = false;
       updateData.pendingPayment = true;
       updateData.paymentLinkSent = true;
+
+      const {
+        link: paymentLink,
+        expiresAt,
+        linkId,
+        log,
+      } = await createPaymentLink(
+        bookingId,
+        updateData.customerName,
+        updateData.customerEmail,
+        idToken,
+        updateData.tours,
+        updateData.total
+      );
+
+      const emailData = prepareAllToursAvailableData(updateData, paymentLink);
+      emailToSend = clientAllToursAvailable(templates["client_availability_confirmed"], emailData);
+      emailSubject = "Tour Availability Confirmed - Ready for Payment";
+      emailStatus = "all_available";
+
       updateData.paymentLink = paymentLink;
+      updateData.paymentLinkExpiresAt = expiresAt;
+      updateData.paymentLinkId = linkId;
+      updateData.paymentLinkGeneratedAt = new Date().toISOString();
+      await db
+        .collection("bookings")
+        .doc(bookingId)
+        .update({ log: admin.firestore.FieldValue.arrayUnion(log) });
     } else {
       // Case 2: Partial availability
       if (!templates["client_partial_availability_notification"]) {
@@ -187,12 +248,17 @@ export async function POST(request) {
 
       const formLink = generateClientFeedbackLink(bookingData.requestId);
       const emailData = preparePartialAvailabilityData(updateData, formLink);
-      emailToSend = clientPartialAvailablilityNotification(
+      emailToSend = clientPartialAvailabilityNotification(
         templates["client_partial_availability_notification"],
         emailData
       );
       emailSubject = "Partial Tour Availability - Feedback Required";
       emailStatus = "partial_availability";
+
+      // Update tour statuses
+      updateData.tours.map((tour) => {
+        tour.status = "pending";
+      });
 
       // Update booking status
       updateData.status = "pending_feedback";

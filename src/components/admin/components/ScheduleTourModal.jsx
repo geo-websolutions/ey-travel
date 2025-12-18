@@ -46,6 +46,40 @@ const ScheduleTourModal = ({ booking, isOpen, onClose, isEditMode }) => {
           .filter((tour) => tour.schedule) // Only tours with schedules
           .map((tour) => {
             const schedule = tour.schedule || {};
+            const isMultiDay = schedule.tourType === "multi_day_tour";
+
+            // Handle dayItinerary properly for multi-day tours
+            let dayItinerary = [];
+            if (isMultiDay) {
+              if (schedule.dayItinerary && Array.isArray(schedule.dayItinerary)) {
+                // Use existing dayItinerary
+                dayItinerary = schedule.dayItinerary.map((day) => ({
+                  day: day.day || 1,
+                  date: day.date ? new Date(day.date) : new Date(schedule.date),
+                  itinerary: day.itinerary || day.activities || [],
+                }));
+              } else if (schedule.itinerary && Array.isArray(schedule.itinerary)) {
+                // Convert old format to dayItinerary format
+                dayItinerary = schedule.itinerary.map((day, index) => ({
+                  day: day.day || index + 1,
+                  date: day.date ? new Date(day.date) : new Date(schedule.date),
+                  itinerary: day.activities || day.itinerary || [],
+                }));
+              } else {
+                // Create default multi-day itinerary
+                const days = schedule.durationDays || 2;
+                let currentDate = new Date(schedule.date);
+
+                for (let day = 1; day <= days; day++) {
+                  dayItinerary.push({
+                    day: day,
+                    date: new Date(currentDate),
+                    itinerary: [],
+                  });
+                  currentDate.setDate(currentDate.getDate() + 1);
+                }
+              }
+            }
 
             return {
               tourId: tour.id,
@@ -82,10 +116,9 @@ const ScheduleTourModal = ({ booking, isOpen, onClose, isEditMode }) => {
                 time: "17:30",
                 notes: "",
               },
-              itinerary: schedule.itinerary || [],
-              // Handle multi-day itinerary properly
-              dayItinerary:
-                schedule.dayItinerary || (schedule.itineraryType === "multi_day" ? [] : []),
+              itinerary: schedule.itinerary && !isMultiDay ? schedule.itinerary : [],
+              // Properly initialize dayItinerary for multi-day tours
+              dayItinerary: dayItinerary,
               equipment: schedule.equipment || [],
               notes: schedule.scheduleNotes || schedule.notes || "",
             };
@@ -290,7 +323,7 @@ const ScheduleTourModal = ({ booking, isOpen, onClose, isEditMode }) => {
     if (type === "multi_day_tour") {
       const days = tourSchedules[index].durationDays || 2;
 
-      // Initialize day-based itinerary
+      // Initialize day-based itinerary for UI
       const dayItinerary = [];
       let currentDate = new Date(tourSchedules[index].date);
 
@@ -453,94 +486,114 @@ const ScheduleTourModal = ({ booking, isOpen, onClose, isEditMode }) => {
   const handleSubmitEdit = async () => {
     setLoading(true);
     try {
-      // 2. Prepare updated schedule data
+      // Prepare updated schedule data
       const updatedScheduleData = {
         bookingId: booking.id,
-        tourSchedules: tourSchedules.map((schedule) => ({
-          ...schedule,
-          date: schedule.date instanceof Date ? schedule.date.toISOString() : schedule.date,
-          updatedAt: new Date().toISOString(),
-          // Ensure proper data types
-          durationHours: parseInt(schedule.durationHours) || 0,
-          durationDays: parseInt(schedule.durationDays) || 1,
-        })),
+        tourSchedules: tourSchedules.map((schedule) => {
+          const isMultiDay = schedule.tourType === "multi_day_tour";
+
+          // Convert dayItinerary back to itinerary format for API
+          let itinerary = [];
+          if (isMultiDay && schedule.dayItinerary) {
+            // Convert dayItinerary to itinerary format expected by API
+            itinerary = schedule.dayItinerary.map((day) => ({
+              day: day.day,
+              date: day.date instanceof Date ? day.date.toISOString() : day.date,
+              activities: day.itinerary.map((item) => ({
+                time: item.time,
+                activity: item.activity,
+                description: item.description || "",
+              })),
+            }));
+          } else if (!isMultiDay && schedule.itinerary) {
+            // Single day tour - use regular itinerary
+            itinerary = schedule.itinerary.map((item) => ({
+              time: item.time,
+              activity: item.activity,
+              description: item.description || "",
+            }));
+          }
+
+          return {
+            ...schedule,
+            date: schedule.date instanceof Date ? schedule.date.toISOString() : schedule.date,
+            updatedAt: new Date().toISOString(),
+            // Ensure proper data types
+            durationHours: parseInt(schedule.durationHours) || 0,
+            durationDays: isMultiDay ? schedule.dayItinerary.length : 1,
+            // For multi-day tours, clear regular itinerary
+            itinerary: itinerary,
+            // Clear dayItinerary as we're only using itinerary for API
+            dayItinerary: undefined,
+            itineraryType: isMultiDay ? "multi_day" : "single_day",
+          };
+        }),
         updatedAt: new Date().toISOString(),
         updatedBy: auth.currentUser?.email || "Unknown",
       };
 
-      // 3. Get the current booking data to merge updates
+      // Get the current booking data to merge updates
       const bookingRef = doc(db, "bookings", booking.id);
 
-      // 4. Merge schedule data with existing tours
-      const processedSchedules = updatedScheduleData.tourSchedules.map((schedule) => ({
-        tourId: schedule.tourId,
-        title: schedule.title,
-        date: schedule.date,
-        tourType: schedule.tourType,
-        startTime: schedule.startTime || null,
-        endTime: schedule.endTime || null,
-        durationHours: schedule.durationHours,
-        durationDays: schedule.durationDays,
-        guide: schedule.guide?.assigned
-          ? {
-              name: schedule.guide.name || "",
-              phone: schedule.guide.phone || "",
-              email: schedule.guide.email || "",
-              assigned: true,
-              assignedAt: new Date().toISOString(),
-            }
-          : null,
-        driver: schedule.driver?.assigned
-          ? {
-              name: schedule.driver.name || "",
-              phone: schedule.driver.phone || "",
-              vehicle: schedule.driver.vehicle || "",
-              assigned: true,
-              assignedAt: new Date().toISOString(),
-            }
-          : null,
-        meetingPoint: {
-          location: schedule.meetingPoint?.location || "",
-          time: schedule.meetingPoint?.time || "",
-          notes: schedule.meetingPoint?.notes || "",
-        },
-        dropoffPoint: {
-          location: schedule.dropoffPoint?.location || "",
-          time: schedule.dropoffPoint?.time || "",
-          notes: schedule.dropoffPoint?.notes || "",
-        },
-        itinerary:
-          schedule.tourType === "multi_day_tour"
-            ? schedule.dayItinerary?.map((day) => ({
-                day: day.day,
-                date: day.date instanceof Date ? day.date.toISOString() : day.date,
-                activities:
-                  day.itinerary?.map((item) => ({
-                    time: item.time,
-                    activity: item.activity,
-                    description: item.description || "",
-                  })) || [],
-              })) || []
-            : schedule.itinerary?.map((item) => ({
-                time: item.time,
-                activity: item.activity,
-                description: item.description || "",
-              })) || [],
-        equipment:
-          schedule.equipment?.map((item) => ({
-            item: item.item,
-            quantity: parseInt(item.quantity) || 1,
-            notes: item.notes || "",
-          })) || [],
-        itineraryType: schedule.tourType === "multi_day_tour" ? "multi_day" : "single_day",
-        scheduleNotes: schedule.notes || "",
-        scheduledAt: booking.scheduledAt || new Date().toISOString(), // Keep original scheduled date
-        scheduledBy: booking.scheduledBy || auth.currentUser?.email || "Unknown",
-        lastUpdated: new Date().toISOString(),
-        updatedBy: auth.currentUser?.email || "Unknown",
-      }));
+      // Merge schedule data with existing tours
+      const processedSchedules = updatedScheduleData.tourSchedules.map((schedule) => {
+        const isMultiDay = schedule.tourType === "multi_day_tour";
 
-      // 5. Prepare tour updates
+        return {
+          tourId: schedule.tourId,
+          title: schedule.title,
+          date: schedule.date,
+          tourType: schedule.tourType,
+          startTime: schedule.startTime || null,
+          endTime: schedule.endTime || null,
+          durationHours: schedule.durationHours,
+          durationDays: schedule.durationDays,
+          guide: schedule.guide?.assigned
+            ? {
+                name: schedule.guide.name || "",
+                phone: schedule.guide.phone || "",
+                email: schedule.guide.email || "",
+                assigned: true,
+                assignedAt: new Date().toISOString(),
+              }
+            : null,
+          driver: schedule.driver?.assigned
+            ? {
+                name: schedule.driver.name || "",
+                phone: schedule.driver.phone || "",
+                vehicle: schedule.driver.vehicle || "",
+                assigned: true,
+                assignedAt: new Date().toISOString(),
+              }
+            : null,
+          meetingPoint: {
+            location: schedule.meetingPoint?.location || "",
+            time: schedule.meetingPoint?.time || "",
+            notes: schedule.meetingPoint?.notes || "",
+          },
+          dropoffPoint: {
+            location: schedule.dropoffPoint?.location || "",
+            time: schedule.dropoffPoint?.time || "",
+            notes: schedule.dropoffPoint?.notes || "",
+          },
+          // Use the converted itinerary
+          itinerary: schedule.itinerary || [],
+          equipment:
+            schedule.equipment?.map((item) => ({
+              item: item.item,
+              quantity: parseInt(item.quantity) || 1,
+              notes: item.notes || "",
+            })) || [],
+          itineraryType: schedule.tourType === "multi_day_tour" ? "multi_day" : "single_day",
+          scheduleNotes: schedule.notes || "",
+          scheduledAt: booking.scheduledAt || new Date().toISOString(), // Keep original scheduled date
+          scheduledBy: booking.scheduledBy || auth.currentUser?.email || "Unknown",
+          lastUpdated: new Date().toISOString(),
+          updatedBy: auth.currentUser?.email || "Unknown",
+        };
+      });
+
+      // Prepare tour updates
       const updatedTours = booking.tours.map((existingTour) => {
         const scheduleData = processedSchedules.find(
           (schedule) => schedule.tourId === existingTour.id
@@ -557,7 +610,7 @@ const ScheduleTourModal = ({ booking, isOpen, onClose, isEditMode }) => {
         return existingTour;
       });
 
-      // 6. Prepare log entry
+      // Prepare log entry
       const editLog = {
         timestamp: new Date().toISOString(),
         event: "schedule_updated",
@@ -574,7 +627,7 @@ const ScheduleTourModal = ({ booking, isOpen, onClose, isEditMode }) => {
         processedBy: auth.currentUser?.email || "Unknown",
       };
 
-      // 7. Prepare update object for Firestore
+      // Prepare update object for Firestore
       const updateData = {
         tours: updatedTours,
         updatedAt: new Date().toISOString(),
@@ -582,13 +635,13 @@ const ScheduleTourModal = ({ booking, isOpen, onClose, isEditMode }) => {
         log: arrayUnion(editLog), // Add to log array
       };
 
-      // 8. Update Firestore document
+      // Update Firestore document
       await updateDoc(bookingRef, updateData);
 
-      // 9. Success handling
+      // Success handling
       toast.success("Schedule updated successfully!");
 
-      // 11. Close modal
+      // Close modal
       onClose();
     } catch (error) {
       console.error("Error updating schedule:", error);

@@ -26,6 +26,32 @@ export const generateClientFeedbackLink = (requestId) => {
   return `${baseUrl}/availability-feedback?token=${encodedToken}`;
 };
 
+export const generatePaymentSuccessLink = (requestId) => {
+  const secretKey = process.env.FEEDBACK_LINK_SECRET;
+
+  if (!secretKey) {
+    throw new Error("FEEDBACK_LINK_SECRET environment variable is not set");
+  }
+
+  // Create JWT token that expires in 7 days
+  const token = jwt.sign(
+    {
+      requestId,
+      type: "payment-success-link",
+    },
+    secretKey,
+    { expiresIn: "2d" }
+  );
+
+  // URL-safe encoding
+  const encodedToken = encodeURIComponent(token);
+
+  const baseUrl =
+    process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://eytravelegypt.com";
+
+  return `${baseUrl}/payment-success?token=${encodedToken}`;
+};
+
 export const verifyFeedbackToken = (token) => {
   const secretKey = process.env.FEEDBACK_LINK_SECRET;
 
@@ -39,7 +65,7 @@ export const verifyFeedbackToken = (token) => {
     const decoded = jwt.verify(token, secretKey);
 
     // Ensure it's a feedback link token
-    if (decoded.type !== "feedback-link") {
+    if (decoded.type !== "feedback-link" && decoded.type !== "payment-success-link") {
       console.warn("Invalid token type:", decoded.type);
       return null;
     }

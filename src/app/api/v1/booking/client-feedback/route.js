@@ -229,31 +229,3 @@ export async function POST(request) {
     );
   }
 }
-
-// Helper function to calculate price for limited tours with modified guests
-function calculateLimitedTourPrice(tour, newGuests) {
-  if (!tour.groupPrices || !Array.isArray(tour.groupPrices)) {
-    return tour.calculatedPrice || 0;
-  }
-
-  // Find appropriate price tier for new guest count
-  let selectedPrice = tour.groupPrices[0]?.price || 0;
-  let perPerson = tour.groupPrices[0]?.perPerson !== false;
-
-  for (const tier of tour.groupPrices) {
-    if (typeof tier.groupSize === "string") {
-      const [min, max] = tier.groupSize.split("-").map(Number);
-      if (newGuests >= min && newGuests <= max) {
-        selectedPrice = tier.price;
-        perPerson = tier.perPerson !== false;
-        break;
-      }
-    } else if (tier.groupSize === newGuests) {
-      selectedPrice = tier.price;
-      perPerson = tier.perPerson !== false;
-      break;
-    }
-  }
-
-  return perPerson ? selectedPrice * newGuests : selectedPrice;
-}

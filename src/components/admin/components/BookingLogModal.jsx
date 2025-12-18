@@ -18,6 +18,9 @@ import {
   FaClock,
   FaCalendarCheck,
   FaCheckCircle,
+  FaLink,
+  FaCreditCard,
+  FaEdit,
 } from "react-icons/fa";
 
 const BookingLogModal = ({ booking, isOpen, onClose }) => {
@@ -87,6 +90,27 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
       },
 
       // Phase 4: Payment
+      payment_link_generated: {
+        icon: FaLink,
+        color: "text-indigo-400",
+        bgColor: "bg-indigo-500/10",
+        label: "Payment Link Generated",
+        description: "Payment link created and sent to client",
+      },
+      stripe_payment_succeeded: {
+        icon: FaCreditCard,
+        color: "text-emerald-400",
+        bgColor: "bg-emerald-500/10",
+        label: "Stripe Payment Succeeded",
+        description: "Payment completed successfully via Stripe",
+      },
+      async_payment_succeeded: {
+        icon: FaCreditCard,
+        color: "text-emerald-400",
+        bgColor: "bg-emerald-500/10",
+        label: "Async Payment Succeeded",
+        description: "Payment completed via alternative method",
+      },
       payment_received: {
         icon: FaDollarSign,
         color: "text-emerald-400",
@@ -109,6 +133,13 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
         bgColor: "bg-indigo-500/10",
         label: "Tour Scheduled",
         description: "Tour schedule confirmed",
+      },
+      schedule_updated: {
+        icon: FaEdit,
+        color: "text-blue-400",
+        bgColor: "bg-blue-500/10",
+        label: "Schedule Updated",
+        description: "Tour schedule was modified",
       },
       schedule_email_sent: {
         icon: FaEnvelope,
@@ -179,6 +210,7 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
 
     return configs[event] || configs.default;
   };
+
   // Format changes object for display
   const formatChanges = (changes) => {
     if (!changes) return null;
@@ -228,6 +260,14 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
     } catch {
       return "Invalid date";
     }
+  };
+
+  // Format currency
+  const formatCurrency = (amount) => {
+    if (typeof amount === "number") {
+      return `$${amount.toFixed(2)}`;
+    }
+    return amount;
   };
 
   if (!isOpen || !booking) return null;
@@ -288,10 +328,12 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
             )}
             {sortedLogs.some((log) => log.event.includes("payment")) && (
               <div className="text-xs px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded-full">
-                💰 Payment Received
+                💰 Payment Processed
               </div>
             )}
-            {sortedLogs.some((log) => log.event.includes("scheduled")) && (
+            {sortedLogs.some(
+              (log) => log.event.includes("scheduled") || log.event.includes("schedule_updated")
+            ) && (
               <div className="text-xs px-2 py-1 bg-indigo-500/20 text-indigo-400 rounded-full">
                 📅 Tour Scheduled
               </div>
@@ -361,38 +403,219 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
                                 <FaCalendarAlt className="inline mr-1" />
                                 {formatTimestamp(log.timestamp)}
                               </div>
+                              {log.processedBy && log.processedBy !== "system" && (
+                                <div className="text-xs text-stone-600 mt-1">
+                                  by {log.processedBy}
+                                </div>
+                              )}
+                              {log.generatedBy && (
+                                <div className="text-xs text-stone-600 mt-1">
+                                  by {log.generatedBy}
+                                </div>
+                              )}
                             </div>
                           </div>
 
-                          {/* Changes */}
-                          {hasChanges && (
+                          {/* NEW: Payment Link Generated Details */}
+                          {log.event === "payment_link_generated" && log.changes && (
                             <div className="mt-4 pt-4 border-t border-stone-600">
-                              <h5 className="text-sm font-medium text-stone-400 mb-2">Changes:</h5>
-                              <div className="space-y-2">
-                                {changes.map((change, idx) => (
-                                  <div
-                                    key={idx}
-                                    className="flex justify-between items-center text-sm bg-stone-800/50 rounded-lg p-2"
-                                  >
-                                    <span className="text-stone-300">{change.key}:</span>
-                                    <span
-                                      className={`font-medium ${
-                                        typeof change.value === "boolean"
-                                          ? change.value
-                                            ? "text-green-400"
-                                            : "text-red-400"
-                                          : "text-amber-400"
-                                      }`}
-                                    >
-                                      {change.value}
-                                    </span>
+                              <h5 className="text-sm font-medium text-stone-400 mb-2">
+                                Payment Link Details:
+                              </h5>
+                              <div className="space-y-3">
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div className="bg-indigo-500/10 rounded-lg p-3">
+                                    <div className="text-sm text-indigo-300">Amount Due</div>
+                                    <div className="text-xl font-bold text-indigo-400">
+                                      {formatCurrency(log.changes.amountDue)}
+                                    </div>
                                   </div>
-                                ))}
+                                  <div className="bg-indigo-500/10 rounded-lg p-3">
+                                    <div className="text-sm text-indigo-300">Payment Link ID</div>
+                                    <div className="text-sm font-medium text-indigo-400 truncate">
+                                      {log.changes.paymentLinkId}
+                                    </div>
+                                  </div>
+                                </div>
+                                {log.changes.expiresAt && (
+                                  <div className="bg-yellow-500/10 rounded-lg p-3">
+                                    <div className="text-sm text-yellow-300">Expires At</div>
+                                    <div className="text-sm font-medium text-yellow-400">
+                                      {new Date(
+                                        log.changes.expiresAt.substring(
+                                          0,
+                                          log.changes.expiresAt.indexOf("Z") + 1
+                                        )
+                                      ).toLocaleDateString("en-US", {
+                                        weekday: "long",
+                                        month: "long",
+                                        day: "numeric",
+                                        year: "numeric",
+                                      })}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           )}
 
-                          {/* Feedback details */}
+                          {/* NEW: Stripe/Async Payment Details */}
+                          {(log.event === "stripe_payment_succeeded" ||
+                            log.event === "async_payment_succeeded") &&
+                            log.changes && (
+                              <div className="mt-4 pt-4 border-t border-stone-600">
+                                <h5 className="text-sm font-medium text-stone-400 mb-2">
+                                  Payment Details:
+                                </h5>
+                                <div className="space-y-3">
+                                  <div className="grid grid-cols-3 gap-2">
+                                    <div className="bg-emerald-500/10 rounded-lg p-3">
+                                      <div className="text-sm text-emerald-300">Amount Paid</div>
+                                      <div className="text-xl font-bold text-emerald-400">
+                                        {formatCurrency(log.changes.amount)}
+                                      </div>
+                                    </div>
+                                    <div className="bg-emerald-500/10 rounded-lg p-3">
+                                      <div className="text-sm text-emerald-300">Payment Method</div>
+                                      <div className="text-lg font-bold text-emerald-400">
+                                        {log.changes.paymentMethod || "Unknown"}
+                                      </div>
+                                    </div>
+                                    <div className="bg-emerald-500/10 rounded-lg p-3">
+                                      <div className="text-sm text-emerald-300">Status</div>
+                                      <div
+                                        className={`text-lg font-bold ${
+                                          log.changes.isFullyPaid
+                                            ? "text-green-400"
+                                            : "text-amber-400"
+                                        }`}
+                                      >
+                                        {log.changes.isFullyPaid ? "Fully Paid" : "Partial"}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="grid grid-cols-2 gap-3">
+                                    <div className="bg-stone-700/50 rounded-lg p-3">
+                                      <div className="text-sm text-stone-300">Previous Paid</div>
+                                      <div className="text-lg font-medium text-stone-300">
+                                        {formatCurrency(log.changes.previousPaid)}
+                                      </div>
+                                    </div>
+                                    <div className="bg-emerald-500/10 rounded-lg p-3">
+                                      <div className="text-sm text-emerald-300">New Total Paid</div>
+                                      <div className="text-lg font-bold text-emerald-400">
+                                        {formatCurrency(log.changes.newPaid)}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  {log.changes.transactionId && (
+                                    <div className="bg-blue-500/10 rounded-lg p-3">
+                                      <div className="text-sm text-blue-300">Transaction ID</div>
+                                      <div className="text-sm font-mono text-blue-400 truncate">
+                                        {log.changes.transactionId}
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {log.changes.stripeSessionId && (
+                                    <div className="bg-purple-500/10 rounded-lg p-3">
+                                      <div className="text-sm text-purple-300">
+                                        Stripe Session ID
+                                      </div>
+                                      <div className="text-sm font-mono text-purple-400 truncate">
+                                        {log.changes.stripeSessionId}
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  <div className="grid grid-cols-2 gap-3">
+                                    <div className="bg-blue-500/10 rounded-lg p-3">
+                                      <div className="text-sm text-blue-300">New Status</div>
+                                      <div className="text-sm font-bold text-blue-400">
+                                        {log.changes.newStatus?.replace(/_/g, " ")}
+                                      </div>
+                                    </div>
+                                    <div className="bg-blue-500/10 rounded-lg p-3">
+                                      <div className="text-sm text-blue-300">Current Step</div>
+                                      <div className="text-sm font-bold text-blue-400">
+                                        {log.changes.currentStep?.replace(/_/g, " ")}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                          {/* NEW: Schedule Updated Details */}
+                          {log.event === "schedule_updated" && log.changes && (
+                            <div className="mt-4 pt-4 border-t border-stone-600">
+                              <h5 className="text-sm font-medium text-stone-400 mb-2">
+                                Schedule Update Details:
+                              </h5>
+                              <div className="space-y-4">
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div className="bg-blue-500/10 rounded-lg p-3">
+                                    <div className="text-sm text-blue-300">Tours Updated</div>
+                                    <div className="text-xl font-bold text-blue-400">
+                                      {log.changes.toursUpdated || 0}
+                                    </div>
+                                  </div>
+                                  <div className="bg-blue-500/10 rounded-lg p-3">
+                                    <div className="text-sm text-blue-300">Changes Summary</div>
+                                    <div className="text-lg font-bold text-blue-400">
+                                      {log.changes.updatedFields?.length || 0} fields updated
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Updated Fields Details */}
+                                {log.changes.updatedFields &&
+                                  Array.isArray(log.changes.updatedFields) && (
+                                    <div className="space-y-3">
+                                      <h6 className="text-sm font-medium text-stone-400">
+                                        Updated Tour Fields:
+                                      </h6>
+                                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                        {log.changes.updatedFields.map((field, idx) => (
+                                          <div key={idx} className="bg-stone-700/50 rounded-lg p-3">
+                                            <div className="text-sm text-stone-300 mb-2">
+                                              Tour ID:{" "}
+                                              <span className="font-mono">{field.tourId}</span>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2">
+                                              {field.guideUpdated && (
+                                                <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">
+                                                  Guide
+                                                </span>
+                                              )}
+                                              {field.driverUpdated && (
+                                                <span className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded">
+                                                  Driver
+                                                </span>
+                                              )}
+                                              {field.itineraryUpdated && (
+                                                <span className="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded">
+                                                  Itinerary
+                                                </span>
+                                              )}
+                                              {field.equipmentUpdated && (
+                                                <span className="px-2 py-1 bg-amber-500/20 text-amber-400 text-xs rounded">
+                                                  Equipment
+                                                </span>
+                                              )}
+                                            </div>
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  )}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Existing: Feedback details */}
                           {log.event === "feedback_received" && log.feedbackDetails && (
                             <div className="mt-4 pt-4 border-t border-stone-600">
                               <h5 className="text-sm font-medium text-stone-400 mb-2">
@@ -421,7 +644,7 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
                             </div>
                           )}
 
-                          {/* Feedback processed details */}
+                          {/* Existing: Feedback processed details */}
                           {log.event === "feedback_processed" && log.changes && (
                             <div className="mt-4 pt-4 border-t border-stone-600">
                               <h5 className="text-sm font-medium text-stone-400 mb-2">
@@ -477,7 +700,7 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
                             </div>
                           )}
 
-                          {/* Tour scheduled details */}
+                          {/* Existing: Tour scheduled details */}
                           {log.event === "tour_scheduled" && log.changes && (
                             <div className="mt-4 pt-4 border-t border-stone-600">
                               <h5 className="text-sm font-medium text-stone-400 mb-2">
@@ -542,7 +765,7 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
                             </div>
                           )}
 
-                          {/* Tour completed details */}
+                          {/* Existing: Tour completed details */}
                           {log.event === "tour_completed" && log.changes && (
                             <div className="mt-4 pt-4 border-t border-stone-600">
                               <h5 className="text-sm font-medium text-stone-400 mb-2">
@@ -567,7 +790,7 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
                             </div>
                           )}
 
-                          {/* Payment details */}
+                          {/* Existing: Payment details */}
                           {log.event === "payment_received" && log.changes && (
                             <div className="mt-4 pt-4 border-t border-stone-600">
                               <h5 className="text-sm font-medium text-stone-400 mb-2">
@@ -618,7 +841,7 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
                             </div>
                           )}
 
-                          {/* Availability check details */}
+                          {/* Existing: Availability check details */}
                           {log.event === "availability_checked" && log.changes && (
                             <div className="mt-4 pt-4 border-t border-stone-600">
                               <h5 className="text-sm font-medium text-stone-400 mb-2">
@@ -684,6 +907,48 @@ const BookingLogModal = ({ booking, isOpen, onClose }) => {
                               </div>
                             </div>
                           )}
+
+                          {/* General changes display for other events */}
+                          {hasChanges &&
+                            ![
+                              "payment_link_generated",
+                              "stripe_payment_succeeded",
+                              "async_payment_succeeded",
+                              "schedule_updated",
+                              "feedback_received",
+                              "feedback_processed",
+                              "tour_scheduled",
+                              "tour_completed",
+                              "payment_received",
+                              "availability_checked",
+                            ].includes(log.event) && (
+                              <div className="mt-4 pt-4 border-t border-stone-600">
+                                <h5 className="text-sm font-medium text-stone-400 mb-2">
+                                  Changes:
+                                </h5>
+                                <div className="space-y-2">
+                                  {changes.map((change, idx) => (
+                                    <div
+                                      key={idx}
+                                      className="flex justify-between items-center text-sm bg-stone-800/50 rounded-lg p-2"
+                                    >
+                                      <span className="text-stone-300">{change.key}:</span>
+                                      <span
+                                        className={`font-medium ${
+                                          typeof change.value === "boolean"
+                                            ? change.value
+                                              ? "text-green-400"
+                                              : "text-red-400"
+                                            : "text-amber-400"
+                                        }`}
+                                      >
+                                        {change.value}
+                                      </span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                         </div>
                       </div>
                     </div>

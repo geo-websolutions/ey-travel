@@ -836,68 +836,104 @@ const ViewScheduleModal = ({ booking, isOpen, onClose, onEditSchedule }) => {
                 <div className="bg-gradient-to-br from-stone-800/40 to-stone-900/40 rounded-xl p-5 border border-purple-500/30">
                   <h3 className="font-bold text-white mb-4 flex items-center">
                     <FaClock className="text-purple-400 mr-2" />
-                    {schedule.itineraryType === "multi_day"
+                    {schedule.itineraryType === "multi_day" ||
+                    schedule.tourType === "multi_day_tour"
                       ? "Multi-Day Itinerary"
                       : "Daily Itinerary"}
                   </h3>
 
-                  {schedule.itineraryType === "multi_day" && schedule.dayItinerary ? (
+                  {schedule.itineraryType === "multi_day" ||
+                  schedule.tourType === "multi_day_tour" ? (
                     <>
-                      {/* Day Tabs for Multi-Day */}
-                      <div className="flex gap-2 mb-6 overflow-x-auto">
-                        {schedule.dayItinerary.map((daySchedule, dayIndex) => (
-                          <button
-                            key={dayIndex}
-                            onClick={() => setActiveDayIndex(dayIndex)}
-                            className={`px-4 py-2 rounded-lg whitespace-nowrap flex items-center gap-2 ${
-                              activeDayIndex === dayIndex
-                                ? "bg-purple-600 text-white"
-                                : "bg-stone-700 hover:bg-stone-600 text-stone-300"
-                            }`}
-                          >
-                            <FaCalendarDay />
-                            <span>
-                              Day {daySchedule.day}: {format(new Date(daySchedule.date), "MMM d")}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-
-                      {/* Activities for selected day */}
-                      <div>
-                        <h4 className="text-white font-bold mb-4 flex items-center">
-                          <FaListUl className="text-blue-400 mr-2" />
-                          Day {schedule.dayItinerary[activeDayIndex]?.day} - Activities
-                        </h4>
-
-                        {schedule.dayItinerary[activeDayIndex]?.itinerary?.length > 0 ? (
-                          <div className="space-y-3">
-                            {schedule.dayItinerary[activeDayIndex].itinerary.map((item, index) => (
-                              <div
-                                key={index}
-                                className="bg-stone-700/50 rounded-lg p-4 border-l-4 border-blue-500"
+                      {/* Check if itinerary has day structure (multi-day) */}
+                      {schedule.itinerary[0]?.day !== undefined ? (
+                        <>
+                          {/* Day Tabs for Multi-Day */}
+                          <div className="flex gap-2 mb-6 overflow-x-auto">
+                            {schedule.itinerary.map((daySchedule, dayIndex) => (
+                              <button
+                                key={dayIndex}
+                                onClick={() => setActiveDayIndex(dayIndex)}
+                                className={`px-4 py-2 rounded-lg whitespace-nowrap flex items-center gap-2 ${
+                                  activeDayIndex === dayIndex
+                                    ? "bg-purple-600 text-white"
+                                    : "bg-stone-700 hover:bg-stone-600 text-stone-300"
+                                }`}
                               >
-                                <div className="flex items-center justify-between mb-2">
-                                  <div className="flex items-center gap-3">
-                                    <div className="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-medium">
-                                      {item.time}
-                                    </div>
-                                    <div className="text-white font-bold">{item.activity}</div>
-                                  </div>
-                                </div>
-                                {item.description && (
-                                  <p className="text-stone-300 text-sm pl-10">{item.description}</p>
-                                )}
-                              </div>
+                                <FaCalendarDay />
+                                <span>
+                                  Day {daySchedule.day}:{" "}
+                                  {format(new Date(daySchedule.date), "MMM d")}
+                                </span>
+                              </button>
                             ))}
                           </div>
-                        ) : (
-                          <div className="text-center py-8 text-stone-500">
-                            <FaCalendarTimes className="text-3xl mx-auto mb-3 opacity-50" />
-                            <p>No activities scheduled for this day</p>
+
+                          {/* Activities for selected day */}
+                          <div>
+                            <h4 className="text-white font-bold mb-4 flex items-center">
+                              <FaListUl className="text-blue-400 mr-2" />
+                              Day {schedule.itinerary[activeDayIndex]?.day} - Activities
+                            </h4>
+
+                            {schedule.itinerary[activeDayIndex]?.activities?.length > 0 ? (
+                              <div className="space-y-3">
+                                {schedule.itinerary[activeDayIndex].activities.map(
+                                  (item, index) => (
+                                    <div
+                                      key={index}
+                                      className="bg-stone-700/50 rounded-lg p-4 border-l-4 border-blue-500"
+                                    >
+                                      <div className="flex items-center justify-between mb-2">
+                                        <div className="flex items-center gap-3">
+                                          <div className="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-medium">
+                                            {item.time}
+                                          </div>
+                                          <div className="text-white font-bold">
+                                            {item.activity}
+                                          </div>
+                                        </div>
+                                      </div>
+                                      {item.description && (
+                                        <p className="text-stone-300 text-sm pl-10">
+                                          {item.description}
+                                        </p>
+                                      )}
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            ) : (
+                              <div className="text-center py-8 text-stone-500">
+                                <FaCalendarTimes className="text-3xl mx-auto mb-3 opacity-50" />
+                                <p>No activities scheduled for this day</p>
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
+                        </>
+                      ) : (
+                        // If itinerary doesn't have day structure, show as regular itinerary
+                        <div className="space-y-3">
+                          {schedule.itinerary.map((item, index) => (
+                            <div
+                              key={index}
+                              className="bg-stone-700/50 rounded-lg p-4 border-l-4 border-blue-500"
+                            >
+                              <div className="flex items-center justify-between mb-2">
+                                <div className="flex items-center gap-3">
+                                  <div className="bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-sm font-medium">
+                                    {item.time}
+                                  </div>
+                                  <div className="text-white font-bold">{item.activity}</div>
+                                </div>
+                              </div>
+                              {item.description && (
+                                <p className="text-stone-300 text-sm pl-10">{item.description}</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </>
                   ) : (
                     /* Single Day Itinerary */

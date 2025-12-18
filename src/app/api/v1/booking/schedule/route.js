@@ -104,6 +104,32 @@ export async function POST(request) {
         const guests_changed = modifications.guestsChanged || false;
         const date_changed = modifications.dateChanged || false;
 
+        const isMultiDay = schedule.tourType === "multi_day_tour";
+
+        let itineraryData = [];
+        if (isMultiDay) {
+          // Use dayItinerary for multi-day tours
+          itineraryData =
+            schedule.dayItinerary?.map((day) => ({
+              day: day.day,
+              date: day.date instanceof Date ? day.date.toISOString() : day.date,
+              activities:
+                day.itinerary?.map((item) => ({
+                  time: item.time,
+                  activity: item.activity,
+                  description: item.description || "",
+                })) || [],
+            })) || [];
+        } else {
+          // Use regular itinerary for single day tours
+          itineraryData =
+            schedule.itinerary?.map((item) => ({
+              time: item.time,
+              activity: item.activity,
+              description: item.description || "",
+            })) || [];
+        }
+
         return {
           tourId: schedule.tourId,
           title: schedule.title,
@@ -154,23 +180,7 @@ export async function POST(request) {
           },
 
           // Itinerary
-          itinerary:
-            schedule.tourType === "multi_day_tour"
-              ? schedule.dayItinerary?.map((day) => ({
-                  day: day.day,
-                  date: day.date instanceof Date ? day.date.toISOString() : day.date,
-                  activities:
-                    day.itinerary?.map((item) => ({
-                      time: item.time,
-                      activity: item.activity,
-                      description: item.description || "",
-                    })) || [],
-                })) || []
-              : schedule.itinerary?.map((item) => ({
-                  time: item.time,
-                  activity: item.activity,
-                  description: item.description || "",
-                })) || [],
+          itinerary: itineraryData,
 
           // Equipment
           equipment:

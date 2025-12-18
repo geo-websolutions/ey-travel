@@ -34,6 +34,7 @@ import ViewScheduleModal from "./ViewScheduleModal";
 import FeedbackProcessingModal from "./FeedbackProcessingModal";
 import { toast } from "react-toastify";
 import { auth } from "@/lib/firebase";
+import { toCairoTime } from "@/utils/dateTime";
 
 const BookingCard = ({ booking, onCheckAvailability }) => {
   const [expanded, setExpanded] = useState(false);

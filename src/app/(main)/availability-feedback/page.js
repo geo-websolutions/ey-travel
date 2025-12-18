@@ -23,6 +23,7 @@ import {
   FaCalendarPlus,
   FaUserMinus,
   FaExchangeAlt,
+  FaBars,
 } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Link from "next/link";
@@ -45,6 +46,7 @@ function AvailabilityFeedbackPageContent() {
   const [activeTourIndex, setActiveTourIndex] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionComplete, setSubmissionComplete] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Fetch booking data on component mount
   useEffect(() => {
@@ -278,14 +280,14 @@ function AvailabilityFeedbackPageContent() {
         description: "Tour is available as requested",
       },
       limited: {
-        label: "Limited Availability",
+        label: "Limited",
         color: "bg-gradient-to-r from-yellow-500 to-amber-600",
         textColor: "text-yellow-400",
         icon: "⚠",
         description: "Limited places available",
       },
       alternative: {
-        label: "Alternative Date",
+        label: "Alternative",
         color: "bg-gradient-to-r from-blue-500 to-blue-600",
         textColor: "text-blue-400",
         icon: "📅",
@@ -321,11 +323,15 @@ function AvailabilityFeedbackPageContent() {
     return (
       <div className="min-h-screen bg-stone-900 flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="w-24 h-24 bg-gradient-to-br from-amber-900/30 to-amber-800/30 rounded-full flex items-center justify-center mb-6 mx-auto">
-            <FaSpinner className="text-amber-400 text-4xl animate-spin" />
+          <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-amber-900/30 to-amber-800/30 rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto">
+            <FaSpinner className="text-amber-400 text-2xl sm:text-4xl animate-spin" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-4">Loading Your Booking Details</h1>
-          <p className="text-stone-400">Please wait while we verify your feedback link...</p>
+          <h1 className="text-xl sm:text-3xl font-bold text-white mb-2 sm:mb-4">
+            Loading Your Booking Details
+          </h1>
+          <p className="text-stone-400 text-sm sm:text-base">
+            Please wait while we verify your feedback link...
+          </p>
         </div>
       </div>
     );
@@ -336,26 +342,28 @@ function AvailabilityFeedbackPageContent() {
     return (
       <div className="min-h-screen bg-stone-900 flex items-center justify-center p-4">
         <div className="text-center max-w-lg">
-          <div className="w-24 h-24 bg-gradient-to-br from-red-900/30 to-red-800/30 rounded-full flex items-center justify-center mb-6 mx-auto">
-            <FaExclamationTriangle className="text-red-400 text-4xl" />
+          <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-red-900/30 to-red-800/30 rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto">
+            <FaExclamationTriangle className="text-red-400 text-2xl sm:text-4xl" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-4">Unable to Load Booking</h1>
-          <div className="bg-gradient-to-br from-red-500/10 to-red-600/10 rounded-xl border border-red-500/30 p-6 mb-6">
-            <p className="text-red-300 font-medium mb-4">{error}</p>
-            <p className="text-stone-400 text-sm">
+          <h1 className="text-xl sm:text-3xl font-bold text-white mb-2 sm:mb-4">
+            Unable to Load Booking
+          </h1>
+          <div className="bg-gradient-to-br from-red-500/10 to-red-600/10 rounded-xl border border-red-500/30 p-4 sm:p-6 mb-4 sm:mb-6">
+            <p className="text-red-300 font-medium text-sm sm:text-base mb-2 sm:mb-4">{error}</p>
+            <p className="text-stone-400 text-xs sm:text-sm">
               This feedback link may have expired or is invalid. Please contact us for assistance.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <Link
               href="/contact"
-              className="px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-amber-600 transition-all"
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-amber-600 transition-all text-sm sm:text-base"
             >
               Contact Support
             </Link>
             <Link
               href="/"
-              className="px-6 py-3 border border-stone-600 text-stone-300 font-medium rounded-lg hover:bg-stone-700/50 hover:text-white transition-colors"
+              className="px-4 sm:px-6 py-2 sm:py-3 border border-stone-600 text-stone-300 font-medium rounded-lg hover:bg-stone-700/50 hover:text-white transition-colors text-sm sm:text-base"
             >
               Return Home
             </Link>
@@ -370,16 +378,18 @@ function AvailabilityFeedbackPageContent() {
     return (
       <div className="min-h-screen bg-stone-900 flex items-center justify-center p-4">
         <div className="text-center max-w-lg">
-          <div className="w-24 h-24 bg-gradient-to-br from-green-900/30 to-green-800/30 rounded-full flex items-center justify-center mb-6 mx-auto">
-            <FaCheck className="text-green-400 text-4xl" />
+          <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gradient-to-br from-green-900/30 to-green-800/30 rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto">
+            <FaCheck className="text-green-400 text-2xl sm:text-4xl" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-4">Feedback Submitted Successfully!</h1>
-          <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-xl border border-green-500/30 p-6 mb-6">
-            <p className="text-green-300 font-medium mb-4">
+          <h1 className="text-xl sm:text-3xl font-bold text-white mb-2 sm:mb-4">
+            Feedback Submitted Successfully!
+          </h1>
+          <div className="bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-xl border border-green-500/30 p-4 sm:p-6 mb-4 sm:mb-6">
+            <p className="text-green-300 font-medium text-sm sm:text-base mb-2 sm:mb-4">
               Thank you for providing your feedback. Our team will review your preferences and get
               back to you soon.
             </p>
-            <div className="text-left space-y-3 text-sm text-stone-300">
+            <div className="text-left space-y-2 sm:space-y-3 text-xs sm:text-sm text-stone-300">
               <div className="flex items-start">
                 <FaEnvelope className="text-green-400 mt-0.5 mr-2 flex-shrink-0" />
                 <span>
@@ -393,10 +403,12 @@ function AvailabilityFeedbackPageContent() {
               </div>
             </div>
           </div>
-          <p className="text-stone-400 text-sm mb-6">Redirecting to homepage in 5 seconds...</p>
+          <p className="text-stone-400 text-xs sm:text-sm mb-4 sm:mb-6">
+            Redirecting to homepage in 5 seconds...
+          </p>
           <Link
             href="/"
-            className="px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-amber-600 transition-all"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-amber-600 to-amber-500 text-white font-semibold rounded-lg hover:from-amber-700 hover:to-amber-600 transition-all text-sm sm:text-base"
           >
             Return Home Now
           </Link>
@@ -410,23 +422,35 @@ function AvailabilityFeedbackPageContent() {
   const statusConfig = getStatusConfig(currentFeedback?.availabilityStatus);
 
   return (
-    <div className="min-h-screen bg-stone-900 text-stone-100 mt-15">
+    <div className="min-h-screen bg-stone-900 text-stone-100 pt-16 sm:pt-20 mt-15 lg:mt-0">
+      {/* Mobile Sidebar Toggle */}
+      <div className="lg:hidden fixed top-16 right-4 z-170">
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="p-2 bg-stone-800 rounded-lg border border-stone-700"
+        >
+          <FaBars className="text-amber-400 text-lg" />
+        </button>
+      </div>
+
       {/* Progress Header */}
-      <div className="sticky top-0 z-40 bg-stone-800/90 backdrop-blur-sm border-b border-stone-700">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="fixed top-0 left-0 right-0 z-150 bg-stone-800/95 backdrop-blur-sm border-b border-stone-700">
+        <div className="max-w-6xl mx-auto px-4 py-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <h1 className="text-2xl font-bold text-white">Tour Availability Feedback</h1>
-              <p className="text-stone-400 text-sm">
+              <h1 className="text-lg sm:text-xl font-bold text-white">
+                Tour Availability Feedback
+              </h1>
+              <p className="text-stone-400 text-xs sm:text-sm">
                 Booking #{booking?.requestId} • {totalTours} tour{totalTours !== 1 ? "s" : ""}
               </p>
             </div>
 
             {/* Progress Indicator */}
-            <div className="flex items-center">
+            <div className="flex items-center justify-between sm:justify-start">
               <div className="flex items-center">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${statusConfig.color} text-white`}
+                  className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold ${statusConfig.color} text-white`}
                 >
                   {statusConfig.icon}
                 </div>
@@ -437,30 +461,34 @@ function AvailabilityFeedbackPageContent() {
                   <div className="text-xs text-stone-500">{statusConfig.label}</div>
                 </div>
               </div>
-              <div className="w-12 h-0.5 mx-2 bg-stone-700"></div>
-              <div className="text-xs text-stone-500">Step 2 of 3</div>
+              <div className="hidden sm:block w-8 h-0.5 mx-2 bg-stone-700"></div>
+              <div className="hidden sm:block text-xs text-stone-500">Step 2 of 3</div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
+      <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-6">
             {/* Welcome Message */}
-            <div className="bg-gradient-to-br from-stone-800/50 to-stone-900/50 rounded-xl border border-stone-700 p-6">
-              <h2 className="text-2xl font-bold text-white mb-4">Help Us Finalize Your Booking</h2>
-              <p className="text-stone-300 mb-4">
+            <div className="bg-gradient-to-br from-stone-800/50 to-stone-900/50 rounded-xl border border-stone-700 p-4 sm:p-6">
+              <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4">
+                Help Us Finalize Your Booking
+              </h2>
+              <p className="text-stone-300 text-sm sm:text-base mb-3 sm:mb-4">
                 Thank you for responding to our availability update. We need your feedback to
                 proceed with your booking request.
               </p>
-              <div className="p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg border border-blue-500/30">
+              <div className="p-3 sm:p-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg border border-blue-500/30">
                 <div className="flex items-start">
-                  <FaInfoCircle className="text-blue-300 mt-0.5 mr-3 flex-shrink-0" />
+                  <FaInfoCircle className="text-blue-300 mt-0.5 mr-2 sm:mr-3 flex-shrink-0 text-sm sm:text-base" />
                   <div>
-                    <p className="text-blue-300 font-medium mb-1">What happens next?</p>
-                    <p className="text-blue-400 text-sm">
+                    <p className="text-blue-300 font-medium text-sm sm:text-base mb-1">
+                      What happens next?
+                    </p>
+                    <p className="text-blue-400 text-xs sm:text-sm">
                       Based on your feedback, we'll prepare a revised booking confirmation and
                       payment link. You'll receive an email with the updated details.
                     </p>
@@ -470,21 +498,21 @@ function AvailabilityFeedbackPageContent() {
             </div>
 
             {/* Tour Navigation */}
-            <div className="flex items-center justify-between bg-stone-800/50 rounded-lg p-4">
+            <div className="flex flex-col sm:flex-row items-center justify-between bg-stone-800/50 rounded-lg p-4 gap-3 sm:gap-4">
               <button
                 onClick={() => setActiveTourIndex((i) => Math.max(0, i - 1))}
                 disabled={activeTourIndex === 0}
-                className="px-4 py-2 rounded-lg bg-stone-700 hover:bg-stone-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="w-full sm:w-auto px-4 py-2 rounded-lg bg-stone-700 hover:bg-stone-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
               >
-                <FaChevronLeft />
+                <FaChevronLeft className="text-sm" />
                 Previous Tour
               </button>
 
-              <div className="text-center">
-                <div className="text-lg font-bold text-white truncate max-w-md">
+              <div className="text-center min-w-0">
+                <div className="text-base sm:text-lg font-bold text-white truncate max-w-[180px] sm:max-w-md mx-auto">
                   {currentFeedback?.title}
                 </div>
-                <div className="text-sm text-stone-400">
+                <div className="text-xs sm:text-sm text-stone-400">
                   Tour {activeTourIndex + 1} of {totalTours}
                 </div>
               </div>
@@ -492,50 +520,54 @@ function AvailabilityFeedbackPageContent() {
               <button
                 onClick={() => setActiveTourIndex((i) => Math.min(totalTours - 1, i + 1))}
                 disabled={activeTourIndex === totalTours - 1}
-                className="px-4 py-2 rounded-lg bg-stone-700 hover:bg-stone-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="w-full sm:w-auto px-4 py-2 rounded-lg bg-stone-700 hover:bg-stone-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 Next Tour
-                <FaChevronRight />
+                <FaChevronRight className="text-sm" />
               </button>
             </div>
 
             {/* Current Tour Card */}
             {currentFeedback && (
-              <div className="bg-gradient-to-br from-stone-800/50 to-stone-900/50 rounded-xl border border-stone-700 p-6">
+              <div className="bg-gradient-to-br from-stone-800/50 to-stone-900/50 rounded-xl border border-stone-700 p-4 sm:p-6">
                 {/* Tour Header */}
-                <div className="flex items-start justify-between mb-6">
-                  <div>
-                    <div className="flex items-center gap-3 mb-2">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between mb-4 sm:mb-6">
+                  <div className="mb-3 sm:mb-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-2">
                       <span
-                        className={`px-3 py-1 rounded-full ${statusConfig.textColor} bg-opacity-20 font-medium`}
+                        className={`px-2 sm:px-3 py-1 rounded-full ${statusConfig.textColor} bg-opacity-20 font-medium text-xs sm:text-sm`}
                       >
                         {statusConfig.icon} {statusConfig.label}
                       </span>
-                      <h3 className="text-xl font-bold text-white">{currentFeedback.title}</h3>
+                      <h3 className="text-lg sm:text-xl font-bold text-white">
+                        {currentFeedback.title}
+                      </h3>
                     </div>
-                    <p className="text-stone-400">{statusConfig.description}</p>
+                    <p className="text-stone-400 text-sm">{statusConfig.description}</p>
                   </div>
                 </div>
 
                 {/* Original Request */}
-                <div className="mb-6 p-4 bg-stone-700/30 rounded-lg">
-                  <h4 className="font-bold text-amber-400 mb-3">Original Request</h4>
-                  <div className="grid grid-cols-2 gap-4">
+                <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-stone-700/30 rounded-lg">
+                  <h4 className="font-bold text-amber-400 mb-2 sm:mb-3 text-sm sm:text-base">
+                    Original Request
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <div className="flex items-center text-sm text-stone-400 mb-1">
-                        <FaCalendarAlt className="mr-2" />
+                      <div className="flex items-center text-xs sm:text-sm text-stone-400 mb-1">
+                        <FaCalendarAlt className="mr-2 text-xs sm:text-sm" />
                         Date
                       </div>
-                      <div className="font-medium text-white">
+                      <div className="font-medium text-white text-sm sm:text-base">
                         {formatDate(currentFeedback.originalDate)}
                       </div>
                     </div>
                     <div>
-                      <div className="flex items-center text-sm text-stone-400 mb-1">
-                        <FaUsers className="mr-2" />
+                      <div className="flex items-center text-xs sm:text-sm text-stone-400 mb-1">
+                        <FaUsers className="mr-2 text-xs sm:text-sm" />
                         Travelers
                       </div>
-                      <div className="font-medium text-white">
+                      <div className="font-medium text-white text-sm sm:text-base">
                         {currentFeedback.originalGuests}{" "}
                         {currentFeedback.originalGuests === 1 ? "person" : "people"}
                       </div>
@@ -545,14 +577,14 @@ function AvailabilityFeedbackPageContent() {
 
                 {/* Status Specific Information */}
                 {currentFeedback.availabilityStatus === "limited" && (
-                  <div className="mb-6 p-4 bg-gradient-to-r from-yellow-500/10 to-amber-600/10 rounded-lg border border-yellow-500/30">
+                  <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-r from-yellow-500/10 to-amber-600/10 rounded-lg border border-yellow-500/30">
                     <div className="flex items-start">
-                      <FaExclamationTriangle className="text-yellow-300 mt-0.5 mr-3 flex-shrink-0" />
+                      <FaExclamationTriangle className="text-yellow-300 mt-0.5 mr-2 sm:mr-3 flex-shrink-0 text-sm sm:text-base" />
                       <div>
-                        <h4 className="font-bold text-yellow-300 mb-2">
+                        <h4 className="font-bold text-yellow-300 mb-1 sm:mb-2 text-sm sm:text-base">
                           Limited Availability Notice
                         </h4>
-                        <p className="text-yellow-400 text-sm">
+                        <p className="text-yellow-400 text-xs sm:text-sm">
                           Only {currentFeedback.limitedPlaces} place
                           {currentFeedback.limitedPlaces !== 1 ? "s" : ""} available for your
                           requested date.
@@ -564,14 +596,14 @@ function AvailabilityFeedbackPageContent() {
 
                 {currentFeedback.availabilityStatus === "alternative" &&
                   currentFeedback.alternativeDate && (
-                    <div className="mb-6 p-4 bg-gradient-to-r from-blue-500/10 to-blue-600/10 rounded-lg border border-blue-500/30">
+                    <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gradient-to-r from-blue-500/10 to-blue-600/10 rounded-lg border border-blue-500/30">
                       <div className="flex items-start">
-                        <FaCalendarPlus className="text-blue-300 mt-0.5 mr-3 flex-shrink-0" />
+                        <FaCalendarPlus className="text-blue-300 mt-0.5 mr-2 sm:mr-3 flex-shrink-0 text-sm sm:text-base" />
                         <div>
-                          <h4 className="font-bold text-blue-300 mb-2">
+                          <h4 className="font-bold text-blue-300 mb-1 sm:mb-2 text-sm sm:text-base">
                             Alternative Date Available
                           </h4>
-                          <p className="text-blue-400 text-sm">
+                          <p className="text-blue-400 text-xs sm:text-sm">
                             Available on: {formatDate(currentFeedback.alternativeDate)}
                           </p>
                         </div>
@@ -580,45 +612,51 @@ function AvailabilityFeedbackPageContent() {
                   )}
 
                 {/* Decision Options */}
-                <div className="mb-6">
-                  <h4 className="font-bold text-amber-400 mb-4">What would you like to do?</h4>
+                <div className="mb-4 sm:mb-6">
+                  <h4 className="font-bold text-amber-400 mb-3 sm:mb-4 text-sm sm:text-base">
+                    What would you like to do?
+                  </h4>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="flex flex-col sm:grid sm:grid-cols-3 gap-2 sm:gap-3">
                     {/* Keep as is */}
                     <button
                       onClick={() => handleDecisionChange(activeTourIndex, "keep")}
-                      className={`p-4 rounded-lg border flex flex-col items-center justify-center transition-all ${
+                      className={`p-3 sm:p-4 rounded-lg border flex flex-row sm:flex-col items-center justify-start sm:justify-center transition-all gap-3 sm:gap-0 ${
                         currentFeedback.decision === "keep"
                           ? "border-green-500 bg-green-500/10"
                           : "border-stone-600 hover:border-stone-500 hover:bg-stone-700/50"
                       }`}
                     >
                       <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${
+                        className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center sm:mb-3 ${
                           currentFeedback.decision === "keep" ? "bg-green-500" : "bg-stone-700"
                         }`}
                       >
-                        <FaCheck className="text-white text-xl" />
+                        <FaCheck className="text-white text-sm sm:text-xl" />
                       </div>
-                      <span
-                        className={`font-bold ${
-                          currentFeedback.decision === "keep" ? "text-green-400" : "text-stone-300"
-                        }`}
-                      >
-                        Keep as is
-                      </span>
-                      <span className="text-xs text-stone-500 mt-1 text-center">
-                        {currentFeedback.availabilityStatus === "available"
-                          ? "Confirm booking"
-                          : "Keep original request"}
-                      </span>
+                      <div className="text-left sm:text-center">
+                        <span
+                          className={`font-bold text-sm sm:text-base ${
+                            currentFeedback.decision === "keep"
+                              ? "text-green-400"
+                              : "text-stone-300"
+                          }`}
+                        >
+                          Keep as is
+                        </span>
+                        <span className="text-xs text-stone-500 block mt-0.5 sm:mt-1">
+                          {currentFeedback.availabilityStatus === "available"
+                            ? "Confirm booking"
+                            : "Keep original request"}
+                        </span>
+                      </div>
                     </button>
 
                     {/* Modify */}
                     <button
                       onClick={() => handleDecisionChange(activeTourIndex, "modify")}
                       disabled={currentFeedback.availabilityStatus === "available"}
-                      className={`p-4 rounded-lg border flex flex-col items-center justify-center transition-all ${
+                      className={`p-3 sm:p-4 rounded-lg border flex flex-row sm:flex-col items-center justify-start sm:justify-center transition-all gap-3 sm:gap-0 ${
                         currentFeedback.decision === "modify"
                           ? "border-blue-500 bg-blue-500/10"
                           : "border-stone-600 hover:border-stone-500 hover:bg-stone-700/50"
@@ -629,54 +667,62 @@ function AvailabilityFeedbackPageContent() {
                       }`}
                     >
                       <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${
+                        className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center sm:mb-3 ${
                           currentFeedback.decision === "modify" ? "bg-blue-500" : "bg-stone-700"
                         }`}
                       >
-                        <FaExchangeAlt className="text-white text-xl" />
+                        <FaExchangeAlt className="text-white text-sm sm:text-xl" />
                       </div>
-                      <span
-                        className={`font-bold ${
-                          currentFeedback.decision === "modify" ? "text-blue-400" : "text-stone-300"
-                        }`}
-                      >
-                        Modify
-                      </span>
-                      <span className="text-xs text-stone-500 mt-1 text-center">
-                        {currentFeedback.availabilityStatus === "limited"
-                          ? "Adjust group size"
-                          : currentFeedback.availabilityStatus === "alternative"
-                          ? "Use alternative date"
-                          : "Make changes"}
-                      </span>
+                      <div className="text-left sm:text-center">
+                        <span
+                          className={`font-bold text-sm sm:text-base ${
+                            currentFeedback.decision === "modify"
+                              ? "text-blue-400"
+                              : "text-stone-300"
+                          }`}
+                        >
+                          Modify
+                        </span>
+                        <span className="text-xs text-stone-500 block mt-0.5 sm:mt-1">
+                          {currentFeedback.availabilityStatus === "limited"
+                            ? "Adjust group size"
+                            : currentFeedback.availabilityStatus === "alternative"
+                            ? "Use alternative date"
+                            : "Make changes"}
+                        </span>
+                      </div>
                     </button>
 
                     {/* Remove */}
                     <button
                       onClick={() => handleDecisionChange(activeTourIndex, "remove")}
-                      className={`p-4 rounded-lg border flex flex-col items-center justify-center transition-all ${
+                      className={`p-3 sm:p-4 rounded-lg border flex flex-row sm:flex-col items-center justify-start sm:justify-center transition-all gap-3 sm:gap-0 ${
                         currentFeedback.decision === "remove"
                           ? "border-red-500 bg-red-500/10"
                           : "border-stone-600 hover:border-stone-500 hover:bg-stone-700/50"
                       }`}
                     >
                       <div
-                        className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${
+                        className={`w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center sm:mb-3 ${
                           currentFeedback.decision === "remove" ? "bg-red-500" : "bg-stone-700"
                         }`}
                       >
-                        <FaTimes className="text-white text-xl" />
+                        <FaTimes className="text-white text-sm sm:text-xl" />
                       </div>
-                      <span
-                        className={`font-bold ${
-                          currentFeedback.decision === "remove" ? "text-red-400" : "text-stone-300"
-                        }`}
-                      >
-                        Remove
-                      </span>
-                      <span className="text-xs text-stone-500 mt-1 text-center">
-                        Remove from booking
-                      </span>
+                      <div className="text-left sm:text-center">
+                        <span
+                          className={`font-bold text-sm sm:text-base ${
+                            currentFeedback.decision === "remove"
+                              ? "text-red-400"
+                              : "text-stone-300"
+                          }`}
+                        >
+                          Remove
+                        </span>
+                        <span className="text-xs text-stone-500 block mt-0.5 sm:mt-1">
+                          Remove from booking
+                        </span>
+                      </div>
                     </button>
                   </div>
                 </div>
@@ -687,25 +733,27 @@ function AvailabilityFeedbackPageContent() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="mb-6 p-4 bg-stone-700/30 rounded-lg border border-stone-600"
+                    className="mb-4 sm:mb-6 p-3 sm:p-4 bg-stone-700/30 rounded-lg border border-stone-600"
                   >
-                    <h5 className="font-bold text-amber-400 mb-4">Modification Details</h5>
+                    <h5 className="font-bold text-amber-400 mb-3 sm:mb-4 text-sm sm:text-base">
+                      Modification Details
+                    </h5>
 
                     {currentFeedback.availabilityStatus === "limited" && (
-                      <div className="mb-4">
-                        <label className="block text-sm font-medium text-stone-400 mb-2">
+                      <div className="mb-3 sm:mb-4">
+                        <label className="block text-xs sm:text-sm font-medium text-stone-400 mb-1 sm:mb-2">
                           Number of Travelers (Max: {currentFeedback.limitedPlaces})
                         </label>
-                        <div className="flex items-center gap-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                           <input
                             type="number"
                             min="1"
                             max={currentFeedback.limitedPlaces}
                             value={currentFeedback.modifiedGuests}
                             onChange={(e) => handleGuestsChange(activeTourIndex, e.target.value)}
-                            className="flex-1 bg-stone-600 border border-stone-500 rounded-lg px-4 py-2 text-white"
+                            className="flex-1 bg-stone-600 border border-stone-500 rounded-lg px-3 sm:px-4 py-2 text-white text-sm sm:text-base"
                           />
-                          <span className="text-stone-400 whitespace-nowrap">
+                          <span className="text-stone-400 text-xs sm:text-sm whitespace-nowrap">
                             of {currentFeedback.originalGuests} requested
                           </span>
                         </div>
@@ -713,11 +761,11 @@ function AvailabilityFeedbackPageContent() {
                     )}
 
                     {currentFeedback.availabilityStatus === "alternative" && (
-                      <div className="mb-4">
-                        <label className="block text-sm font-medium text-stone-400 mb-2">
+                      <div className="mb-3 sm:mb-4">
+                        <label className="block text-xs sm:text-sm font-medium text-stone-400 mb-1 sm:mb-2">
                           Select Alternative Date
                         </label>
-                        <div className="flex flex-col md:flex-row md:items-center gap-3">
+                        <div className="flex flex-col gap-2 sm:gap-3">
                           <DatePicker
                             selected={
                               currentFeedback.modifiedDate
@@ -726,7 +774,7 @@ function AvailabilityFeedbackPageContent() {
                             }
                             onChange={(date) => handleDateChange(activeTourIndex, date)}
                             minDate={new Date()}
-                            className="bg-stone-600 border border-stone-500 rounded-lg px-4 py-2 text-white w-full md:w-auto"
+                            className="bg-stone-600 border border-stone-500 rounded-lg px-3 sm:px-4 py-2 text-white w-full text-sm sm:text-base"
                             dateFormat="MMMM d, yyyy"
                             placeholderText="Select alternative date"
                             showPopperArrow={false}
@@ -735,7 +783,7 @@ function AvailabilityFeedbackPageContent() {
                             dayClassName={() => "text-white hover:bg-amber-500"}
                           />
                           {currentFeedback.modifiedDate && (
-                            <span className="text-stone-300">
+                            <span className="text-stone-300 text-xs sm:text-sm">
                               Selected:{" "}
                               {format(new Date(currentFeedback.modifiedDate), "MMMM d, yyyy")}
                             </span>
@@ -744,14 +792,14 @@ function AvailabilityFeedbackPageContent() {
                       </div>
                     )}
 
-                    <div className="mt-4">
-                      <label className="block text-sm font-medium text-stone-400 mb-2">
+                    <div className="mt-3 sm:mt-4">
+                      <label className="block text-xs sm:text-sm font-medium text-stone-400 mb-1 sm:mb-2">
                         Notes about this modification (optional)
                       </label>
                       <textarea
                         value={currentFeedback.notes}
                         onChange={(e) => handleNotesChange(activeTourIndex, e.target.value)}
-                        className="w-full bg-stone-600 border border-stone-500 rounded-lg p-3 text-white"
+                        className="w-full bg-stone-600 border border-stone-500 rounded-lg p-3 text-white text-sm sm:text-base"
                         rows="2"
                         placeholder="Any specific requirements or preferences..."
                       />
@@ -761,14 +809,14 @@ function AvailabilityFeedbackPageContent() {
 
                 {/* Notes for other decisions */}
                 {(currentFeedback.decision === "keep" || currentFeedback.decision === "remove") && (
-                  <div className="mb-6">
-                    <label className="block text-sm font-medium text-stone-400 mb-2">
+                  <div className="mb-4 sm:mb-6">
+                    <label className="block text-xs sm:text-sm font-medium text-stone-400 mb-1 sm:mb-2">
                       Notes (optional)
                     </label>
                     <textarea
                       value={currentFeedback.notes}
                       onChange={(e) => handleNotesChange(activeTourIndex, e.target.value)}
-                      className="w-full bg-stone-600 border border-stone-500 rounded-lg p-3 text-white"
+                      className="w-full bg-stone-600 border border-stone-500 rounded-lg p-3 text-white text-sm sm:text-base"
                       rows="2"
                       placeholder={
                         currentFeedback.decision === "keep"
@@ -780,10 +828,10 @@ function AvailabilityFeedbackPageContent() {
                 )}
 
                 {/* Tour Progress */}
-                <div className="mt-6">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-stone-400">Tour Progress</span>
-                    <span className="text-sm text-stone-300">
+                <div className="mt-4 sm:mt-6">
+                  <div className="flex justify-between items-center mb-1 sm:mb-2">
+                    <span className="text-xs sm:text-sm text-stone-400">Tour Progress</span>
+                    <span className="text-xs sm:text-sm text-stone-300">
                       {activeTourIndex + 1}/{totalTours}
                     </span>
                   </div>
@@ -799,147 +847,191 @@ function AvailabilityFeedbackPageContent() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Booking Summary */}
-            <div className="bg-gradient-to-br from-stone-800/50 to-stone-900/50 rounded-xl border border-stone-700 p-6">
-              <h3 className="text-xl font-bold text-white mb-4">Booking Summary</h3>
+          <div
+            className={`lg:col-span-1 lg:sticky lg:top-24 h-fit my-auto fixed inset-y-0 right-0 w-full max-w-sm lg:max-w-nonetransform transition-transform duration-300 ease-in-out z-150 ${
+              isSidebarOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
+            } ${isSidebarOpen ? "block" : "hidden lg:block"}`}
+          >
+            <div className="h-full lg:h-auto bg-stone-900 lg:bg-transparent overflow-y-auto p-4 sm:p-6 lg:p-0 rounded-lg ">
+              <div className="space-y-4 sm:space-y-6">
+                {/* Booking Summary */}
+                <div className="bg-gradient-to-br from-stone-800/50 to-stone-900/50 rounded-xl border border-stone-700 p-4 sm:p-6">
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4">
+                    Booking Summary
+                  </h3>
 
-              <div className="space-y-3 mb-6">
-                <div className="flex justify-between">
-                  <span className="text-stone-400">Booking ID</span>
-                  <span className="text-white font-medium text-sm">{booking?.requestId}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-stone-400">Customer</span>
-                  <span className="text-white font-medium">{booking?.customer?.name}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-stone-400">Email</span>
-                  <span className="text-white font-medium text-sm">{booking?.customer?.email}</span>
-                </div>
-                <div className="border-t border-stone-700 pt-3">
-                  <div className="flex justify-between">
-                    <span className="text-lg font-bold text-white">Original Total</span>
-                    <span className="text-2xl font-bold text-amber-400">
-                      ${booking?.total?.toLocaleString()}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Tour Status Overview */}
-              <div className="mt-4">
-                <h4 className="font-medium text-stone-300 mb-3">Tour Status Overview</h4>
-                <div className="space-y-2">
-                  {feedback.map((tour, index) => (
-                    <div
-                      key={index}
-                      onClick={() => setActiveTourIndex(index)}
-                      className={`p-2 rounded-lg cursor-pointer transition-colors ${
-                        activeTourIndex === index ? "bg-stone-700" : "hover:bg-stone-700/50"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <div
-                            className={`w-3 h-3 rounded-full mr-2 ${getStatusConfig(
-                              tour.availabilityStatus
-                            ).textColor.replace("text-", "bg-")}`}
-                          />
-                          <span className="text-sm text-stone-300 truncate max-w-[120px]">
-                            Tour {index + 1}
-                          </span>
-                        </div>
-                        <span
-                          className={`text-xs font-medium ${
-                            getStatusConfig(tour.availabilityStatus).textColor
-                          }`}
-                        >
-                          {tour.decision === "keep" ? "✓" : tour.decision === "modify" ? "↻" : "✗"}
+                  <div className="space-y-2 sm:space-y-3 mb-4 sm:mb-6">
+                    <div className="flex justify-between">
+                      <span className="text-stone-400 text-xs sm:text-sm">Booking ID</span>
+                      <span className="text-white font-medium text-xs sm:text-sm">
+                        {booking?.requestId}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-stone-400 text-xs sm:text-sm">Customer</span>
+                      <span className="text-white font-medium text-xs sm:text-sm">
+                        {booking?.customer?.name}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-stone-400 text-xs sm:text-sm">Email</span>
+                      <span className="text-white font-medium text-xs sm:text-sm">
+                        {booking?.customer?.email}
+                      </span>
+                    </div>
+                    <div className="border-t border-stone-700 pt-2 sm:pt-3">
+                      <div className="flex justify-between">
+                        <span className="text-base sm:text-lg font-bold text-white">
+                          Original Total
+                        </span>
+                        <span className="text-xl sm:text-2xl font-bold text-amber-400">
+                          ${booking?.total?.toLocaleString()}
                         </span>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+                  </div>
 
-            {/* Next Steps */}
-            <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-500/30 p-6">
-              <h3 className="text-lg font-bold text-blue-300 mb-3">Next Steps</h3>
-              <div className="space-y-3 text-sm text-stone-300">
-                <div className="flex items-start">
-                  <span className="inline-block w-5 h-5 bg-blue-500 rounded-full text-center text-blue-900 font-bold mr-2 flex-shrink-0">
-                    1
-                  </span>
-                  <span>Provide feedback for all tours</span>
+                  {/* Tour Status Overview */}
+                  <div className="mt-4">
+                    <h4 className="font-medium text-stone-300 mb-2 sm:mb-3 text-sm sm:text-base">
+                      Tour Status Overview
+                    </h4>
+                    <div className="max-h-[150px] sm:max-h-[200px] overflow-y-auto pr-2 space-y-1 sm:space-y-2">
+                      {feedback.map((tour, index) => (
+                        <div
+                          key={index}
+                          onClick={() => {
+                            setActiveTourIndex(index);
+                            setIsSidebarOpen(false);
+                          }}
+                          className={`p-2 rounded-lg cursor-pointer transition-colors ${
+                            activeTourIndex === index ? "bg-stone-700" : "hover:bg-stone-700/50"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center min-w-0">
+                              <div
+                                className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full mr-2 ${getStatusConfig(
+                                  tour.availabilityStatus
+                                ).textColor.replace("text-", "bg-")}`}
+                              />
+                              <span className="text-xs sm:text-sm text-stone-300 truncate max-w-[100px] sm:max-w-[120px]">
+                                Tour {index + 1}
+                              </span>
+                            </div>
+                            <span
+                              className={`text-xs font-medium ${
+                                getStatusConfig(tour.availabilityStatus).textColor
+                              }`}
+                            >
+                              {tour.decision === "keep"
+                                ? "✓"
+                                : tour.decision === "modify"
+                                ? "↻"
+                                : "✗"}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-start">
-                  <span className="inline-block w-5 h-5 bg-blue-500 rounded-full text-center text-blue-900 font-bold mr-2 flex-shrink-0">
-                    2
-                  </span>
-                  <span>Submit your preferences</span>
-                </div>
-                <div className="flex items-start">
-                  <span className="inline-block w-5 h-5 bg-blue-500 rounded-full text-center text-blue-900 font-bold mr-2 flex-shrink-0">
-                    3
-                  </span>
-                  <span>Receive updated confirmation email</span>
-                </div>
-              </div>
-            </div>
 
-            {/* Submit Button */}
-            <button
-              onClick={handleSubmitFeedback}
-              disabled={isSubmitting || feedback.some((f) => !f.decision)}
-              className="w-full py-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-green-500/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer"
-            >
-              {isSubmitting ? (
-                <>
-                  <FaSpinner className="animate-spin mr-2" />
-                  Submitting...
-                </>
-              ) : (
-                <>
-                  <FaSave className="mr-2" />
-                  Submit All Feedback
-                </>
-              )}
-            </button>
+                {/* Next Steps */}
+                <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-500/30 p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-bold text-blue-300 mb-2 sm:mb-3">
+                    Next Steps
+                  </h3>
+                  <div className="space-y-2 text-xs sm:text-sm text-stone-300">
+                    <div className="flex items-start">
+                      <span className="inline-block w-4 h-4 sm:w-5 sm:h-5 bg-blue-500 rounded-full text-center text-blue-900 font-bold mr-2 flex-shrink-0 text-xs">
+                        1
+                      </span>
+                      <span>Provide feedback for all tours</span>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="inline-block w-4 h-4 sm:w-5 sm:h-5 bg-blue-500 rounded-full text-center text-blue-900 font-bold mr-2 flex-shrink-0 text-xs">
+                        2
+                      </span>
+                      <span>Submit your preferences</span>
+                    </div>
+                    <div className="flex items-start">
+                      <span className="inline-block w-4 h-4 sm:w-5 sm:h-5 bg-blue-500 rounded-full text-center text-blue-900 font-bold mr-2 flex-shrink-0 text-xs">
+                        3
+                      </span>
+                      <span>Receive updated confirmation email</span>
+                    </div>
+                  </div>
+                </div>
 
-            {/* Help Section */}
-            <div className="pt-6 border-t border-stone-700">
-              <h4 className="font-medium text-stone-300 mb-3">Need help deciding?</h4>
-              <div className="space-y-2">
-                <a
-                  href="mailto:info@eytravelegypt.com"
-                  className="flex items-center text-sm text-amber-400 hover:text-amber-300 transition-colors"
+                {/* Submit Button */}
+                <button
+                  onClick={handleSubmitFeedback}
+                  disabled={isSubmitting || feedback.some((f) => !f.decision)}
+                  className="w-full py-3 sm:py-4 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold rounded-lg transition-all shadow-lg hover:shadow-green-500/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer text-sm sm:text-base"
                 >
-                  <FaEnvelope className="mr-2" />
-                  Email our experts
-                </a>
-                <a
-                  href="https://wa.me/201278926104"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center text-sm text-green-400 hover:text-green-300 transition-colors"
-                >
-                  <FaWhatsapp className="mr-2" />
-                  WhatsApp chat
-                </a>
-                <a
-                  href="tel:+201080174045"
-                  className="flex items-center text-sm text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  <FaPhone className="mr-2" />
-                  Call us for advice
-                </a>
+                  {isSubmitting ? (
+                    <>
+                      <FaSpinner className="animate-spin mr-2" />
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <FaSave className="mr-2" />
+                      Submit All Feedback
+                    </>
+                  )}
+                </button>
+
+                {/* Help Section */}
+                <div className="pt-4 sm:pt-6 border-t border-stone-700">
+                  <h4 className="font-medium text-stone-300 mb-2 sm:mb-3 text-sm sm:text-base">
+                    Need help deciding?
+                  </h4>
+                  <div className="space-y-1 sm:space-y-2">
+                    <a
+                      href="mailto:info@eytravelegypt.com"
+                      className="flex items-center text-xs sm:text-sm text-amber-400 hover:text-amber-300 transition-colors"
+                    >
+                      <FaEnvelope className="mr-2 text-xs sm:text-sm" />
+                      Email our experts
+                    </a>
+                    <a
+                      href="https://wa.me/201278926104"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center text-xs sm:text-sm text-green-400 hover:text-green-300 transition-colors"
+                    >
+                      <FaWhatsapp className="mr-2 text-xs sm:text-sm" />
+                      WhatsApp chat
+                    </a>
+                    <a
+                      href="tel:+201080174045"
+                      className="flex items-center text-xs sm:text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                    >
+                      <FaPhone className="mr-2 text-xs sm:text-sm" />
+                      Call us for advice
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Mobile Sidebar Overlay */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 z-20 lg:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
